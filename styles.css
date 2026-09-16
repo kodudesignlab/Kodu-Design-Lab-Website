@@ -249,15 +249,15 @@ img { display: block; max-width: 100%; }
 .about__grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   column-gap: var(--column-gap);
-  row-gap: 80px;
+  row-gap: 64px;
   align-items: start;
 }
 
 .about__portrait {
   grid-column: 1 / 3;
-  grid-row: 1 / 3;
+  grid-row: 1 / 4;
   aspect-ratio: 6 / 8;
   border-radius: 4px;
   overflow: hidden;

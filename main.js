@@ -115,7 +115,7 @@
     const navItems = gsap.utils.toArray('.nav > *');
     const portrait = document.querySelector('.about__portrait');
     const eyebrows = gsap.utils.toArray('.about__eyebrow');
-    const lead = document.querySelector('.about__lead');
+    const leads = gsap.utils.toArray('.about__lead');
     const listItems = gsap.utils.toArray('.about__list li');
 
     // Wrap every word in a masked span so each can rise into view
@@ -141,12 +141,13 @@
     ready.then(() => {
       if (reduceMotion) { html.classList.remove('is-loading'); html.classList.add('intro-done'); return; }
 
-      const words = splitWords(lead);
+      const wordSets = leads.map(splitWords);
+      const words = wordSets.flat();
       gsap.set(brandLines, { y: 14, opacity: 0 });
       gsap.set(navItems, { y: 14, opacity: 0 });
       gsap.set(portrait, { opacity: 0, y: 24, clipPath: 'inset(0 0 100% 0)' });
       gsap.set(eyebrows, { opacity: 0, y: 10 });
-      gsap.set(lead, { opacity: 1 });
+      gsap.set(leads, { opacity: 1 });
       gsap.set(words, { yPercent: 110 });
       gsap.set(listItems, { opacity: 0, y: 12 });
       html.classList.remove('is-loading');
@@ -168,13 +169,17 @@
       // Portrait wipes up into view
       tl.to(portrait, { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }, 0.25);
 
-      // Eyebrow, then the paragraph rises word by word
-      tl.to(eyebrows[0], { opacity: 1, y: 0, duration: 0.6 }, 0.45)
-        .to(words, { yPercent: 0, duration: 0.9, ease: 'power3.out', stagger: 0.018 }, 0.55);
+      // Each text row: eyebrow fades, then its paragraph rises word by word
+      let at = 0.45;
+      wordSets.forEach((set, i) => {
+        tl.to(eyebrows[i], { opacity: 1, y: 0, duration: 0.6 }, at)
+          .to(set, { yPercent: 0, duration: 0.9, ease: 'power3.out', stagger: 0.016 }, at + 0.1);
+        at += 0.1 + set.length * 0.016 * 0.55; // next row starts while this one is still finishing
+      });
 
       // Services list
-      tl.to(eyebrows[1], { opacity: 1, y: 0, duration: 0.6 }, 1.3)
-        .to(listItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, 1.4);
+      tl.to(eyebrows[wordSets.length], { opacity: 1, y: 0, duration: 0.6 }, at)
+        .to(listItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, at + 0.1);
     });
     return;
   }
