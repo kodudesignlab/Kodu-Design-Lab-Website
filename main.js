@@ -10,7 +10,7 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Rolling hover text for brand + nav links ---------- */
-  document.querySelectorAll('.brand__link, .nav__item').forEach((el) => {
+  document.querySelectorAll('.brand__link, .nav__item, .roll-target').forEach((el) => {
     const text = el.textContent.trim();
     el.setAttribute('aria-label', text);
     el.textContent = '';
@@ -117,6 +117,7 @@
     const eyebrows = gsap.utils.toArray('.about__eyebrow');
     const leads = gsap.utils.toArray('.about__lead');
     const listItems = gsap.utils.toArray('.about__list li');
+    const linkItems = gsap.utils.toArray('.about__links li');
 
     // Wrap every word in a masked span so each can rise into view
     function splitWords(el) {
@@ -149,14 +150,14 @@
       gsap.set(eyebrows, { opacity: 0, y: 10 });
       gsap.set(leads, { opacity: 1 });
       gsap.set(words, { yPercent: 110 });
-      gsap.set(listItems, { opacity: 0, y: 12 });
+      gsap.set([listItems, linkItems], { opacity: 0, y: 12 });
       html.classList.remove('is-loading');
 
       const tl = gsap.timeline({
         defaults: { ease: 'power3.out' },
         onComplete() {
           html.classList.add('intro-done');
-          gsap.set([brandLines, navItems, eyebrows, listItems, portrait], { clearProps: 'transform,opacity,clipPath' });
+          gsap.set([brandLines, navItems, eyebrows, listItems, linkItems, portrait], { clearProps: 'transform,opacity,clipPath' });
           gsap.set(words, { clearProps: 'transform' });
         },
       });
@@ -177,9 +178,12 @@
         at += 0.1 + set.length * 0.016 * 0.55; // next row starts while this one is still finishing
       });
 
-      // Services list
+      // Services list, then social links
       tl.to(eyebrows[wordSets.length], { opacity: 1, y: 0, duration: 0.6 }, at)
         .to(listItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, at + 0.1);
+      at += 0.35;
+      tl.to(eyebrows[wordSets.length + 1], { opacity: 1, y: 0, duration: 0.6 }, at)
+        .to(linkItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, at + 0.1);
     });
     return;
   }

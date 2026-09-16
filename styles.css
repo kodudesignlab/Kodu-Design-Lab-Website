@@ -249,7 +249,7 @@ img { display: block; max-width: 100%; }
 .about__grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   column-gap: var(--column-gap);
   row-gap: 64px;
   align-items: start;
@@ -257,7 +257,7 @@ img { display: block; max-width: 100%; }
 
 .about__portrait {
   grid-column: 1 / 3;
-  grid-row: 1 / 4;
+  grid-row: 1 / 5;
   aspect-ratio: 6 / 8;
   border-radius: 4px;
   overflow: hidden;
@@ -273,7 +273,8 @@ img { display: block; max-width: 100%; }
   color: var(--text-primary);
 }
 .about__lead,
-.about__list { grid-column: 7 / 12; }
+.about__list,
+.about__links { grid-column: 7 / 12; }
 
 .about__lead {
   font-weight: 500;
@@ -292,6 +293,32 @@ img { display: block; max-width: 100%; }
   color: var(--text-primary);
 }
 
+/* Social links — label + Lucide arrow-up-right (20px, 5px gap) */
+.about__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+.about__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.about__link-icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  transition: transform 0.4s var(--ease-out);
+}
+.about__link:hover .about__link-icon { transform: translate(2px, -2px); }
+
 /* Word-reveal masks (spans are injected by main.js) */
 .about .word {
   display: inline-block;
@@ -306,21 +333,22 @@ img { display: block; max-width: 100%; }
 .is-loading .about__portrait,
 .is-loading .about__eyebrow,
 .is-loading .about__lead,
-.is-loading .about__list li { opacity: 0; }
+.is-loading .about__list li,
+.is-loading .about__links li { opacity: 0; }
 
 @media (max-width: 1199px) {
   .about__portrait { grid-column: 1 / 4; }
   .about__eyebrow  { grid-column: 5 / 7; }
-  .about__lead, .about__list { grid-column: 7 / 13; }
+  .about__lead, .about__list, .about__links { grid-column: 7 / 13; }
 }
 
 @media (max-width: 899px) {
   .about { justify-content: flex-start; padding-top: 0; padding-bottom: 40px; }
   .about__grid { row-gap: 12px; }
   .about__portrait { grid-column: 1 / 13; grid-row: auto; max-width: 360px; margin-bottom: 36px; }
-  .about__eyebrow, .about__lead, .about__list { grid-column: 1 / 13; }
+  .about__eyebrow, .about__lead, .about__list, .about__links { grid-column: 1 / 13; }
   .about__list { margin-bottom: 0; }
-  .about__eyebrow--services { margin-top: 36px; }
+  .about__eyebrow--services, .about__eyebrow--links { margin-top: 36px; }
 }
 
 /* ---------- Page transition helpers ---------- */
