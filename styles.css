@@ -230,13 +230,21 @@ img { display: block; max-width: 100%; }
 .project-image--poster   { aspect-ratio: 1188 / 1680; grid-column: span 2; }
 
 /* ---------- About page ---------- */
+/* Block sits at the bottom of the viewport; portrait and text top-align with each other */
 .about {
   flex: 1 1 auto;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px var(--margin-main) 96px;
+}
+.about__row-wrap {
+  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 40px;
-  padding: 40px var(--margin-main) 80px;
+  width: 100%;
+  max-width: 1349px;
 }
 
 .about__portrait {
@@ -305,12 +313,11 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 899px) {
   .about {
-    flex-direction: column;
-    align-items: stretch;
     justify-content: flex-start;
     padding-top: 0;
     padding-bottom: 40px;
   }
+  .about__row-wrap { flex-direction: column; align-items: stretch; }
   .about__portrait { flex: none; width: 100%; max-width: 360px; }
   .about__info { flex: none; gap: 48px; }
   .about__row { grid-template-columns: 1fr; row-gap: 12px; }
