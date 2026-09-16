@@ -240,14 +240,14 @@ window.KODU_PROJECTS = {
     "info": "Video platform for connection",
     "images": [
       {
-        "src": "images/alpha-life-essentials/floatingphones",
+        "src": "images/alpha-life-essentials/floatingphonesmain",
         "widths": [
           1200,
           2000,
           2800
         ],
         "ratio": "16-10",
-        "alt": "Alpha Life Essentials: Floatingphones"
+        "alt": "Alpha Life Essentials: Floatingphonesmain"
       }
     ]
   }
