@@ -150,7 +150,7 @@ for (const p of projects) {
       src: `images/${p.slug}/${f.slug}`,
       widths,
       ratio,
-      alt: f.alt || `${p.meta.name} — ${titleCase(f.slug)}`,
+      alt: f.alt || `${p.meta.name}: ${titleCase(f.slug)}`,
     });
     log(`  ${f.file.padEnd(34)} ${ratio.padEnd(9)} [${widths.join(', ')}]`);
   }

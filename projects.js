@@ -13,7 +13,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Courtside Wines — Tote"
+        "alt": "Courtside Wines: Tote"
       },
       {
         "src": "images/courtside-wines/vineyard-graphic",
@@ -23,7 +23,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-9",
-        "alt": "Courtside Wines — Vineyard Graphic"
+        "alt": "Courtside Wines: Vineyard Graphic"
       },
       {
         "src": "images/courtside-wines/tshirt-front",
@@ -33,7 +33,7 @@ window.KODU_PROJECTS = {
           2309
         ],
         "ratio": "portrait",
-        "alt": "Courtside Wines — Tshirt Front"
+        "alt": "Courtside Wines: Tshirt Front"
       },
       {
         "src": "images/courtside-wines/tshirt-back",
@@ -43,7 +43,7 @@ window.KODU_PROJECTS = {
           2309
         ],
         "ratio": "portrait",
-        "alt": "Courtside Wines — Tshirt Back"
+        "alt": "Courtside Wines: Tshirt Back"
       },
       {
         "src": "images/courtside-wines/business-card",
@@ -53,7 +53,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-9",
-        "alt": "Courtside Wines — Business Card"
+        "alt": "Courtside Wines: Business Card"
       },
       {
         "src": "images/courtside-wines/poster-01",
@@ -61,7 +61,7 @@ window.KODU_PROJECTS = {
           1188
         ],
         "ratio": "poster",
-        "alt": "Courtside Wines — Poster 01"
+        "alt": "Courtside Wines: Poster 01"
       },
       {
         "src": "images/courtside-wines/poster-02",
@@ -69,7 +69,7 @@ window.KODU_PROJECTS = {
           1188
         ],
         "ratio": "poster",
-        "alt": "Courtside Wines — Poster 02"
+        "alt": "Courtside Wines: Poster 02"
       },
       {
         "src": "images/courtside-wines/poster-03",
@@ -77,7 +77,7 @@ window.KODU_PROJECTS = {
           1188
         ],
         "ratio": "poster",
-        "alt": "Courtside Wines — Poster 03"
+        "alt": "Courtside Wines: Poster 03"
       },
       {
         "src": "images/courtside-wines/multi-mag",
@@ -87,7 +87,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Courtside Wines — Multi Mag"
+        "alt": "Courtside Wines: Multi Mag"
       },
       {
         "src": "images/courtside-wines/macbook-01",
@@ -97,7 +97,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Courtside Wines — Macbook 01"
+        "alt": "Courtside Wines: Macbook 01"
       },
       {
         "src": "images/courtside-wines/macbook-02",
@@ -107,7 +107,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Courtside Wines — Macbook 02"
+        "alt": "Courtside Wines: Macbook 02"
       }
     ]
   },
@@ -123,7 +123,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Laptop Hero"
+        "alt": "Grampians Sandstone: Laptop Hero"
       },
       {
         "src": "images/grampians-sandstone/homepage-screen",
@@ -133,7 +133,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Homepage Screen"
+        "alt": "Grampians Sandstone: Homepage Screen"
       },
       {
         "src": "images/grampians-sandstone/text-overlay",
@@ -143,7 +143,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Text Overlay"
+        "alt": "Grampians Sandstone: Text Overlay"
       },
       {
         "src": "images/grampians-sandstone/photo-building",
@@ -152,7 +152,7 @@ window.KODU_PROJECTS = {
           1500
         ],
         "ratio": "portrait",
-        "alt": "Grampians Sandstone — Photo Building"
+        "alt": "Grampians Sandstone: Photo Building"
       },
       {
         "src": "images/grampians-sandstone/photo-clocktower",
@@ -161,7 +161,7 @@ window.KODU_PROJECTS = {
           1500
         ],
         "ratio": "portrait",
-        "alt": "Grampians Sandstone — Photo Clocktower"
+        "alt": "Grampians Sandstone: Photo Clocktower"
       },
       {
         "src": "images/grampians-sandstone/product-slider",
@@ -171,7 +171,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Product Slider"
+        "alt": "Grampians Sandstone: Product Slider"
       },
       {
         "src": "images/grampians-sandstone/image-slider",
@@ -181,7 +181,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-9",
-        "alt": "Grampians Sandstone — Image Slider"
+        "alt": "Grampians Sandstone: Image Slider"
       },
       {
         "src": "images/grampians-sandstone/page-specifications",
@@ -191,7 +191,7 @@ window.KODU_PROJECTS = {
           2400
         ],
         "ratio": "third",
-        "alt": "Grampians Sandstone — Page Specifications"
+        "alt": "Grampians Sandstone: Page Specifications"
       },
       {
         "src": "images/grampians-sandstone/page-frame-2",
@@ -201,7 +201,7 @@ window.KODU_PROJECTS = {
           2400
         ],
         "ratio": "third",
-        "alt": "Grampians Sandstone — Page Frame 2"
+        "alt": "Grampians Sandstone: Page Frame 2"
       },
       {
         "src": "images/grampians-sandstone/page-frame-3",
@@ -211,7 +211,7 @@ window.KODU_PROJECTS = {
           2400
         ],
         "ratio": "third",
-        "alt": "Grampians Sandstone — Page Frame 3"
+        "alt": "Grampians Sandstone: Page Frame 3"
       },
       {
         "src": "images/grampians-sandstone/digger",
@@ -221,7 +221,7 @@ window.KODU_PROJECTS = {
           2440
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Digger"
+        "alt": "Grampians Sandstone: Digger"
       },
       {
         "src": "images/grampians-sandstone/mobile-overlay",
@@ -231,7 +231,7 @@ window.KODU_PROJECTS = {
           2800
         ],
         "ratio": "16-9",
-        "alt": "Grampians Sandstone — Mobile Overlay"
+        "alt": "Grampians Sandstone: Mobile Overlay"
       }
     ]
   }
