@@ -2,6 +2,5 @@
   "name": "Project Name",
   "info": "Information",
   "order": 5,
-  "draft": true,
-  "cover": "cover.jpg"
+  "draft": true
 }
