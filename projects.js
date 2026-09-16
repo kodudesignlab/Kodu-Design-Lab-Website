@@ -126,14 +126,14 @@ window.KODU_PROJECTS = {
         "alt": "Grampians Sandstone — Laptop Hero"
       },
       {
-        "src": "images/grampians-sandstone/website-hero",
+        "src": "images/grampians-sandstone/homepage-screen",
         "widths": [
           1200,
           2000,
           2800
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Website Hero"
+        "alt": "Grampians Sandstone — Homepage Screen"
       },
       {
         "src": "images/grampians-sandstone/text-overlay",
