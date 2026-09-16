@@ -1,10 +1,24 @@
 # Kodu Design Lab
 
-Personal portfolio site for Lachlan Sarv. Static HTML/CSS/JS with GSAP — no build step.
+Personal portfolio site for Lachlan Sarv. Static HTML/CSS/JS with GSAP — no framework, no npm dependencies.
 
-- `index.html` — homepage (project cards, intro animation, card → project transition)
-- `projects/*.html` — standalone project pages (refresh/deep-link safe)
-- `projects.js` — project data (images, aspect ratios, copy)
-- `scripts/build-images.sh` — generates responsive JPG variants from source images
+## Adding / editing projects
 
-Run locally: `npx -y serve -l 5173 .`
+See **[content/HOW-TO-ADD-A-PROJECT.md](content/HOW-TO-ADD-A-PROJECT.md)**. Short version:
+drop a folder of images + a `project.json` into `content/`, then double-click **Publish.command**.
+
+- **Preview.command** — build + open a local preview at http://localhost:5173
+- **Publish.command** — build + commit + push (Vercel auto-deploys from `main`)
+
+## Structure
+
+- `content/<slug>/` — source of truth: original images + `project.json` per project
+- `scripts/build.js` — generates everything below from `content/` (macOS `sips` for resizing)
+- `images/<slug>/` — generated responsive JPGs (1200 / 2000 / 2800 + covers)
+- `projects.js` — generated project data used by `main.js`
+- `projects/<slug>.html` — generated standalone project pages (refresh/deep-link safe)
+- `index.html` — homepage; the cards between `<!-- projects:start/end -->` are generated
+- `main.js` — intro animation, theme toggle, card → project transitions
+- `styles.css` — design tokens, layout, light/dark themes
+
+Live: https://kodu-design-lab.vercel.app

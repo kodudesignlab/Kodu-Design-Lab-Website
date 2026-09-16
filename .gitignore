@@ -2,7 +2,3 @@
 .vercel
 .claude/
 node_modules/
-
-# Original source images — web variants are generated into images/<slug>/ by scripts/build-images.sh
-images/Courtside Wines/
-images/Grampians Sandstone/

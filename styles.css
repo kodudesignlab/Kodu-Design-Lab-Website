@@ -172,6 +172,8 @@ img { display: block; max-width: 100%; }
 .intro-done .project-card { transition: opacity 0.4s ease; }
 .intro-done .project-container:has(.project-card:hover) .project-card:not(:hover) { opacity: 0.5; }
 
+.project-card--draft { cursor: default; }
+
 .project-card__name { font-weight: 500; color: var(--text-primary); }
 .project-card__info { color: var(--text-muted); }
 

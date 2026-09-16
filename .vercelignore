@@ -1,0 +1,5 @@
+# Source images and build tooling aren't needed on the live site
+content/
+scripts/
+*.command
+README.md
