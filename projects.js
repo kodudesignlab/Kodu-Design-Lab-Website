@@ -116,23 +116,24 @@ window.KODU_PROJECTS = {
     "info": "Website Design & Build",
     "images": [
       {
-        "src": "images/grampians-sandstone/laptop",
-        "widths": [
-          1200,
-          1280
-        ],
-        "ratio": "16-10",
-        "alt": "Grampians Sandstone — Laptop"
-      },
-      {
-        "src": "images/grampians-sandstone/hero",
+        "src": "images/grampians-sandstone/laptop-hero",
         "widths": [
           1200,
           2000,
           2800
         ],
         "ratio": "16-10",
-        "alt": "Grampians Sandstone — Hero"
+        "alt": "Grampians Sandstone — Laptop Hero"
+      },
+      {
+        "src": "images/grampians-sandstone/website-hero",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "ratio": "16-10",
+        "alt": "Grampians Sandstone — Website Hero"
       },
       {
         "src": "images/grampians-sandstone/text-overlay",
@@ -145,22 +146,22 @@ window.KODU_PROJECTS = {
         "alt": "Grampians Sandstone — Text Overlay"
       },
       {
-        "src": "images/grampians-sandstone/photo-01",
+        "src": "images/grampians-sandstone/photo-building",
         "widths": [
           1200,
           1500
         ],
         "ratio": "portrait",
-        "alt": "Grampians Sandstone — Photo 01"
+        "alt": "Grampians Sandstone — Photo Building"
       },
       {
-        "src": "images/grampians-sandstone/photo-02",
+        "src": "images/grampians-sandstone/photo-clocktower",
         "widths": [
           1200,
           1500
         ],
         "ratio": "portrait",
-        "alt": "Grampians Sandstone — Photo 02"
+        "alt": "Grampians Sandstone — Photo Clocktower"
       },
       {
         "src": "images/grampians-sandstone/product-slider",
@@ -183,34 +184,34 @@ window.KODU_PROJECTS = {
         "alt": "Grampians Sandstone — Image Slider"
       },
       {
-        "src": "images/grampians-sandstone/frame-01",
+        "src": "images/grampians-sandstone/page-specifications",
         "widths": [
           1200,
           2000,
           2400
         ],
         "ratio": "third",
-        "alt": "Grampians Sandstone — Frame 01"
+        "alt": "Grampians Sandstone — Page Specifications"
       },
       {
-        "src": "images/grampians-sandstone/frame-02",
+        "src": "images/grampians-sandstone/page-frame-2",
         "widths": [
           1200,
           2000,
           2400
         ],
         "ratio": "third",
-        "alt": "Grampians Sandstone — Frame 02"
+        "alt": "Grampians Sandstone — Page Frame 2"
       },
       {
-        "src": "images/grampians-sandstone/frame-03",
+        "src": "images/grampians-sandstone/page-frame-3",
         "widths": [
           1200,
           2000,
           2400
         ],
         "ratio": "third",
-        "alt": "Grampians Sandstone — Frame 03"
+        "alt": "Grampians Sandstone — Page Frame 3"
       },
       {
         "src": "images/grampians-sandstone/digger",
