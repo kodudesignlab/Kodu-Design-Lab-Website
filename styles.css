@@ -277,6 +277,7 @@ img { display: block; max-width: 100%; }
 .about__links { grid-column: 7 / 12; }
 
 .about__lead {
+  max-width: 62ch;   /* keep measure comfortable on very wide screens */
   font-weight: 500;
   font-size: 18px;
   line-height: 1.5;
