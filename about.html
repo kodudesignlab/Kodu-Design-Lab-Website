@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Grampians Sandstone — Kodu Design Lab</title>
+  <title>About — Kodu Design Lab</title>
+  <meta name="description" content="Lachlan Sarv — independent designer behind Kodu Design Lab. Websites, interfaces, brands and graphic design.">
   <script>
     (function () {
       try {
@@ -13,20 +14,20 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preload" href="../fonts/PPNeueMontreal-Medium.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="../fonts/PPNeueMontreal-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="preload" href="fonts/PPNeueMontreal-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/PPNeueMontreal-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body data-view="project" data-project="grampians-sandstone" data-base="../">
+<body data-view="about" data-base="">
 
   <header class="site-header">
     <div class="brand">
-      <p class="brand__name"><a class="brand__link" href="../">Kodu Design Lab by Lachlan Sarv</a></p>
+      <p class="brand__name"><a class="brand__link" href="./">Kodu Design Lab by Lachlan Sarv</a></p>
       <p class="brand__tagline">Digital &amp; Graphic Design</p>
     </div>
 
     <nav class="nav" aria-label="Primary">
-      <a class="nav__item" href="../about">About</a>
+      <a class="nav__item" href="about">About</a>
       <a class="nav__item" href="mailto:kodudesignlab@gmail.com">Contact</a>
       <button class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
         <!-- Moon: shown in light mode -->
@@ -49,10 +50,36 @@
     </nav>
   </header>
 
-  <main class="project-page" data-project-page></main>
+  <main class="about">
+    <div class="about__portrait">
+      <img src="images/about/portrait-600.jpg"
+           srcset="images/about/portrait-600.jpg 600w, images/about/portrait-1200.jpg 1200w"
+           sizes="(max-width: 899px) calc(100vw - 40px), 237px"
+           alt="Lachlan Sarv" decoding="async">
+    </div>
+
+    <div class="about__info">
+      <section class="about__row">
+        <p class="about__eyebrow">About me</p>
+        <p class="about__lead" data-split>
+          Hi, I’m Lachlan — welcome to Kodu, my independent design practice. I make websites, interfaces and brands that feel considered, calm and easy to use. I care a lot about the small details: the type, the spacing, the way something moves when you click it. I’ve been lucky to work with all kinds of people, from small businesses finding their feet to established brands wanting a refresh. If you’ve got something in mind, or just want to say hi, I’d genuinely love to hear from you.
+        </p>
+      </section>
+
+      <section class="about__row">
+        <p class="about__eyebrow">What I do</p>
+        <ul class="about__list">
+          <li>Website &amp; UI Design</li>
+          <li>Webflow Development</li>
+          <li>Interactive Prototypes (Figma)</li>
+          <li>Graphic Design</li>
+          <li>Brand Identity</li>
+        </ul>
+      </section>
+    </div>
+  </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="../projects.js"></script>
-  <script src="../main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

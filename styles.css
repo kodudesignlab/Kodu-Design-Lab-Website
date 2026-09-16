@@ -208,6 +208,93 @@ img { display: block; max-width: 100%; }
 .project-image--third    { aspect-ratio: 4 / 5;     grid-column: span 2; }
 .project-image--poster   { aspect-ratio: 1188 / 1680; grid-column: span 2; }
 
+/* ---------- About page ---------- */
+.about {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 40px var(--margin-main) 80px;
+}
+
+.about__portrait {
+  flex: 0 0 237px;
+  width: 237px;
+  aspect-ratio: 6 / 8;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--card-placeholder);
+}
+.about__portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+.about__info {
+  flex: 0 1 855px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.about__row {
+  display: grid;
+  grid-template-columns: minmax(80px, 1fr) minmax(0, 608px);
+  column-gap: 40px;
+  justify-content: space-between;
+}
+
+.about__eyebrow {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.about__lead {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.about__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Word-reveal masks (spans are injected by main.js) */
+.about .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;   /* room for descenders inside the mask */
+  margin-bottom: -0.08em;
+}
+.about .word > span { display: inline-block; will-change: transform; }
+
+/* Pre-animation: hide until JS is ready (JS removes this) */
+.is-loading .about__portrait,
+.is-loading .about__eyebrow,
+.is-loading .about__lead,
+.is-loading .about__list li { opacity: 0; }
+
+@media (max-width: 899px) {
+  .about {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-top: 0;
+    padding-bottom: 40px;
+  }
+  .about__portrait { flex: none; width: 100%; max-width: 360px; }
+  .about__info { flex: none; gap: 48px; }
+  .about__row { grid-template-columns: 1fr; row-gap: 12px; }
+}
+
 /* ---------- Page transition helpers ---------- */
 /* The floating image that travels between the card and the project hero */
 .flip-clone {

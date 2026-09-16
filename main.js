@@ -74,6 +74,76 @@
     return;
   }
 
+  /* ---------- About page ---------- */
+  if (body.dataset.view === 'about') {
+    const brandLines = gsap.utils.toArray('.brand > *');
+    const navItems = gsap.utils.toArray('.nav > *');
+    const portrait = document.querySelector('.about__portrait');
+    const eyebrows = gsap.utils.toArray('.about__eyebrow');
+    const lead = document.querySelector('.about__lead');
+    const listItems = gsap.utils.toArray('.about__list li');
+
+    // Wrap every word in a masked span so each can rise into view
+    function splitWords(el) {
+      const text = el.textContent.trim().replace(/\s+/g, ' ');
+      el.textContent = '';
+      const inners = [];
+      text.split(' ').forEach((word, i, arr) => {
+        const mask = document.createElement('span');
+        mask.className = 'word';
+        const inner = document.createElement('span');
+        inner.textContent = word;
+        mask.appendChild(inner);
+        el.appendChild(mask);
+        if (i < arr.length - 1) el.appendChild(document.createTextNode(' '));
+        inners.push(inner);
+      });
+      return inners;
+    }
+
+    html.classList.add('is-loading');
+    const ready = document.fonts ? document.fonts.ready : Promise.resolve();
+    ready.then(() => {
+      if (reduceMotion) { html.classList.remove('is-loading'); html.classList.add('intro-done'); return; }
+
+      const words = splitWords(lead);
+      gsap.set(brandLines, { y: 14, opacity: 0 });
+      gsap.set(navItems, { y: 14, opacity: 0 });
+      gsap.set(portrait, { opacity: 0, y: 24, clipPath: 'inset(0 0 100% 0)' });
+      gsap.set(eyebrows, { opacity: 0, y: 10 });
+      gsap.set(lead, { opacity: 1 });
+      gsap.set(words, { yPercent: 110 });
+      gsap.set(listItems, { opacity: 0, y: 12 });
+      html.classList.remove('is-loading');
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        onComplete() {
+          html.classList.add('intro-done');
+          gsap.set([brandLines, navItems, eyebrows, listItems, portrait], { clearProps: 'transform,opacity,clipPath' });
+          gsap.set(words, { clearProps: 'transform' });
+        },
+      });
+      window.koduIntro = tl;
+
+      // Nav — top-left first, then the right side
+      tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, 0.1)
+        .to(navItems, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06 }, 0.3);
+
+      // Portrait wipes up into view
+      tl.to(portrait, { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }, 0.25);
+
+      // Eyebrow, then the paragraph rises word by word
+      tl.to(eyebrows[0], { opacity: 1, y: 0, duration: 0.6 }, 0.45)
+        .to(words, { yPercent: 0, duration: 0.9, ease: 'power3.out', stagger: 0.018 }, 0.55);
+
+      // Services list
+      tl.to(eyebrows[1], { opacity: 1, y: 0, duration: 0.6 }, 1.3)
+        .to(listItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, 1.4);
+    });
+    return;
+  }
+
   /* ---------- Homepage ---------- */
   const brandLines = gsap.utils.toArray('.brand > *');
   const navItems = gsap.utils.toArray('.nav > *');
