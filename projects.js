@@ -234,5 +234,21 @@ window.KODU_PROJECTS = {
         "alt": "Grampians Sandstone: Mobile Overlay"
       }
     ]
+  },
+  "alpha-life-essentials": {
+    "name": "Alpha Life Essentials",
+    "info": "Video platform for connection",
+    "images": [
+      {
+        "src": "images/alpha-life-essentials/floatingphones",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "ratio": "16-10",
+        "alt": "Alpha Life Essentials: Floatingphones"
+      }
+    ]
   }
 };
