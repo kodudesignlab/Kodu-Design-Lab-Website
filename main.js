@@ -9,6 +9,27 @@
   const PROJECTS = window.KODU_PROJECTS || {};
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Rolling hover text for brand + nav links ---------- */
+  document.querySelectorAll('.brand__link, .nav__item').forEach((el) => {
+    const text = el.textContent.trim();
+    el.setAttribute('aria-label', text);
+    el.textContent = '';
+    el.classList.add('roll');
+    ['roll__text', 'roll__text roll__text--clone'].forEach((cls) => {
+      const line = document.createElement('span');
+      line.className = cls;
+      line.setAttribute('aria-hidden', 'true');
+      [...text].forEach((ch, i) => {
+        const s = document.createElement('span');
+        s.className = 'char';
+        s.style.setProperty('--i', i);
+        s.textContent = ch;
+        line.appendChild(s);
+      });
+      el.appendChild(line);
+    });
+  });
+
   /* ---------- Theme toggle ---------- */
   const toggle = document.querySelector('.theme-toggle');
   function syncToggle() {

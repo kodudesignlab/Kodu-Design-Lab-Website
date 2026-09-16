@@ -83,6 +83,7 @@ img { display: block; max-width: 100%; }
 }
 
 .brand { max-width: 243px; }
+.brand__link { white-space: nowrap; }
 .brand__name { font-weight: 500; color: var(--text-primary); }
 .brand__tagline { color: var(--text-muted); }
 
@@ -95,9 +96,29 @@ img { display: block; max-width: 100%; }
 .nav__item {
   color: var(--text-primary);
   white-space: nowrap;
-  transition: opacity 0.25s ease;
 }
-.nav__item:hover { opacity: 0.6; }
+
+/* ---------- Rolling text links (brand + nav) ----------
+   Two copies of the label stacked in a clipped box; on hover each letter slides up one
+   line, staggered left → right, so the second copy rolls in. Letters are split by main.js. */
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.roll__text { display: block; }
+.roll__text--clone { position: absolute; left: 0; top: 100%; }
+.roll .char {
+  display: inline-block;
+  white-space: pre;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 16ms);
+}
+.roll:hover .char,
+.roll:focus-visible .char { transform: translateY(-100%); }
+@media (hover: none) { .roll .char { transition: none; } }
 
 .theme-toggle {
   position: relative;
