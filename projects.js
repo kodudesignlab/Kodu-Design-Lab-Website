@@ -116,6 +116,15 @@ window.KODU_PROJECTS = {
     "info": "Website Design & Build",
     "images": [
       {
+        "src": "images/grampians-sandstone/laptop",
+        "widths": [
+          1200,
+          1280
+        ],
+        "ratio": "16-10",
+        "alt": "Grampians Sandstone — Laptop"
+      },
+      {
         "src": "images/grampians-sandstone/hero",
         "widths": [
           1200,
