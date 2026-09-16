@@ -3,10 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kodu Design Lab — Lachlan Sarv</title>
-  <meta name="description" content="Kodu Design Lab by Lachlan Sarv. Digital & Graphic Design.">
+  <title>Grampians Sandstone — Kodu Design Lab</title>
   <script>
-    // Apply saved / system theme before first paint to avoid a flash
     (function () {
       try {
         var saved = localStorage.getItem('theme');
@@ -15,15 +13,15 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preload" href="fonts/PPNeueMontreal-Medium.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/PPNeueMontreal-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" href="../fonts/PPNeueMontreal-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/PPNeueMontreal-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../styles.css">
 </head>
-<body data-view="home" data-base="">
+<body data-view="project" data-project="grampians-sandstone" data-base="../">
 
   <header class="site-header">
     <div class="brand">
-      <p class="brand__name"><a class="brand__link" href="./">Kodu Design Lab by Lachlan Sarv</a></p>
+      <p class="brand__name"><a class="brand__link" href="../">Kodu Design Lab by Lachlan Sarv</a></p>
       <p class="brand__tagline">Digital &amp; Graphic Design</p>
     </div>
 
@@ -51,77 +49,10 @@
     </nav>
   </header>
 
-  <main class="project-wrapper">
-    <div class="project-container">
-
-      <a class="project-card" href="projects/courtside-wines" data-project="courtside-wines">
-        <div class="project-card__media">
-          <img src="images/courtside-wines/tote-1200.jpg"
-               srcset="images/courtside-wines/tote-1200.jpg 1200w, images/courtside-wines/tote-2000.jpg 2000w"
-               sizes="(max-width: 1199px) calc(50vw - 25px), calc(16.66vw - 12px)"
-               alt="Courtside Wines tote bag in royal blue" loading="eager" decoding="async">
-        </div>
-        <div class="project-card__meta">
-          <p class="project-card__name">Courtside Wines</p>
-          <p class="project-card__info">Branding, Print &amp; Web</p>
-        </div>
-      </a>
-
-      <a class="project-card" href="projects/grampians-sandstone" data-project="grampians-sandstone">
-        <div class="project-card__media">
-          <img src="images/project-04.jpg" alt="Grampians Sandstone website on a laptop" loading="eager">
-        </div>
-        <div class="project-card__meta">
-          <p class="project-card__name">Grampians Sandstone</p>
-          <p class="project-card__info">Website Design &amp; Build</p>
-        </div>
-      </a>
-
-      <a class="project-card" href="projects/project-02.html">
-        <div class="project-card__media">
-          <img src="images/project-02.jpg" alt="Mobile app screens" loading="eager">
-        </div>
-        <div class="project-card__meta">
-          <p class="project-card__name">Project Name</p>
-          <p class="project-card__info">Information</p>
-        </div>
-      </a>
-
-      <a class="project-card" href="projects/project-03.html">
-        <div class="project-card__media">
-          <img src="images/project-03.jpg" alt="Bus shelter poster" loading="eager">
-        </div>
-        <div class="project-card__meta">
-          <p class="project-card__name">Project Name</p>
-          <p class="project-card__info">Information</p>
-        </div>
-      </a>
-
-      <a class="project-card" href="projects/project-05.html">
-        <div class="project-card__media">
-          <img src="images/project-05.jpg" alt="Sculptural furniture" loading="eager">
-        </div>
-        <div class="project-card__meta">
-          <p class="project-card__name">Project Name</p>
-          <p class="project-card__info">Information</p>
-        </div>
-      </a>
-
-      <a class="project-card" href="projects/project-06.html">
-        <div class="project-card__media">
-          <img src="images/project-06.jpg" alt="Packaging tape detail" loading="eager">
-        </div>
-        <div class="project-card__meta">
-          <p class="project-card__name">Project Name</p>
-          <p class="project-card__info">Information</p>
-        </div>
-      </a>
-
-    </div>
-  </main>
+  <main class="project-page" data-project-page></main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="projects.js"></script>
-  <script src="main.js"></script>
+  <script src="../projects.js"></script>
+  <script src="../main.js"></script>
 </body>
 </html>

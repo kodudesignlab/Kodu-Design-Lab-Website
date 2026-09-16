@@ -30,6 +30,7 @@
     '16-10':   'calc(100vw - 40px)',
     '16-9':    'calc(100vw - 40px)',
     portrait: 'calc(50vw - 30px)',
+    third:    'calc(33.33vw - 27px)',
     poster:   'calc(33.33vw - 27px)',
   };
   function imageSrcset(img) {
