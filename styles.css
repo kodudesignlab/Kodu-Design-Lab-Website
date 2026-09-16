@@ -319,15 +319,14 @@ img { display: block; max-width: 100%; }
 }
 .about__link:hover .about__link-icon { transform: translate(2px, -2px); }
 
-/* Word-reveal masks (spans are injected by main.js) */
-.about .word {
-  display: inline-block;
+/* Line-reveal masks (spans are injected by main.js, removed again after the intro) */
+.about .line {
+  display: block;
   overflow: hidden;
-  vertical-align: bottom;
   padding-bottom: 0.08em;   /* room for descenders inside the mask */
   margin-bottom: -0.08em;
 }
-.about .word > span { display: inline-block; will-change: transform; }
+.about .line > span { display: block; }
 
 /* Pre-animation: hide until JS is ready (JS removes this) */
 .is-loading .about__portrait,

@@ -119,22 +119,34 @@
     const listItems = gsap.utils.toArray('.about__list li');
     const linkItems = gsap.utils.toArray('.about__links li');
 
-    // Wrap every word in a masked span so each can rise into view
-    function splitWords(el) {
+    // Split a paragraph into its rendered lines, each wrapped in a mask so it can rise into view.
+    // Lines are measured from the real layout, so wrapping is identical to the plain text.
+    function splitLines(el) {
       const text = el.textContent.trim().replace(/\s+/g, ' ');
+      el.dataset.text = text;
       el.textContent = '';
-      const inners = [];
-      text.split(' ').forEach((word, i, arr) => {
+      const probes = text.split(' ').map((w) => {
+        const s = document.createElement('span');
+        s.textContent = w + ' ';
+        el.appendChild(s);
+        return s;
+      });
+      const lines = [];
+      let top = null;
+      probes.forEach((p) => {
+        if (p.offsetTop !== top) { top = p.offsetTop; lines.push([]); }
+        lines[lines.length - 1].push(p.textContent);
+      });
+      el.textContent = '';
+      return lines.map((wordsInLine) => {
         const mask = document.createElement('span');
-        mask.className = 'word';
+        mask.className = 'line';
         const inner = document.createElement('span');
-        inner.textContent = word;
+        inner.textContent = wordsInLine.join('').trimEnd();
         mask.appendChild(inner);
         el.appendChild(mask);
-        if (i < arr.length - 1) el.appendChild(document.createTextNode(' '));
-        inners.push(inner);
+        return inner;
       });
-      return inners;
     }
 
     html.classList.add('is-loading');
@@ -142,14 +154,14 @@
     ready.then(() => {
       if (reduceMotion) { html.classList.remove('is-loading'); html.classList.add('intro-done'); return; }
 
-      const wordSets = leads.map(splitWords);
-      const words = wordSets.flat();
+      const lineSets = leads.map(splitLines);
+      const lines = lineSets.flat();
       gsap.set(brandLines, { y: 14, opacity: 0 });
       gsap.set(navItems, { y: 14, opacity: 0 });
       gsap.set(portrait, { opacity: 0, y: 24, clipPath: 'inset(0 0 100% 0)' });
       gsap.set(eyebrows, { opacity: 0, y: 10 });
       gsap.set(leads, { opacity: 1 });
-      gsap.set(words, { yPercent: 110 });
+      gsap.set(lines, { yPercent: 110 });
       gsap.set([listItems, linkItems], { opacity: 0, y: 12 });
       html.classList.remove('is-loading');
 
@@ -157,33 +169,34 @@
         defaults: { ease: 'power3.out' },
         onComplete() {
           html.classList.add('intro-done');
-          gsap.set([brandLines, navItems, eyebrows, listItems, linkItems, portrait], { clearProps: 'transform,opacity,clipPath' });
-          gsap.set(words, { clearProps: 'transform' });
+          gsap.set([brandLines, navItems, eyebrows, leads, listItems, linkItems, portrait], { clearProps: 'transform,opacity,clipPath' });
+          // Put the paragraphs back to plain text so they render as ordinary, crisp type
+          leads.forEach((el) => { el.textContent = el.dataset.text; });
         },
       });
       window.koduIntro = tl;
 
       // Nav — top-left first, then the right side
-      tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, 0.1)
-        .to(navItems, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06 }, 0.3);
+      tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, force3D: false }, 0.1)
+        .to(navItems, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06, force3D: false }, 0.3);
 
       // Portrait wipes up into view
       tl.to(portrait, { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power3.inOut' }, 0.25);
 
-      // Each text row: eyebrow fades, then its paragraph rises word by word
+      // Each text row: eyebrow fades, then its paragraph rises line by line
       let at = 0.45;
-      wordSets.forEach((set, i) => {
-        tl.to(eyebrows[i], { opacity: 1, y: 0, duration: 0.6 }, at)
-          .to(set, { yPercent: 0, duration: 0.9, ease: 'power3.out', stagger: 0.016 }, at + 0.1);
-        at += 0.1 + set.length * 0.016 * 0.55; // next row starts while this one is still finishing
+      lineSets.forEach((set, i) => {
+        tl.to(eyebrows[i], { opacity: 1, y: 0, duration: 0.6, force3D: false }, at)
+          .to(set, { yPercent: 0, duration: 1.0, ease: 'power3.out', stagger: 0.09, force3D: false }, at + 0.1);
+        at += 0.1 + set.length * 0.09 * 0.7; // next row starts while this one is still finishing
       });
 
       // Services list, then social links
-      tl.to(eyebrows[wordSets.length], { opacity: 1, y: 0, duration: 0.6 }, at)
-        .to(listItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, at + 0.1);
+      tl.to(eyebrows[lineSets.length], { opacity: 1, y: 0, duration: 0.6, force3D: false }, at)
+        .to(listItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07, force3D: false }, at + 0.1);
       at += 0.35;
-      tl.to(eyebrows[wordSets.length + 1], { opacity: 1, y: 0, duration: 0.6 }, at)
-        .to(linkItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, at + 0.1);
+      tl.to(eyebrows[lineSets.length + 1], { opacity: 1, y: 0, duration: 0.6, force3D: false }, at)
+        .to(linkItems, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07, force3D: false }, at + 0.1);
     });
     return;
   }
@@ -254,8 +267,8 @@
     }, 0);
 
     // 2. Nav appears while the cards are mid-slide — top-left first, then the right side
-    tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, 0.35)
-      .to(navItems, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06 }, 0.6);
+    tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, force3D: false }, 0.35)
+      .to(navItems, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06, force3D: false }, 0.6);
 
     // 3. Spread starts while the slide-up is still settling so the two motions blend with no pause (1.05s → ~2.55s)
     tl.to(cards, {
