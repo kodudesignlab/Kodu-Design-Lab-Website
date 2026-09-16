@@ -94,10 +94,16 @@ for (const p of projects) {
   fs.mkdirSync(outDir, { recursive: true });
   log(`\n${p.meta.name}  (${p.slug})${p.meta.draft ? '  — draft' : ''}`);
 
-  // Cover for the homepage card
-  const coverFile = p.meta.cover || (p.files[0] && p.files[0].file);
-  if (!coverFile || !fs.existsSync(path.join(p.dir, coverFile))) {
-    warn(`no cover image — set "cover" in project.json or add images`);
+  // Homepage card cover — ALWAYS the first page image (the hero), so the card → hero
+  // transition is seamless. Only a draft with no page images may use a cover.jpg instead.
+  if (p.meta.cover) warn(`"cover" in project.json is ignored — the first image is always the cover`);
+  let coverFile = p.files[0] && p.files[0].file;
+  if (!coverFile) {
+    const fallback = fs.readdirSync(p.dir).find((f) => /^cover\.(jpe?g|png)$/i.test(f));
+    if (fallback) coverFile = fallback;
+  }
+  if (!coverFile) {
+    warn('no images — the card needs at least one image (or a cover.jpg for a draft)');
   } else {
     const src = path.join(p.dir, coverFile);
     const { w } = imageSize(src);

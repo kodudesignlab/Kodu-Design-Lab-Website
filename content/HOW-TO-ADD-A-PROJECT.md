@@ -5,7 +5,7 @@
 
 2. **Drop your images in.** Name them with a number first so they're in order:
    ```
-   01-hero.jpg          ← the first image is the hero (lands full-width)
+   01-hero.jpg          ← the first image is the hero AND the homepage card image
    02-detail.jpg
    03-photo-left.jpg
    04-photo-right.jpg
@@ -26,13 +26,13 @@
    {
      "name": "My New Project",
      "info": "Branding & Web",
-     "order": 3,
-     "cover": "cover.jpg"
+     "order": 3
    }
    ```
    - `order` — position on the homepage (1 = first)
-   - `cover` — image for the homepage card (6:8 crop, centred). Optional; defaults to the first image.
-     A separate `cover.jpg` in the folder is ignored as a page image.
+   - The homepage card always shows the **first image** (cropped to 6:8, centred) — it has to be the
+     same image as the hero so the card-to-page transition is seamless. Pick a hero that also crops
+     well to portrait. (Drafts with no images can use a `cover.jpg` instead.)
    - `"draft": true` — show the card but don't link it / build a page
 
 4. **Double-click `Preview.command`** to check it locally, then **`Publish.command`** to push it live.
