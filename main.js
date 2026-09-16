@@ -175,6 +175,8 @@
         },
       });
       window.koduIntro = tl;
+      // Lines were measured at the current width — if the window resizes mid-intro, just finish
+      addEventListener('resize', () => { if (tl.isActive()) tl.progress(1); }, { once: true });
 
       // Nav — top-left first, then the right side
       tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, force3D: false }, 0.1)
