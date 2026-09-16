@@ -1,0 +1,342 @@
+/* Kodu Design Lab — homepage intro, theme toggle, project page + transitions */
+(function () {
+  const html = document.documentElement;
+  const body = document.body;
+  const BASE = body.dataset.base || '';           // '' on the homepage, '../' inside /projects
+  // Absolute site root, captured before any pushState changes the document base URL
+  const SITE_ROOT = new URL(BASE || './', location.href).href;
+  const siteUrl = (path) => new URL(path, SITE_ROOT).href;
+  const PROJECTS = window.KODU_PROJECTS || {};
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Theme toggle ---------- */
+  const toggle = document.querySelector('.theme-toggle');
+  function syncToggle() {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    toggle.setAttribute('aria-pressed', String(isDark));
+    toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    syncToggle();
+  });
+  syncToggle();
+
+  /* ---------- Project page rendering ---------- */
+  // How wide each image slot is on screen, so the browser can pick the sharpest variant
+  const SIZES = {
+    '16-10':   'calc(100vw - 40px)',
+    '16-9':    'calc(100vw - 40px)',
+    portrait: 'calc(50vw - 30px)',
+    poster:   'calc(33.33vw - 27px)',
+  };
+  function imageSrcset(img) {
+    return img.widths.map((w) => `${siteUrl(img.src + '-' + w + '.jpg')} ${w}w`).join(', ');
+  }
+  function largestSrc(img) {
+    return siteUrl(img.src + '-' + Math.max(...img.widths) + '.jpg');
+  }
+
+  function buildProjectPage(slug) {
+    const data = PROJECTS[slug];
+    const page = document.createElement('main');
+    page.className = 'project-page';
+    page.dataset.project = slug;
+    if (!data) return page;
+    data.images.forEach((img, i) => {
+      const fig = document.createElement('figure');
+      fig.className = 'project-image project-image--' + img.ratio;
+      if (i === 0) fig.classList.add('project-image--hero');
+      const el = document.createElement('img');
+      el.src = largestSrc(img);
+      el.srcset = imageSrcset(img);
+      el.sizes = SIZES[img.ratio] || '100vw';
+      el.alt = img.alt || '';
+      el.loading = i < 3 ? 'eager' : 'lazy';
+      el.decoding = 'async';
+      fig.appendChild(el);
+      page.appendChild(fig);
+    });
+    return page;
+  }
+
+  // Standalone project page (direct load / refresh): render and stop here
+  const staticPage = document.querySelector('[data-project-page]');
+  if (staticPage) {
+    const slug = body.dataset.project;
+    const built = buildProjectPage(slug);
+    staticPage.replaceWith(built);
+    if (PROJECTS[slug]) document.title = PROJECTS[slug].name + ' — Kodu Design Lab';
+    html.classList.add('intro-done');
+    return;
+  }
+
+  /* ---------- Homepage ---------- */
+  const brandLines = gsap.utils.toArray('.brand > *');
+  const navItems = gsap.utils.toArray('.nav > *');
+  const wrapper = document.querySelector('.project-wrapper');
+  const container = document.querySelector('.project-container');
+  const cards = gsap.utils.toArray('.project-card');
+  const cardMeta = gsap.utils.toArray('.project-card__meta');
+  const HOME_TITLE = document.title;
+
+  html.classList.add('is-loading');
+
+  function runIntro() {
+    if (reduceMotion || typeof gsap === 'undefined') {
+      html.classList.remove('is-loading');
+      html.classList.add('intro-done');
+      return;
+    }
+
+    // Where each card's centre sits in its final layout, relative to the container centre
+    const cRect = container.getBoundingClientRect();
+    const cx = cRect.left + cRect.width / 2;
+    const cy = cRect.top + cRect.height / 2;
+    const offsets = cards.map((card) => {
+      const r = card.getBoundingClientRect();
+      return { x: cx - (r.left + r.width / 2), y: cy - (r.top + r.height / 2) };
+    });
+
+    // Set initial states, then remove the CSS "hidden" class so GSAP owns opacity
+    gsap.set(brandLines, { y: 14, opacity: 0 });
+    gsap.set(navItems, { y: 14, opacity: 0 });
+    gsap.set(cardMeta, { opacity: 0 });
+    // Cards start stacked at the container centre but pushed fully below the viewport
+    const belowViewport = window.innerHeight;
+    cards.forEach((card, i) => {
+      gsap.set(card, {
+        x: offsets[i].x,
+        y: offsets[i].y + belowViewport,
+        scale: 0.96,
+        rotation: (i - (cards.length - 1) / 2) * 1.5,
+        opacity: 1,
+        zIndex: cards.length - i,
+        transformOrigin: '50% 50%',
+      });
+    });
+    html.classList.remove('is-loading');
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      onComplete() {
+        html.classList.add('intro-done');
+        // Drop GSAP's inline transforms so text sits on whole pixels and renders crisp
+        gsap.set([brandLines, navItems], { clearProps: 'transform,opacity' });
+      },
+    });
+    window.koduIntro = tl; // handy for scrubbing in devtools
+
+    // 1. Cards slide up from below the viewport and settle stacked in the centre (0 → ~1.25s)
+    tl.to(cards, {
+      y: (i) => offsets[i].y,
+      scale: 1,
+      duration: 1.0,
+      ease: 'power3.out',
+      stagger: 0.05,
+    }, 0);
+
+    // 2. Nav appears while the cards are mid-slide — top-left first, then the right side
+    tl.to(brandLines, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, 0.35)
+      .to(navItems, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06 }, 0.6);
+
+    // 3. Spread starts while the slide-up is still settling so the two motions blend with no pause (1.05s → ~2.55s)
+    tl.to(cards, {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      duration: 1.3,
+      ease: 'power3.inOut',
+      stagger: { each: 0.04, from: 'center' },
+      onComplete() {
+        gsap.set(cards, { clearProps: 'transform,zIndex,opacity' });
+      },
+    }, 1.05);
+
+    // 4. Card text fades in as the spread settles
+    tl.to(cardMeta, {
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      stagger: { each: 0.04, from: 'center' },
+      onComplete() {
+        gsap.set(cardMeta, { clearProps: 'opacity' });
+      },
+    }, 1.9);
+  }
+
+  // Wait for fonts so measured card positions are final
+  const ready = document.fonts ? document.fonts.ready : Promise.resolve();
+  ready.then(runIntro);
+
+  /* ---------- Card → project page transition (and back) ---------- */
+  let currentPage = null;   // the .project-page element while a project is open
+  let activeCard = null;    // the card that was clicked
+  let busy = false;
+
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  history.replaceState({ view: 'home' }, '', location.href);
+
+  // A fixed-position copy of an image that can travel between two rects
+  function makeClone(imgSrc, rect) {
+    const clone = document.createElement('div');
+    clone.className = 'flip-clone';
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = '';
+    clone.appendChild(img);
+    gsap.set(clone, { top: rect.top, left: rect.left, width: rect.width, height: rect.height });
+    body.appendChild(clone);
+    return clone;
+  }
+
+  function openProject(card, slug, pushUrl) {
+    if (busy || !PROJECTS[slug]) return;
+    busy = true;
+    activeCard = card;
+    html.classList.add('is-transitioning');
+
+    const media = card.querySelector('.project-card__media');
+    const otherCards = cards.filter((c) => c !== card);
+    const first = media.getBoundingClientRect();
+
+    // Build the page now (hidden) so images start loading immediately
+    const page = buildProjectPage(slug);
+    const hero = page.querySelector('.project-image--hero');
+    const rest = gsap.utils.toArray(page.querySelectorAll('.project-image:not(.project-image--hero)'));
+    gsap.set(rest, { opacity: 0, y: 40 });
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.inOut' },
+      onComplete() {
+        html.classList.remove('is-transitioning');
+        busy = false;
+      },
+    });
+    window.koduTransition = tl;
+
+    // 1. Other cards (and all card text) fade away
+    tl.to(otherCards, { opacity: 0, y: 12, duration: 0.4, ease: 'power2.out', stagger: 0.02 }, 0)
+      .to(card.querySelector('.project-card__meta'), { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0);
+
+    // 2. Swap the DOM: card image → travelling clone → project hero
+    const SWAP_AT = 0.2;
+    tl.add(() => {
+      // Use the largest hero variant so the clone stays sharp as it grows to full width
+      const clone = makeClone(largestSrc(PROJECTS[slug].images[0]), first);
+      gsap.set(media, { visibility: 'hidden' });
+      gsap.set(hero, { visibility: 'hidden' });
+
+      wrapper.hidden = true;
+      body.appendChild(page);
+      currentPage = page;
+      window.scrollTo(0, 0);
+
+      const last = hero.getBoundingClientRect();
+      tl.to(clone, {
+        top: last.top, left: last.left, width: last.width, height: last.height,
+        duration: 1.3, ease: 'power3.inOut',
+        onComplete() {
+          gsap.set(hero, { clearProps: 'visibility' });
+          clone.remove();
+        },
+      }, SWAP_AT);
+      tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
+    }, SWAP_AT);
+
+    if (pushUrl) history.pushState({ view: 'project', slug }, '', card.getAttribute('href'));
+    document.title = PROJECTS[slug].name + ' — Kodu Design Lab';
+  }
+
+  function closeProject() {
+    if (busy || !currentPage) return;
+    busy = true;
+    html.classList.add('is-transitioning');
+
+    const page = currentPage;
+    const card = activeCard;
+    const media = card.querySelector('.project-card__media');
+    const meta = card.querySelector('.project-card__meta');
+    const otherCards = cards.filter((c) => c !== card);
+    const hero = page.querySelector('.project-image--hero');
+    const rest = gsap.utils.toArray(page.querySelectorAll('.project-image:not(.project-image--hero)'));
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.inOut' },
+      onComplete() {
+        html.classList.remove('is-transitioning');
+        busy = false;
+      },
+    });
+    window.koduTransition = tl;
+
+    // 1. Other project images fade away
+    tl.to(rest, { opacity: 0, y: 24, duration: 0.3, ease: 'power2.in', stagger: 0.015 }, 0);
+
+    // 2. Hero → travelling clone → card image, while the other cards fade back in
+    const SWAP_AT = 0.25;
+    tl.add(() => {
+      const first = hero.getBoundingClientRect();
+      const heroImg = hero.querySelector('img');
+      const clone = makeClone(heroImg.currentSrc || heroImg.src, first);
+
+      page.remove();
+      currentPage = null;
+      gsap.set(otherCards, { opacity: 0, y: 12 });
+      gsap.set(meta, { opacity: 0 });
+      wrapper.hidden = false;
+      window.scrollTo(0, 0);
+
+      const last = media.getBoundingClientRect();
+      tl.to(clone, {
+        top: last.top, left: last.left, width: last.width, height: last.height,
+        duration: 1.3, ease: 'power3.inOut',
+        onComplete() {
+          gsap.set(media, { clearProps: 'visibility' });
+          clone.remove();
+        },
+      }, SWAP_AT);
+      tl.to(otherCards, {
+        opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.03,
+        onComplete() { gsap.set(otherCards, { clearProps: 'transform,opacity' }); },
+      }, SWAP_AT + 0.75);
+      tl.to(meta, {
+        opacity: 1, duration: 0.4, ease: 'power2.out',
+        onComplete() { gsap.set(meta, { clearProps: 'opacity' }); },
+      }, SWAP_AT + 0.95);
+    }, SWAP_AT);
+
+    document.title = HOME_TITLE;
+  }
+
+  // Card clicks: only cards with project data get the in-page transition
+  cards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      const slug = card.dataset.project;
+      if (!slug || !PROJECTS[slug] || reduceMotion) return; // fall through to a normal navigation
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      openProject(card, slug, true);
+    });
+  });
+
+  // Brand link acts as "back" while a project is open
+  document.querySelector('.brand__link').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentPage) history.back();
+    else window.scrollTo(0, 0);
+  });
+
+  // Browser back / forward
+  window.addEventListener('popstate', (e) => {
+    const state = e.state || { view: 'home' };
+    if (state.view === 'home' && currentPage) {
+      closeProject();
+    } else if (state.view === 'project' && !currentPage) {
+      const card = cards.find((c) => c.dataset.project === state.slug);
+      if (card) openProject(card, state.slug, false);
+    }
+  });
+})();

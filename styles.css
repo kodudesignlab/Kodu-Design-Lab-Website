@@ -1,0 +1,258 @@
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/PPNeueMontreal-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('fonts/PPNeueMontreal-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg-base: #ffffff;
+  --text-primary: #1c1c1c;
+  --text-muted: #52525b;
+  --card-placeholder: #ececec;
+
+  --margin-main: 20px;
+  --column-gap: 10px;
+  --card-gap: 6px;
+  --wrapper-pad-bottom: 40px;
+
+  --label-lg: 16px;
+  --body-font: 'PP Neue Montreal', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg-base: #191919;
+  --text-primary: #f2f2f2;
+  --text-muted: #a1a1aa;
+  --card-placeholder: #2c2c30;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+body {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--body-font);
+  font-size: var(--label-lg);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  /* Crisp type */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  font-synthesis: none;
+  -webkit-text-size-adjust: 100%;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ---------- Header ---------- */
+.site-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--margin-main);
+  flex: 0 0 auto;
+}
+
+.brand { max-width: 243px; }
+.brand__name { font-weight: 500; color: var(--text-primary); }
+.brand__tagline { color: var(--text-muted); }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav__item {
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition: opacity 0.25s ease;
+}
+.nav__item:hover { opacity: 0.6; }
+
+.theme-toggle {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.theme-toggle__icon {
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.3s ease, transform 0.45s var(--ease-out);
+}
+.theme-toggle__icon--sun { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+:root[data-theme='dark'] .theme-toggle__icon--moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
+:root[data-theme='dark'] .theme-toggle__icon--sun { opacity: 1; transform: rotate(0deg) scale(1); }
+
+/* ---------- Project cards ---------- */
+.project-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--margin-main) var(--wrapper-pad-bottom);
+}
+
+.project-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--column-gap);
+  width: 100%;
+}
+
+.project-card {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+  will-change: transform;
+}
+
+.project-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 6 / 8;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--card-placeholder);
+}
+.project-card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+.project-card:hover .project-card__media img { transform: scale(1.03); }
+
+/* Hover: dim every other card (image + text) to 50%, keep the hovered one at 100%.
+   Only enabled once the intro has finished so the transition doesn't fight GSAP. */
+.intro-done .project-card { transition: opacity 0.4s ease; }
+.intro-done .project-container:has(.project-card:hover) .project-card:not(:hover) { opacity: 0.5; }
+
+.project-card__name { font-weight: 500; color: var(--text-primary); }
+.project-card__info { color: var(--text-muted); }
+
+/* ---------- Project page ---------- */
+.project-page {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--margin-main);
+  align-content: start;
+  padding: 0 var(--margin-main) var(--margin-main);
+}
+
+.project-image {
+  position: relative;
+  margin: 0; /* reset <figure> default */
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--card-placeholder);
+  grid-column: span 6;
+}
+.project-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.project-image--16-10   { aspect-ratio: 16 / 10; }
+.project-image--16-9    { aspect-ratio: 16 / 9; }
+.project-image--portrait { aspect-ratio: 4 / 5;     grid-column: span 3; }
+.project-image--poster   { aspect-ratio: 1188 / 1680; grid-column: span 2; }
+
+/* ---------- Page transition helpers ---------- */
+/* The floating image that travels between the card and the project hero */
+.flip-clone {
+  position: fixed;
+  z-index: 50;
+  border-radius: 4px;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: top, left, width, height;
+}
+.flip-clone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  backface-visibility: hidden;
+}
+/* While a transition runs, hand opacity control to GSAP */
+.is-transitioning .project-card { transition: none; }
+.is-transitioning .project-container:has(.project-card:hover) .project-card:not(:hover) { opacity: 1; }
+.is-transitioning .project-card:hover .project-card__media img { transform: none; }
+
+/* Pre-animation state: hide until JS positions the cards (JS removes this) */
+.is-loading .brand > *,
+.is-loading .nav > *,
+.is-loading .project-card { opacity: 0; }
+
+/* Cards start below the viewport during the intro — stop that creating a scrollbar */
+html:not(.intro-done) { overflow: hidden; }
+
+/* ---------- Responsive: 2-col grid below 1200px ---------- */
+@media (max-width: 1199px) {
+  .project-wrapper {
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+  .project-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 24px;
+    align-items: start;
+  }
+  .project-card { flex: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
