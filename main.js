@@ -19,12 +19,26 @@
       const line = document.createElement('span');
       line.className = cls;
       line.setAttribute('aria-hidden', 'true');
-      [...text].forEach((ch, i) => {
-        const s = document.createElement('span');
-        s.className = 'char';
-        s.style.setProperty('--i', i);
-        s.textContent = ch;
-        line.appendChild(s);
+      // Letters grouped by word so text can only wrap at spaces on narrow screens
+      let i = 0;
+      text.split(' ').forEach((word, w, words) => {
+        const group = document.createElement('span');
+        group.className = 'roll__word';
+        [...word].forEach((ch) => {
+          const s = document.createElement('span');
+          s.className = 'char';
+          s.style.setProperty('--i', i++);
+          s.textContent = ch;
+          group.appendChild(s);
+        });
+        line.appendChild(group);
+        if (w < words.length - 1) {
+          const sp = document.createElement('span');
+          sp.className = 'char';
+          sp.style.setProperty('--i', i++);
+          sp.textContent = ' ';
+          line.appendChild(sp);
+        }
       });
       el.appendChild(line);
     });

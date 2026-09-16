@@ -109,6 +109,7 @@ img { display: block; max-width: 100%; }
   vertical-align: top;
 }
 .roll__text { display: block; }
+.roll__word { display: inline-block; white-space: nowrap; }
 .roll__text--clone { position: absolute; left: 0; top: 100%; }
 .roll .char {
   display: inline-block;
@@ -119,6 +120,12 @@ img { display: block; max-width: 100%; }
 .roll:hover .char,
 .roll:focus-visible .char { transform: translateY(-100%); }
 @media (hover: none) { .roll .char { transition: none; } }
+/* Narrow screens: let the brand wrap onto two lines and skip its roll (single-line effect only) */
+@media (max-width: 899px) {
+  .brand__link { white-space: normal; }
+  .brand__link .roll__text--clone { display: none; }
+  .brand__link .char { transform: none !important; }
+}
 
 .theme-toggle {
   position: relative;
@@ -229,8 +236,9 @@ img { display: block; max-width: 100%; }
 .project-image--third    { aspect-ratio: 4 / 5;     grid-column: span 2; }
 .project-image--poster   { aspect-ratio: 1188 / 1680; grid-column: span 2; }
 
-/* ---------- About page ---------- */
-/* Block sits at the bottom of the viewport; portrait and text top-align with each other */
+/* ---------- About page ----------
+   12-column grid (10px gutters, same as the homepage cards), anchored to the bottom.
+   Portrait = cols 1–2 · eyebrows = cols 5–6 · text = cols 7–11 (as in the Figma grid). */
 .about {
   flex: 1 1 auto;
   display: flex;
@@ -238,18 +246,18 @@ img { display: block; max-width: 100%; }
   justify-content: flex-end;
   padding: 40px var(--margin-main) 96px;
 }
-.about__row-wrap {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 40px;
-  width: 100%;
-  max-width: 1349px;
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  column-gap: var(--column-gap);
+  row-gap: 80px;
+  align-items: start;
 }
 
 .about__portrait {
-  flex: 0 0 237px;
-  width: 237px;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
   aspect-ratio: 6 / 8;
   border-radius: 4px;
   overflow: hidden;
@@ -257,26 +265,15 @@ img { display: block; max-width: 100%; }
 }
 .about__portrait img { width: 100%; height: 100%; object-fit: cover; }
 
-.about__info {
-  flex: 0 1 855px;
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-}
-
-.about__row {
-  display: grid;
-  grid-template-columns: minmax(80px, 1fr) minmax(0, 608px);
-  column-gap: 40px;
-  justify-content: space-between;
-}
-
 .about__eyebrow {
+  grid-column: 5 / 7;
   font-weight: 500;
   font-size: 18px;
   line-height: 1.5;
   color: var(--text-primary);
 }
+.about__lead,
+.about__list { grid-column: 7 / 12; }
 
 .about__lead {
   font-weight: 500;
@@ -311,16 +308,19 @@ img { display: block; max-width: 100%; }
 .is-loading .about__lead,
 .is-loading .about__list li { opacity: 0; }
 
+@media (max-width: 1199px) {
+  .about__portrait { grid-column: 1 / 4; }
+  .about__eyebrow  { grid-column: 5 / 7; }
+  .about__lead, .about__list { grid-column: 7 / 13; }
+}
+
 @media (max-width: 899px) {
-  .about {
-    justify-content: flex-start;
-    padding-top: 0;
-    padding-bottom: 40px;
-  }
-  .about__row-wrap { flex-direction: column; align-items: stretch; }
-  .about__portrait { flex: none; width: 100%; max-width: 360px; }
-  .about__info { flex: none; gap: 48px; }
-  .about__row { grid-template-columns: 1fr; row-gap: 12px; }
+  .about { justify-content: flex-start; padding-top: 0; padding-bottom: 40px; }
+  .about__grid { row-gap: 12px; }
+  .about__portrait { grid-column: 1 / 13; grid-row: auto; max-width: 360px; margin-bottom: 36px; }
+  .about__eyebrow, .about__lead, .about__list { grid-column: 1 / 13; }
+  .about__list { margin-bottom: 0; }
+  .about__eyebrow--services { margin-top: 36px; }
 }
 
 /* ---------- Page transition helpers ---------- */
