@@ -9,6 +9,13 @@
   const PROJECTS = window.KODU_PROJECTS || {};
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Header links: make them absolute so they survive pushState URL changes ----------
+     (otherwise "about" resolves to /projects/about after opening a project from the homepage) */
+  document.querySelectorAll('.brand__link, .nav__item').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (href && !/^(https?:|mailto:|#)/.test(href)) a.href = siteUrl(href);
+  });
+
   /* ---------- Rolling hover text for brand + nav links ---------- */
   document.querySelectorAll('.brand__link, .nav__item, .roll-target').forEach((el) => {
     const text = el.textContent.trim();
