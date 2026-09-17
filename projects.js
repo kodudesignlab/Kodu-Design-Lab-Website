@@ -356,7 +356,7 @@ window.KODU_PROJECTS = {
   },
   "nsw-mining": {
     "name": "NSW Mining Careers",
-    "info": "Careers Site Design",
+    "info": "Choose Your Adventure",
     "overview": "A careers site for NSW Mining built to help people find their way into the industry. Alongside the full site system, I designed an interactive questionnaire that matches visitors with the mining careers that suit them, then points them to the pathways to get there.",
     "role": [
       "Site System Design",
