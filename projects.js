@@ -277,20 +277,20 @@ window.KODU_PROJECTS = {
         "src": "images/alpha-life-essentials/02-website-layout",
         "widths": [
           1200,
-          1440
+          1800
         ],
         "cols": 2,
-        "aspect": "1440 / 2016",
+        "aspect": "1800 / 2520",
         "alt": "Alpha Life Essentials: Website Layout"
       },
       {
         "src": "images/alpha-life-essentials/03-website-layout",
         "widths": [
           1200,
-          1440
+          1800
         ],
         "cols": 2,
-        "aspect": "1440 / 2016",
+        "aspect": "1800 / 2520",
         "alt": "Alpha Life Essentials: Website Layout"
       }
     ]
