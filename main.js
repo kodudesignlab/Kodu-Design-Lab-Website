@@ -68,13 +68,7 @@
 
   /* ---------- Project page rendering ---------- */
   // How wide each image slot is on screen, so the browser can pick the sharpest variant
-  const SIZES = {
-    '16-10':   'calc(100vw - 40px)',
-    '16-9':    'calc(100vw - 40px)',
-    portrait: 'calc(50vw - 30px)',
-    third:    'calc(33.33vw - 27px)',
-    poster:   'calc(33.33vw - 27px)',
-  };
+  const SIZES = { 1: 'calc(100vw - 40px)', 2: 'calc(50vw - 30px)', 3: 'calc(33.33vw - 27px)' };
   function imageSrcset(img) {
     return img.widths.map((w) => `${siteUrl(img.src + '-' + w + '.jpg')} ${w}w`).join(', ');
   }
@@ -90,12 +84,13 @@
     if (!data) return page;
     data.images.forEach((img, i) => {
       const fig = document.createElement('figure');
-      fig.className = 'project-image project-image--' + img.ratio;
+      fig.className = 'project-image project-image--cols-' + (img.cols || 1);
+      fig.style.aspectRatio = img.aspect || '16 / 10';
       if (i === 0) fig.classList.add('project-image--hero');
       const el = document.createElement('img');
       el.src = largestSrc(img);
       el.srcset = imageSrcset(img);
-      el.sizes = SIZES[img.ratio] || '100vw';
+      el.sizes = SIZES[img.cols] || SIZES[1];
       el.alt = img.alt || '';
       el.loading = i < 3 ? 'eager' : 'lazy';
       el.decoding = 'async';

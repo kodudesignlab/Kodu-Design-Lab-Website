@@ -6,107 +6,118 @@ window.KODU_PROJECTS = {
     "info": "Branding, Print & Web",
     "images": [
       {
-        "src": "images/courtside-wines/tote",
+        "src": "images/courtside-wines/01-tote",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Courtside Wines: Tote"
       },
       {
-        "src": "images/courtside-wines/vineyard-graphic",
+        "src": "images/courtside-wines/02-vineyard-graphic",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-9",
+        "cols": 1,
+        "aspect": "16 / 9",
         "alt": "Courtside Wines: Vineyard Graphic"
       },
       {
-        "src": "images/courtside-wines/tshirt-front",
+        "src": "images/courtside-wines/03-tshirt-front",
         "widths": [
           1200,
           2000,
           2309
         ],
-        "ratio": "portrait",
+        "cols": 2,
+        "aspect": "2309 / 2880",
         "alt": "Courtside Wines: Tshirt Front"
       },
       {
-        "src": "images/courtside-wines/tshirt-back",
+        "src": "images/courtside-wines/04-tshirt-back",
         "widths": [
           1200,
           2000,
           2309
         ],
-        "ratio": "portrait",
+        "cols": 2,
+        "aspect": "2309 / 2880",
         "alt": "Courtside Wines: Tshirt Back"
       },
       {
-        "src": "images/courtside-wines/business-card",
+        "src": "images/courtside-wines/05-business-card",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-9",
+        "cols": 1,
+        "aspect": "16 / 9",
         "alt": "Courtside Wines: Business Card"
       },
       {
-        "src": "images/courtside-wines/poster-01",
+        "src": "images/courtside-wines/06-poster-01",
         "widths": [
           1188
         ],
-        "ratio": "poster",
+        "cols": 3,
+        "aspect": "1188 / 1680",
         "alt": "Courtside Wines: Poster 01"
       },
       {
-        "src": "images/courtside-wines/poster-02",
+        "src": "images/courtside-wines/07-poster-02",
         "widths": [
           1188
         ],
-        "ratio": "poster",
+        "cols": 3,
+        "aspect": "1188 / 1680",
         "alt": "Courtside Wines: Poster 02"
       },
       {
-        "src": "images/courtside-wines/poster-03",
+        "src": "images/courtside-wines/08-poster-03",
         "widths": [
           1188
         ],
-        "ratio": "poster",
+        "cols": 3,
+        "aspect": "1188 / 1680",
         "alt": "Courtside Wines: Poster 03"
       },
       {
-        "src": "images/courtside-wines/multi-mag",
+        "src": "images/courtside-wines/09-multi-mag",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Courtside Wines: Multi Mag"
       },
       {
-        "src": "images/courtside-wines/macbook-01",
+        "src": "images/courtside-wines/10-macbook-01",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Courtside Wines: Macbook 01"
       },
       {
-        "src": "images/courtside-wines/macbook-02",
+        "src": "images/courtside-wines/11-macbook-02",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Courtside Wines: Macbook 02"
       }
     ]
@@ -116,121 +127,133 @@ window.KODU_PROJECTS = {
     "info": "Website Design & Build",
     "images": [
       {
-        "src": "images/grampians-sandstone/laptop-hero",
+        "src": "images/grampians-sandstone/01-laptop-hero",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Grampians Sandstone: Laptop Hero"
       },
       {
-        "src": "images/grampians-sandstone/homepage-screen",
+        "src": "images/grampians-sandstone/02-homepage-screen",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Grampians Sandstone: Homepage Screen"
       },
       {
-        "src": "images/grampians-sandstone/text-overlay",
+        "src": "images/grampians-sandstone/03-text-overlay",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Grampians Sandstone: Text Overlay"
       },
       {
-        "src": "images/grampians-sandstone/photo-building",
+        "src": "images/grampians-sandstone/04-photo-building",
         "widths": [
           1200,
           1500
         ],
-        "ratio": "portrait",
+        "cols": 2,
+        "aspect": "1500 / 1875",
         "alt": "Grampians Sandstone: Photo Building"
       },
       {
-        "src": "images/grampians-sandstone/photo-clocktower",
+        "src": "images/grampians-sandstone/05-photo-clocktower",
         "widths": [
           1200,
           1500
         ],
-        "ratio": "portrait",
+        "cols": 2,
+        "aspect": "1500 / 1875",
         "alt": "Grampians Sandstone: Photo Clocktower"
       },
       {
-        "src": "images/grampians-sandstone/product-slider",
+        "src": "images/grampians-sandstone/06-product-slider",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Grampians Sandstone: Product Slider"
       },
       {
-        "src": "images/grampians-sandstone/image-slider",
+        "src": "images/grampians-sandstone/07-image-slider",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-9",
+        "cols": 1,
+        "aspect": "16 / 9",
         "alt": "Grampians Sandstone: Image Slider"
       },
       {
-        "src": "images/grampians-sandstone/page-specifications",
+        "src": "images/grampians-sandstone/08-page-specifications",
         "widths": [
           1200,
           2000,
           2400
         ],
-        "ratio": "third",
+        "cols": 3,
+        "aspect": "4 / 5",
         "alt": "Grampians Sandstone: Page Specifications"
       },
       {
-        "src": "images/grampians-sandstone/page-frame-2",
+        "src": "images/grampians-sandstone/09-page-frame-2",
         "widths": [
           1200,
           2000,
           2400
         ],
-        "ratio": "third",
+        "cols": 3,
+        "aspect": "4 / 5",
         "alt": "Grampians Sandstone: Page Frame 2"
       },
       {
-        "src": "images/grampians-sandstone/page-frame-3",
+        "src": "images/grampians-sandstone/10-page-frame-3",
         "widths": [
           1200,
           2000,
           2400
         ],
-        "ratio": "third",
+        "cols": 3,
+        "aspect": "4 / 5",
         "alt": "Grampians Sandstone: Page Frame 3"
       },
       {
-        "src": "images/grampians-sandstone/digger",
+        "src": "images/grampians-sandstone/11-digger",
         "widths": [
           1200,
           2000,
           2440
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Grampians Sandstone: Digger"
       },
       {
-        "src": "images/grampians-sandstone/mobile-overlay",
+        "src": "images/grampians-sandstone/12-mobile-overlay",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-9",
+        "cols": 1,
+        "aspect": "16 / 9",
         "alt": "Grampians Sandstone: Mobile Overlay"
       }
     ]
@@ -240,14 +263,35 @@ window.KODU_PROJECTS = {
     "info": "Video platform for connection",
     "images": [
       {
-        "src": "images/alpha-life-essentials/floatingphonesmain",
+        "src": "images/alpha-life-essentials/01-floatingphonesmain",
         "widths": [
           1200,
           2000,
           2800
         ],
-        "ratio": "16-10",
+        "cols": 1,
+        "aspect": "16 / 10",
         "alt": "Alpha Life Essentials: Floatingphonesmain"
+      },
+      {
+        "src": "images/alpha-life-essentials/02-website-layout",
+        "widths": [
+          1200,
+          1440
+        ],
+        "cols": 2,
+        "aspect": "1440 / 2016",
+        "alt": "Alpha Life Essentials: Website Layout"
+      },
+      {
+        "src": "images/alpha-life-essentials/03-website-layout",
+        "widths": [
+          1200,
+          1440
+        ],
+        "cols": 2,
+        "aspect": "1440 / 2016",
+        "alt": "Alpha Life Essentials: Website Layout"
       }
     ]
   }

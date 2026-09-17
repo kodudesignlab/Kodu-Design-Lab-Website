@@ -17,7 +17,9 @@ const CONTENT = path.join(ROOT, 'content');
 const WIDTHS = [1200, 2000, 2800];        // page images
 const COVER_WIDTHS = [800, 1600];         // homepage card covers
 const QUALITY = 88;
-const RATIOS = ['16-10', '16-9', 'portrait', 'third', 'poster'];
+// Filename hints → columns per row. New style: .2up / .3up (aspect comes from the image itself).
+// Old style still accepted: .portrait/.third/.poster (2, 3, 3 per row), .16-9/.16-10 (full width, fixed box).
+const HINTS = { '2up': 2, '3up': 3, full: 1, portrait: 2, third: 3, poster: 3, '16-9': 1, '16-10': 1 };
 
 const log = (...a) => console.log(...a);
 const warn = (...a) => console.warn('  ⚠︎', ...a);
@@ -42,26 +44,23 @@ function needsBuild(src, dest) {
   return fs.statSync(src).mtimeMs > fs.statSync(dest).mtimeMs;
 }
 
-// Guess a layout ratio from the image's own proportions
-function detectRatio({ w, h }) {
-  const r = w / h;
-  if (r < 1) return 'portrait';
-  return r >= 1.7 ? '16-9' : '16-10';
+// Full-width images sit in a 16:9 or 16:10 box (whichever is closer); side-by-side ones keep their own shape
+function fullWidthAspect({ w, h }) {
+  return w / h >= 1.7 ? '16 / 9' : '16 / 10';
 }
 
-// "07-frame-01.third.jpg" → { order: 7, slug: 'frame-01', ratioHint: 'third' }
+// "07-frame.2up.jpg" → { order: 7, slug: '07-frame', hint: '2up' }
+// The number is kept in the slug so two files with the same name can't overwrite each other.
 function parseImageName(file) {
   const base = file.replace(/\.(jpe?g|png)$/i, '');
   const parts = base.split('.');
-  let ratioHint = null;
-  if (parts.length > 1 && RATIOS.includes(parts[parts.length - 1])) ratioHint = parts.pop();
+  let hint = null;
+  if (parts.length > 1 && HINTS[parts[parts.length - 1].toLowerCase()] !== undefined) hint = parts.pop().toLowerCase();
   const name = parts.join('.');
   const m = name.match(/^(\d+)[-_ ]*(.*)$/);
-  return {
-    order: m ? +m[1] : 9999,
-    slug: (m ? m[2] : name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'image',
-    ratioHint,
-  };
+  const words = (m ? m[2] : name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'image';
+  const order = m ? +m[1] : 9999;
+  return { order, slug: m ? String(m[1]).padStart(2, '0') + '-' + words : words, name: words, hint };
 }
 
 const escapeHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -131,7 +130,12 @@ for (const p of projects) {
   for (const f of p.files) {
     const src = path.join(p.dir, f.file);
     const size = imageSize(src);
-    const ratio = f.ratioHint || detectRatio(size);
+    const cols = f.hint ? HINTS[f.hint] : (size.w < size.h ? 2 : 1);   // portrait images pair up by default
+    let aspect;
+    if (cols === 1) aspect = f.hint === '16-9' ? '16 / 9' : f.hint === '16-10' ? '16 / 10' : fullWidthAspect(size);
+    else if (f.hint === 'portrait' || f.hint === 'third') aspect = '4 / 5';
+    else if (f.hint === 'poster') aspect = '1188 / 1680';
+    else aspect = size.w + ' / ' + size.h;
     const widths = [];
     for (const w of WIDTHS) {
       if (w > size.w) continue;
@@ -149,10 +153,22 @@ for (const p of projects) {
     images.push({
       src: `images/${p.slug}/${f.slug}`,
       widths,
-      ratio,
-      alt: f.alt || `${p.meta.name}: ${titleCase(f.slug)}`,
+      cols,
+      aspect,
+      alt: `${p.meta.name}: ${titleCase(f.name)}`,
     });
-    log(`  ${f.file.padEnd(34)} ${ratio.padEnd(9)} [${widths.join(', ')}]`);
+    const layout = cols === 1 ? 'full ' + aspect.replace(/ /g, '') : cols + ' per row';
+    log(`  ${f.file.padEnd(34)} ${layout.padEnd(12)} [${widths.join(', ')}]`);
+  }
+
+  // Warn when a side-by-side row isn't filled or its images have different shapes
+  for (let i = 0; i < images.length; ) {
+    const c = images[i].cols;
+    if (c === 1) { i++; continue; }
+    const row = images.slice(i, i + c);
+    if (row.length < c || row.some((im) => im.cols !== c)) warn(`row starting at ${p.files[i].file} needs ${c} images marked .${c}up`);
+    else if (row.some((im) => im.aspect !== row[0].aspect)) warn(`row starting at ${p.files[i].file}: images have different shapes, they won't line up`);
+    i += row.length;
   }
 
   data[p.slug] = { name: p.meta.name, info: p.meta.info || '', images };

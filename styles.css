@@ -230,11 +230,10 @@ img { display: block; max-width: 100%; }
   height: 100%;
   object-fit: cover;
 }
-.project-image--16-10   { aspect-ratio: 16 / 10; }
-.project-image--16-9    { aspect-ratio: 16 / 9; }
-.project-image--portrait { aspect-ratio: 4 / 5;     grid-column: span 3; }
-.project-image--third    { aspect-ratio: 4 / 5;     grid-column: span 2; }
-.project-image--poster   { aspect-ratio: 1188 / 1680; grid-column: span 2; }
+/* Columns per row (aspect-ratio is set inline per image by main.js) */
+.project-image--cols-1 { grid-column: span 6; }
+.project-image--cols-2 { grid-column: span 3; }
+.project-image--cols-3 { grid-column: span 2; }
 
 /* ---------- About page ----------
    12-column grid (10px gutters, same as the homepage cards), anchored to the bottom.
