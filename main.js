@@ -18,9 +18,7 @@
 
   /* ---------- Rolling hover text for brand + nav links ---------- */
   document.querySelectorAll('.brand__link, .nav__item, .roll-target').forEach((el) => {
-    // Keep text and any <br> (used to stack the brand name on mobile)
-    const parts = [...el.childNodes].map((n) => (n.nodeName === 'BR' ? { br: n.className } : n.textContent)).filter((p) => p !== '');
-    const text = parts.map((p) => (typeof p === 'string' ? p : ' ')).join('').replace(/\s+/g, ' ').trim();
+    const text = el.textContent.trim();
     el.setAttribute('aria-label', text);
     el.textContent = '';
     el.classList.add('roll');
@@ -28,36 +26,47 @@
       const line = document.createElement('span');
       line.className = cls;
       line.setAttribute('aria-hidden', 'true');
+      // Letters grouped by word so text can only wrap at spaces on narrow screens
       let i = 0;
-      const addSpace = () => {
-        const sp = document.createElement('span');
-        sp.className = 'char';
-        sp.style.setProperty('--i', i++);
-        sp.textContent = ' ';
-        line.appendChild(sp);
-      };
-      parts.forEach((part) => {
-        if (typeof part !== 'string') { const br = document.createElement('br'); br.className = part.br; line.appendChild(br); return; }
-        const words = part.trim().split(/\s+/).filter(Boolean);
-        if (/^\s/.test(part) && line.lastChild && line.lastChild.nodeName !== 'BR') addSpace();
-        // Letters grouped by word so text can only wrap at spaces on narrow screens
-        words.forEach((word, w) => {
-          const group = document.createElement('span');
-          group.className = 'roll__word';
-          [...word].forEach((ch) => {
-            const s = document.createElement('span');
-            s.className = 'char';
-            s.style.setProperty('--i', i++);
-            s.textContent = ch;
-            group.appendChild(s);
-          });
-          line.appendChild(group);
-          if (w < words.length - 1) addSpace();
+      text.split(' ').forEach((word, w, words) => {
+        const group = document.createElement('span');
+        group.className = 'roll__word';
+        [...word].forEach((ch) => {
+          const s = document.createElement('span');
+          s.className = 'char';
+          s.style.setProperty('--i', i++);
+          s.textContent = ch;
+          group.appendChild(s);
         });
+        line.appendChild(group);
+        if (w < words.length - 1) {
+          const sp = document.createElement('span');
+          sp.className = 'char';
+          sp.style.setProperty('--i', i++);
+          sp.textContent = ' ';
+          line.appendChild(sp);
+        }
       });
       el.appendChild(line);
     });
   });
+
+  /* ---------- Tagline: "by Lachlan Sarv" ⇄ "Digital & Graphic Design" ----------
+     A three-line track (A, B, A) slides up one line every few seconds; after the third
+     line it snaps back to the top invisibly, so it reads as an endless upward loop. */
+  const swap = document.querySelector('.brand__swap');
+  if (swap && !reduceMotion) {
+    let step = 0;
+    setInterval(() => {
+      step += 1;
+      gsap.to(swap, {
+        yPercent: -(100 / 3) * step,   // one line = a third of the three-line track
+        duration: 0.7,
+        ease: 'power3.inOut',
+        onComplete() { if (step === 2) { step = 0; gsap.set(swap, { yPercent: 0 }); } },
+      });
+    }, 3500);
+  }
 
   /* ---------- Theme toggle ---------- */
   const toggle = document.querySelector('.theme-toggle');

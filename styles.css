@@ -84,8 +84,10 @@ img { display: block; max-width: 100%; }
 
 .brand { max-width: 243px; }
 .brand__link { white-space: nowrap; }
-.brand__break { display: none; }
-@media (max-width: 899px) { .brand__break { display: block; } }
+/* Tagline alternates between two lines: a clipped one-line window with a sliding track (main.js) */
+.brand__tagline { height: 1.4em; overflow: hidden; }
+.brand__swap { display: block; }
+.brand__swap > span { display: block; white-space: nowrap; }
 .brand__name { font-weight: 500; color: var(--text-primary); }
 .brand__tagline { color: var(--text-muted); }
 
@@ -128,12 +130,6 @@ img { display: block; max-width: 100%; }
 .roll:hover .char,
 .roll:focus-visible .char { transform: translateY(-100%); }
 @media (hover: none) { .roll .char { transition: none; } }
-/* Narrow screens: let the brand wrap onto two lines and skip its roll (single-line effect only) */
-@media (max-width: 899px) {
-  .brand__link { white-space: normal; }
-  .brand__link .roll__text--clone { display: none; }
-  .brand__link .char { transform: none !important; }
-}
 
 .theme-toggle {
   position: relative;
