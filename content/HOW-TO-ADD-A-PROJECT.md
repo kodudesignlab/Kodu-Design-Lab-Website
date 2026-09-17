@@ -18,8 +18,8 @@
    - `NUMBER` sets the order (two digits: 01, 02 … 12).
    - `name` is just for you (it becomes the alt text). Files can share a name, e.g. both `02-layout` and `03-layout` are fine.
    - `HINT` is optional and says **how many per row**: `.2up` or `.3up`. Leave it off for full width.
-   - `.tall` puts consecutive tall images side by side at the **same height** with nothing cropped
-     (widths adjust to each image's shape). Use it when the images aren't the same size.
+   - `.tall` puts tall images side by side at equal width, each at its **own natural height**
+     (top-aligned, nothing cropped; a shorter one just leaves space below). Use it when they aren't the same size.
 
    Side-by-side images keep their own shape (the build measures them), so make sure the
    images in one row are the **same size** or they won't line up. Rows must be complete:

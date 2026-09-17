@@ -21,7 +21,7 @@ const COVER_RATIO = 3 / 4;                // 6:8 card
 const QUALITY = 88;
 // Filename hints → columns per row. New style: .2up / .3up (aspect comes from the image itself).
 // Old style still accepted: .portrait/.third/.poster (2, 3, 3 per row), .16-9/.16-10 (full width, fixed box).
-// .tall = consecutive tall images share one row at EQUAL HEIGHT (widths follow each image's shape, nothing cropped)
+// .tall = tall images side by side at equal width, each at its own natural height (nothing cropped)
 const HINTS = { '2up': 2, '3up': 3, tall: 'tall', full: 1, portrait: 2, third: 3, poster: 3, '16-9': 1, '16-10': 1 };
 
 const log = (...a) => console.log(...a);

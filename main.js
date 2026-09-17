@@ -208,20 +208,11 @@
     page.className = 'project-page';
     page.dataset.project = slug;
     if (!data) return page;
-    let tallRow = null;   // open .project-row--tall while consecutive tall images continue
     data.images.forEach((img, i) => {
       const fig = document.createElement('figure');
       fig.className = 'project-image project-image--cols-' + (img.cols || 1);
       fig.style.aspectRatio = img.aspect || '16 / 10';
-      if (img.tall) {
-        // Equal-height row: each image's flex-grow is its aspect ratio, so widths scale to match heights
-        const [w, h] = img.aspect.split('/').map(Number);
-        fig.classList.add('project-image--tall');
-        fig.style.flex = `${w / h} 1 0`;
-        if (!tallRow) { tallRow = document.createElement('div'); tallRow.className = 'project-row--tall'; page.appendChild(tallRow); }
-      } else {
-        tallRow = null;
-      }
+      if (img.tall) fig.classList.add('project-image--tall');   // natural height, top-aligned, never cropped
       if (i === 0) fig.classList.add('project-image--hero');
       const el = document.createElement('img');
       el.src = largestSrc(img);
@@ -231,8 +222,8 @@
       el.loading = i < 3 ? 'eager' : 'lazy';
       el.decoding = 'async';
       fig.appendChild(el);
-      (img.tall ? tallRow : page).appendChild(fig);
-      if (i === 0) { const text = buildProjectText(data); if (text) page.appendChild(text); tallRow = null; }
+      page.appendChild(fig);
+      if (i === 0) { const text = buildProjectText(data); if (text) page.appendChild(text); }
     });
     return page;
   }
