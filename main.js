@@ -216,10 +216,26 @@
 
   html.classList.add('is-loading');
 
+  // Warm the cache with each project's hero image so the card → hero transition never waits on
+  // the network. Uses the same srcset/sizes as the real hero so the browser fetches the exact
+  // variant it will later display. Runs when the browser is idle, after the intro.
+  function preloadHeroes() {
+    const run = () => Object.values(PROJECTS).forEach((p) => {
+      const im = p.images && p.images[0];
+      if (!im) return;
+      const i = new Image();
+      i.sizes = SIZES[1];
+      i.srcset = imageSrcset(im);
+      i.src = largestSrc(im);
+    });
+    if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 2000 }); else setTimeout(run, 500);
+  }
+
   function runIntro() {
     if (reduceMotion || typeof gsap === 'undefined') {
       html.classList.remove('is-loading');
       html.classList.add('intro-done');
+      preloadHeroes();
       return;
     }
 
@@ -257,6 +273,7 @@
         html.classList.add('intro-done');
         // Drop GSAP's inline transforms so text sits on whole pixels and renders crisp
         gsap.set([brandLines, navItems], { clearProps: 'transform,opacity' });
+        preloadHeroes();
       },
     });
     window.koduIntro = tl; // handy for scrubbing in devtools
@@ -356,8 +373,15 @@
     // 2. Swap the DOM: card image → travelling clone → project hero
     const SWAP_AT = 0.2;
     tl.add(() => {
-      // Use the largest hero variant so the clone stays sharp as it grows to full width
-      const clone = makeClone(largestSrc(PROJECTS[slug].images[0]), first);
+      // Start the clone from the card image that's already on screen (instant), then hand it the
+      // hero's srcset so the browser upgrades to the hi-res variant as soon as it's available.
+      // The <img> keeps showing the current bitmap until the new one has decoded, so no blank frame.
+      const cardImg = media.querySelector('img');
+      const heroData = PROJECTS[slug].images[0];
+      const clone = makeClone(cardImg.currentSrc || cardImg.src, first);
+      const cloneImg = clone.querySelector('img');
+      cloneImg.sizes = SIZES[1];
+      cloneImg.srcset = imageSrcset(heroData);
       gsap.set(media, { visibility: 'hidden' });
       gsap.set(hero, { visibility: 'hidden' });
 
@@ -371,8 +395,14 @@
         top: last.top, left: last.left, width: last.width, height: last.height,
         duration: 1.3, ease: 'power3.inOut',
         onComplete() {
-          gsap.set(hero, { clearProps: 'visibility' });
-          clone.remove();
+          // Keep the clone in place until the hero underneath has actually loaded
+          const heroImg = hero.querySelector('img');
+          const reveal = () => { gsap.set(hero, { clearProps: 'visibility' }); clone.remove(); };
+          if (heroImg.complete && heroImg.naturalWidth) reveal();
+          else {
+            heroImg.addEventListener('load', reveal, { once: true });
+            heroImg.addEventListener('error', reveal, { once: true });
+          }
         },
       }, SWAP_AT);
       tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
