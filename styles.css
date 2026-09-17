@@ -363,9 +363,9 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 899px) {
-  .about { justify-content: flex-start; padding-top: 0; padding-bottom: 40px; }
+  .about { justify-content: flex-start; padding-top: 3rem; padding-bottom: 40px; }   /* 3rem from the nav */
   .about__grid { row-gap: 12px; }
-  .about__portrait { grid-column: 1 / 13; grid-row: auto; max-width: 360px; margin-bottom: 36px; }
+  .about__portrait { grid-column: 1 / 7; grid-row: auto; margin-bottom: 36px; }        /* half the screen width */
   .about__eyebrow, .about__lead, .about__list, .about__links { grid-column: 1 / 13; }
   .about__list { margin-bottom: 0; }
   .about__eyebrow--services, .about__eyebrow--links { margin-top: 36px; }
@@ -437,7 +437,7 @@ html:not(.intro-done) { overflow: hidden; }
     min-width: 0;
     margin: auto calc(-1 * var(--margin-main));         /* auto = vertically centred, but never overflows the safe zone */
     padding: 0 calc((100vw - var(--card-w)) / 2);       /* centres the first (and last) card */
-    --card-w: 90vw;                     /* neighbours peek in by (5vw - 10px gap) ≈ 8px on a 375px phone */
+    --card-w: calc(90vw - 6px);         /* neighbours peek in by ~12px on a 375px phone */
     overflow-x: auto;
     overflow-y: visible;
     scroll-snap-type: x mandatory;
