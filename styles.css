@@ -239,6 +239,13 @@ img { display: block; max-width: 100%; }
 .project-image--cols-2 { grid-column: span 3; }
 .project-image--cols-3 { grid-column: span 2; }
 
+/* Mobile: every image full width, one per row */
+@media (max-width: 699px) {
+  .project-page { gap: 12px; padding-bottom: 12px; }
+  .project-image--cols-2,
+  .project-image--cols-3 { grid-column: span 6; }
+}
+
 /* ---------- About page ----------
    12-column grid (10px gutters, same as the homepage cards), anchored to the bottom.
    Portrait = cols 1–2 · eyebrows = cols 5–6 · text = cols 7–11 (as in the Figma grid). */

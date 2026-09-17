@@ -68,7 +68,12 @@
 
   /* ---------- Project page rendering ---------- */
   // How wide each image slot is on screen, so the browser can pick the sharpest variant
-  const SIZES = { 1: 'calc(100vw - 40px)', 2: 'calc(50vw - 30px)', 3: 'calc(33.33vw - 27px)' };
+  // Below 700px every image is full width, so the browser should pick sizes accordingly
+  const SIZES = {
+    1: 'calc(100vw - 40px)',
+    2: '(max-width: 699px) calc(100vw - 40px), calc(50vw - 30px)',
+    3: '(max-width: 699px) calc(100vw - 40px), calc(33.33vw - 27px)',
+  };
   function imageSrcset(img) {
     return img.widths.map((w) => `${siteUrl(img.src + '-' + w + '.jpg')} ${w}w`).join(', ');
   }
