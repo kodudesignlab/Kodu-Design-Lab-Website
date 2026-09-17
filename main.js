@@ -232,7 +232,7 @@
   const navItems = gsap.utils.toArray('.nav > *');
   const wrapper = document.querySelector('.project-wrapper');
   const container = document.querySelector('.project-container');
-  let cards = gsap.utils.toArray('.project-card');
+  const cards = gsap.utils.toArray('.project-card');
   const cardMeta = gsap.utils.toArray('.project-card__meta');
   const HOME_TITLE = document.title;
   const mobileMQ = matchMedia('(max-width: 699px)');   // the mobile carousel breakpoint
@@ -259,7 +259,6 @@
       html.classList.remove('is-loading');
       html.classList.add('intro-done');
       preloadHeroes();
-      setupMobileLoop();
       return;
     }
 
@@ -300,7 +299,6 @@
         // Drop GSAP's inline transforms so text sits on whole pixels and renders crisp
         gsap.set([brandLines, navItems], { clearProps: 'transform,opacity' });
         preloadHeroes();
-        setupMobileLoop();
       },
     });
     window.koduIntro = tl; // handy for scrubbing in devtools
@@ -520,7 +518,7 @@
   }
 
   // Card clicks: only cards with project data get the in-page transition
-  function wireCard(card) {
+  cards.forEach((card) => {
     card.addEventListener('click', (e) => {
       const slug = card.dataset.project;
       if (!slug || !PROJECTS[slug] || reduceMotion) return; // fall through to a normal navigation
@@ -528,42 +526,8 @@
       e.preventDefault();
       openProject(card, slug, true);
     });
-  }
-  cards.forEach(wireCard);
+  });
 
-  /* ---------- Mobile carousel: infinite loop ----------
-     Below 700px the cards sit in a horizontal snap-scroller. We add a full copy of the set on
-     each side and, whenever the scroll position drifts into a copy, jump it back by one set
-     width. The copies are pixel-identical so the jump is invisible. Desktop is untouched. */
-  let loopActive = false;
-  function setupMobileLoop() {
-    const originals = cards.filter((c) => !c.dataset.clone);
-    container.querySelectorAll('[data-clone]').forEach((c) => c.remove());
-    cards = originals;
-    loopActive = false;
-    if (!mobileMQ.matches || originals.length < 2) return;
-
-    const before = originals.map((c) => { const k = c.cloneNode(true); k.dataset.clone = 'before'; return k; });
-    const after  = originals.map((c) => { const k = c.cloneNode(true); k.dataset.clone = 'after';  return k; });
-    before.forEach((k) => container.insertBefore(k, originals[0]));
-    after.forEach((k) => container.appendChild(k));
-    [...before, ...after].forEach(wireCard);
-    cards = [...before, ...originals, ...after];
-    loopActive = true;
-
-    // One set = n cards + n gaps
-    const step = originals[1].getBoundingClientRect().left - originals[0].getBoundingClientRect().left;
-    const setWidth = step * originals.length;
-    container.style.scrollBehavior = 'auto';
-    container.scrollLeft = setWidth;             // start on the first real card
-    container.addEventListener('scroll', () => {
-      if (!loopActive) return;
-      const x = container.scrollLeft;
-      if (x < setWidth - step / 2) container.scrollLeft = x + setWidth;
-      else if (x >= 2 * setWidth - step / 2) container.scrollLeft = x - setWidth;
-    }, { passive: true });
-  }
-  mobileMQ.addEventListener('change', setupMobileLoop);
 
   // Brand link acts as "back" while a project is open
   document.querySelector('.brand__link').addEventListener('click', (e) => {
