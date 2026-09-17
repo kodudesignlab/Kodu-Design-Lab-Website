@@ -17,7 +17,7 @@
   });
 
   /* ---------- Rolling hover text for brand + nav links ---------- */
-  document.querySelectorAll('.brand__link, .nav__item, .roll-target').forEach((el) => {
+  function rollify(els) { els.forEach((el) => {
     const text = el.textContent.trim();
     el.setAttribute('aria-label', text);
     el.textContent = '';
@@ -49,7 +49,8 @@
       });
       el.appendChild(line);
     });
-  });
+  }); }
+  rollify(document.querySelectorAll('.brand__link, .nav__item, .roll-target'));
 
   /* ---------- Tagline: "by Lachlan Sarv" ⇄ "Digital & Graphic Design" ----------
      A three-line track (A, B, A) slides up one line every few seconds; after the third
@@ -83,7 +84,94 @@
   });
   syncToggle();
 
+  /* ---------- Shared: line-by-line text reveal ---------- */
+  // Split a paragraph into its rendered lines, each wrapped in a mask so it can rise into view.
+  // Lines are measured from the real layout, so wrapping is identical to the plain text.
+  function splitLines(el) {
+    const text = el.textContent.trim().replace(/\s+/g, ' ');
+    el.dataset.text = text;
+    el.textContent = '';
+    const probes = text.split(' ').map((w) => {
+      const s = document.createElement('span');
+      s.textContent = w + ' ';
+      el.appendChild(s);
+      return s;
+    });
+    const lines = [];
+    let top = null;
+    probes.forEach((p) => {
+      if (p.offsetTop !== top) { top = p.offsetTop; lines.push([]); }
+      lines[lines.length - 1].push(p.textContent);
+    });
+    el.textContent = '';
+    return lines.map((wordsInLine) => {
+      const mask = document.createElement('span');
+      mask.className = 'line';
+      const inner = document.createElement('span');
+      inner.textContent = wordsInLine.join('').trimEnd();
+      mask.appendChild(inner);
+      el.appendChild(mask);
+      return inner;
+    });
+  }
+
+  const ARROW = '<svg class="ext-link__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>';
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+
   /* ---------- Project page rendering ---------- */
+  // Overview / My Role / The Team / Live Site — same grid + type as the About page
+  function buildProjectText(d) {
+    if (!d.overview && !d.role.length && !d.team.length && !d.link) return null;
+    const sec = document.createElement('section');
+    sec.className = 'project-text';
+    let html = '<div class="project-text__grid">';
+    if (d.overview) html += `<p class="project-text__eyebrow">Overview</p><p class="project-text__lead" data-split>${esc(d.overview)}</p>`;
+    if (d.role.length) html += `<p class="project-text__eyebrow">My Role</p><ul class="project-text__list">${d.role.map((r) => '<li>' + esc(r) + '</li>').join('')}</ul>`;
+    if (d.team.length) html += `<p class="project-text__eyebrow">The Team</p><ul class="project-text__list">${d.team.map((t) => '<li>' + esc(t) + '</li>').join('')}</ul>`;
+    if (d.link) html += `<p class="project-text__link"><a class="ext-link" href="${esc(d.link)}" target="_blank" rel="noopener"><span class="ext-link__text roll-target">Live Site</span>${ARROW}</a></p>`;
+    html += '</div>';
+    sec.innerHTML = html;
+    return sec;
+  }
+
+  // Animate a project text block in (eyebrows fade, paragraph rises line by line, lists stagger).
+  // Returns the timeline so callers can slot it into a larger sequence.
+  function revealProjectText(sec, opts = {}) {
+    const eyebrows = gsap.utils.toArray(sec.querySelectorAll('.project-text__eyebrow'));
+    const leads = gsap.utils.toArray(sec.querySelectorAll('.project-text__lead'));
+    const items = gsap.utils.toArray(sec.querySelectorAll('.project-text__list li, .project-text__link'));
+    if (reduceMotion) { sec.classList.add('is-revealed'); return gsap.timeline(); }
+    const lineSets = leads.map(splitLines);
+    const lines = lineSets.flat();
+    gsap.set(eyebrows, { opacity: 0, y: 10 });
+    gsap.set(lines, { yPercent: 110 });
+    gsap.set(items, { opacity: 0, y: 12 });
+    sec.classList.add('is-revealed');
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      onComplete() {
+        gsap.set([eyebrows, items], { clearProps: 'transform,opacity' });
+        leads.forEach((el) => { el.textContent = el.dataset.text; });   // back to plain, crisp text
+      },
+    });
+    let at = 0;
+    let li = 0;
+    eyebrows.forEach((eb, i) => {
+      tl.to(eb, { opacity: 1, y: 0, duration: 0.6, force3D: false }, at);
+      if (i < lineSets.length) {
+        tl.to(lineSets[i], { yPercent: 0, duration: 1.0, ease: 'power3.out', stagger: 0.09, force3D: false }, at + 0.1);
+        at += 0.1 + lineSets[i].length * 0.09 * 0.7;
+      } else {
+        const list = eb.nextElementSibling ? gsap.utils.toArray(eb.nextElementSibling.querySelectorAll('li')) : [];
+        tl.to(list, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07, force3D: false }, at + 0.1);
+        at += 0.35;
+      }
+    });
+    const link = sec.querySelector('.project-text__link');
+    if (link) tl.to(link, { opacity: 1, y: 0, duration: 0.7, force3D: false }, at + 0.1);
+    return tl;
+  }
+
   // How wide each image slot is on screen, so the browser can pick the sharpest variant
   // Below 700px every image is full width, so the browser should pick sizes accordingly
   const SIZES = {
@@ -118,6 +206,7 @@
       el.decoding = 'async';
       fig.appendChild(el);
       page.appendChild(fig);
+      if (i === 0) { const text = buildProjectText(data); if (text) page.appendChild(text); }
     });
     return page;
   }
@@ -130,6 +219,11 @@
     staticPage.replaceWith(built);
     if (PROJECTS[slug]) document.title = PROJECTS[slug].name + ' — Kodu Design Lab';
     html.classList.add('intro-done');
+    const text = built.querySelector('.project-text');
+    if (text) {
+      rollify(text.querySelectorAll('.roll-target'));
+      (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => revealProjectText(text));
+    }
     return;
   }
 
@@ -142,36 +236,6 @@
     const leads = gsap.utils.toArray('.about__lead');
     const listItems = gsap.utils.toArray('.about__list li');
     const linkItems = gsap.utils.toArray('.about__links li');
-
-    // Split a paragraph into its rendered lines, each wrapped in a mask so it can rise into view.
-    // Lines are measured from the real layout, so wrapping is identical to the plain text.
-    function splitLines(el) {
-      const text = el.textContent.trim().replace(/\s+/g, ' ');
-      el.dataset.text = text;
-      el.textContent = '';
-      const probes = text.split(' ').map((w) => {
-        const s = document.createElement('span');
-        s.textContent = w + ' ';
-        el.appendChild(s);
-        return s;
-      });
-      const lines = [];
-      let top = null;
-      probes.forEach((p) => {
-        if (p.offsetTop !== top) { top = p.offsetTop; lines.push([]); }
-        lines[lines.length - 1].push(p.textContent);
-      });
-      el.textContent = '';
-      return lines.map((wordsInLine) => {
-        const mask = document.createElement('span');
-        mask.className = 'line';
-        const inner = document.createElement('span');
-        inner.textContent = wordsInLine.join('').trimEnd();
-        mask.appendChild(inner);
-        el.appendChild(mask);
-        return inner;
-      });
-    }
 
     html.classList.add('is-loading');
     const ready = document.fonts ? document.fonts.ready : Promise.resolve();
@@ -398,7 +462,9 @@
     // Build the page now (hidden) so images start loading immediately
     const page = buildProjectPage(slug);
     const hero = page.querySelector('.project-image--hero');
-    const rest = gsap.utils.toArray(page.querySelectorAll('.project-image:not(.project-image--hero)'));
+    const textBlock = page.querySelector('.project-text');
+    if (textBlock) rollify(textBlock.querySelectorAll('.roll-target'));
+    const rest = gsap.utils.toArray(page.querySelectorAll('.project-image:not(.project-image--hero), .project-text'));
     gsap.set(rest, { opacity: 0, y: 40 });
 
     const tl = gsap.timeline({
@@ -451,6 +517,7 @@
         },
       }, SWAP_AT);
       tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
+      if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
     }, SWAP_AT);
 
     if (pushUrl) history.pushState({ view: 'project', slug }, '', card.getAttribute('href'));
@@ -469,7 +536,7 @@
     const meta = card.querySelector('.project-card__meta');
     const otherCards = cards.filter((c) => c !== card);
     const hero = page.querySelector('.project-image--hero');
-    const rest = gsap.utils.toArray(page.querySelectorAll('.project-image:not(.project-image--hero)'));
+    const rest = gsap.utils.toArray(page.querySelectorAll('.project-image:not(.project-image--hero), .project-text'));
 
     const tl = gsap.timeline({
       defaults: { ease: 'power3.inOut' },

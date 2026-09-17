@@ -1,5 +1,17 @@
 {
   "name": "Grampians Sandstone",
   "info": "Website Design & Build",
-  "order": 2
+  "order": 2,
+  "overview": "A full website design and build for Grampians Sandstone, a supplier of natural Victorian sandstone. The site pairs large-scale photography with a clear product structure, so architects, landscapers and homeowners can quickly find the right stone for their project.",
+  "role": [
+    "Visual Design System",
+    "User Experience",
+    "WordPress Block System",
+    "Figma Prototype"
+  ],
+  "team": [
+    "BEECH Agency team",
+    "Dom Andrews (Development)"
+  ],
+  "link": "https://grampianssandstone.com.au"
 }

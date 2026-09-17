@@ -36,6 +36,13 @@
      "order": 3
    }
    ```
+   Optional copy block (shown between the hero and the rest of the images — leave any out to hide it):
+   ```json
+   "overview": "One or two short paragraphs about the project.",
+   "role": ["Visual Design System", "User Experience"],
+   "team": ["BEECH Agency team", "Dom Andrews (Development)"],
+   "link": "https://example.com"
+   ```
    - `order` — position on the homepage (1 = first)
    - The homepage card always shows the **first image** (cropped to 6:8, centred) — it has to be the
      same image as the hero so the card-to-page transition is seamless. Pick a hero that also crops

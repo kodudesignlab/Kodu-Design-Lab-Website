@@ -337,13 +337,15 @@ img { display: block; max-width: 100%; }
 .about__link:hover .about__link-icon { transform: translate(2px, -2px); }
 
 /* Line-reveal masks (spans are injected by main.js, removed again after the intro) */
-.about .line {
+.about .line,
+.project-text .line {
   display: block;
   overflow: hidden;
   padding-bottom: 0.08em;   /* room for descenders inside the mask */
   margin-bottom: -0.08em;
 }
-.about .line > span { display: block; }
+.about .line > span,
+.project-text .line > span { display: block; }
 
 /* Pre-animation: hide until JS is ready (JS removes this) */
 .is-loading .about__portrait,
@@ -366,6 +368,58 @@ img { display: block; max-width: 100%; }
   .about__list { margin-bottom: 0; }
   .about__eyebrow { margin-top: 36px; }                 /* same gap between every section… */
   .about__portrait + .about__eyebrow { margin-top: 0; } /* …except the first, which sits under the portrait */
+}
+
+/* ---------- Project copy block (Overview / My Role / The Team / Live Site) ----------
+   Same 12-col grid + type as the About page: eyebrows in cols 5–6, text in cols 7–11. */
+.project-text {
+  grid-column: span 6;
+  padding: calc(7.5rem - var(--margin-main)) 0;   /* 7.5rem visual gap including the grid's 20px */
+}
+.project-text__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--column-gap);
+  row-gap: 2.5rem;
+  align-items: start;
+}
+.project-text__eyebrow { grid-column: 5 / 7; }
+.project-text__lead,
+.project-text__list,
+.project-text__link { grid-column: 7 / 12; }
+.project-text__eyebrow,
+.project-text__lead,
+.project-text__list,
+.project-text__link {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+.project-text__lead { max-width: 62ch; }
+.project-text__list { list-style: none; margin: 0; padding: 0; }
+/* Hidden until the reveal has measured its lines (JS adds is-revealed) */
+.project-text:not(.is-revealed) .project-text__eyebrow,
+.project-text:not(.is-revealed) .project-text__lead,
+.project-text:not(.is-revealed) .project-text__list li,
+.project-text:not(.is-revealed) .project-text__link { opacity: 0; }
+
+/* External link: label + Lucide arrow-up-right (20px, 5px gap) — shared with the About page */
+.ext-link { display: inline-flex; align-items: center; gap: 5px; }
+.ext-link__icon { width: 20px; height: 20px; flex: none; transition: transform 0.4s var(--ease-out); }
+.ext-link:hover .ext-link__icon { transform: translate(2px, -2px); }
+
+@media (max-width: 1199px) {
+  .project-text__eyebrow { grid-column: 5 / 7; }
+  .project-text__lead, .project-text__list, .project-text__link { grid-column: 7 / 13; }
+}
+@media (max-width: 899px) {
+  .project-text { padding: 4rem 0; }
+  .project-text__grid { row-gap: 12px; }
+  .project-text__eyebrow, .project-text__lead, .project-text__list, .project-text__link { grid-column: 1 / 13; font-size: 16px; }
+  .project-text__eyebrow { margin-top: 28px; }
+  .project-text__eyebrow:first-child { margin-top: 0; }
+  .project-text__link { margin-top: 28px; }
 }
 
 /* ---------- Page transition helpers ---------- */

@@ -4,6 +4,10 @@ window.KODU_PROJECTS = {
   "courtside-wines": {
     "name": "Courtside Wines",
     "info": "Branding, Print & Web",
+    "overview": "",
+    "role": [],
+    "team": [],
+    "link": "",
     "images": [
       {
         "src": "images/courtside-wines/01-tote",
@@ -125,6 +129,18 @@ window.KODU_PROJECTS = {
   "grampians-sandstone": {
     "name": "Grampians Sandstone",
     "info": "Website Design & Build",
+    "overview": "A full website design and build for Grampians Sandstone, a supplier of natural Victorian sandstone. The site pairs large-scale photography with a clear product structure, so architects, landscapers and homeowners can quickly find the right stone for their project.",
+    "role": [
+      "Visual Design System",
+      "User Experience",
+      "WordPress Block System",
+      "Figma Prototype"
+    ],
+    "team": [
+      "BEECH Agency team",
+      "Dom Andrews (Development)"
+    ],
+    "link": "https://grampianssandstone.com.au",
     "images": [
       {
         "src": "images/grampians-sandstone/01-laptop-hero",
@@ -261,6 +277,10 @@ window.KODU_PROJECTS = {
   "alpha-life-essentials": {
     "name": "Alpha Life Essentials",
     "info": "Video platform for connection",
+    "overview": "",
+    "role": [],
+    "team": [],
+    "link": "",
     "images": [
       {
         "src": "images/alpha-life-essentials/01-floatingphonesmain",
