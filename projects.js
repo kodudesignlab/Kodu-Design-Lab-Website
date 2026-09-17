@@ -291,7 +291,8 @@ window.KODU_PROJECTS = {
       "Figma Prototype"
     ],
     "team": [
-      "BEECH Agency team"
+      "BEECH Agency team",
+      "Dom Andrews (Development)"
     ],
     "link": "https://app.lifeessentials.com.au/",
     "images": [
