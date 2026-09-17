@@ -1,5 +1,13 @@
 {
   "name": "Courtside Wines",
   "info": "Branding, Print & Web",
-  "order": 1
+  "order": 1,
+  "overview": "A personal concept project for a Hunter Valley estate winery aimed at a younger crowd. It covers a full brand rollout, from the identity and print pieces through to apparel, plus a simple storefront UI to bring it all together online.",
+  "role": [
+    "Brand Identity",
+    "Print Design",
+    "Apparel Design",
+    "Website Design",
+    "UI Design"
+  ]
 }

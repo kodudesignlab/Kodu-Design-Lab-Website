@@ -4,8 +4,14 @@ window.KODU_PROJECTS = {
   "courtside-wines": {
     "name": "Courtside Wines",
     "info": "Branding, Print & Web",
-    "overview": "",
-    "role": [],
+    "overview": "A personal concept project for a Hunter Valley estate winery aimed at a younger crowd. It covers a full brand rollout, from the identity and print pieces through to apparel, plus a simple storefront UI to bring it all together online.",
+    "role": [
+      "Brand Identity",
+      "Print Design",
+      "Apparel Design",
+      "Website Design",
+      "UI Design"
+    ],
     "team": [],
     "link": "",
     "images": [
@@ -137,8 +143,7 @@ window.KODU_PROJECTS = {
       "Figma Prototype"
     ],
     "team": [
-      "BEECH Agency team",
-      "Dom Andrews (Development)"
+      "BEECH Agency team"
     ],
     "link": "https://grampianssandstone.com.au",
     "images": [
@@ -277,10 +282,18 @@ window.KODU_PROJECTS = {
   "alpha-life-essentials": {
     "name": "Alpha Life Essentials",
     "info": "Video platform for connection",
-    "overview": "",
-    "role": [],
-    "team": [],
-    "link": "",
+    "overview": "A watch party video platform for curious young people with big questions, built for Life Essentials, a series by Alpha. The brief was a full video platform that feels as intuitive as Netflix: users can sign up, create and join multiple watch parties, edit their profile and download resources along the way.",
+    "role": [
+      "User Experience",
+      "UI Design",
+      "Site System Design",
+      "Portal Login Flow",
+      "Figma Prototype"
+    ],
+    "team": [
+      "BEECH Agency team"
+    ],
+    "link": "https://app.lifeessentials.com.au/",
     "images": [
       {
         "src": "images/alpha-life-essentials/01-floatingphonesmain",
