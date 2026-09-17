@@ -111,12 +111,18 @@ img { display: block; max-width: 100%; }
 .roll__text { display: block; }
 .roll__word { display: inline-block; white-space: nowrap; }
 .roll__text--clone { position: absolute; left: 0; top: 100%; }
+.roll {
+  --roll-step: 16ms;   /* per-letter stagger */
+  --roll-dur: 0.55s;
+}
 .roll .char {
   display: inline-block;
   white-space: pre;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--i) * 16ms);
+  transition: transform var(--roll-dur) cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * var(--roll-step));
 }
+/* The brand name is 31 characters, so it gets a tighter stagger to finish in a similar time */
+.brand__link.roll { --roll-step: 7ms; --roll-dur: 0.45s; }
 .roll:hover .char,
 .roll:focus-visible .char { transform: translateY(-100%); }
 @media (hover: none) { .roll .char { transition: none; } }
