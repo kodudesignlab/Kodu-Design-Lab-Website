@@ -211,7 +211,7 @@ const wanted = new Set();
 for (const slug of Object.keys(data)) {
   const d = data[slug];
   const hero = d.images[0];
-  const description = escapeHtml(`${d.name}${d.info ? ' — ' + d.info : ''}. A project by Kodu Design Lab, the design practice of Lachlan Sarv in Newcastle, NSW.`);
+  const description = escapeHtml(`${d.name}${d.info ? ' — ' + d.info : ''}. From the design journey of Lachlan Sarv, Lead UI/UX Designer at BEECH Agency, Newcastle NSW.`);
   const html = template
     .replace(/\{\{TITLE\}\}/g, escapeHtml(d.name))
     .replace(/\{\{SLUG\}\}/g, slug)
