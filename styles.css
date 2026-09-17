@@ -245,11 +245,23 @@ img { display: block; max-width: 100%; }
 .project-image--cols-2 { grid-column: span 3; }
 .project-image--cols-3 { grid-column: span 2; }
 
+/* Tall images side by side at equal height: flex-grow = aspect ratio (set inline), so widths
+   follow each image's shape and nothing is cropped */
+.project-row--tall {
+  grid-column: span 6;
+  display: flex;
+  gap: var(--margin-main);
+  align-items: stretch;
+}
+.project-row--tall .project-image { min-width: 0; grid-column: auto; }
+
 /* Mobile: every image full width, one per row */
 @media (max-width: 699px) {
   .project-page { gap: 12px; padding-bottom: 12px; }
   .project-image--cols-2,
   .project-image--cols-3 { grid-column: span 6; }
+  .project-row--tall { flex-direction: column; gap: 12px; }
+  .project-row--tall .project-image { flex: none !important; width: 100%; }
 }
 
 /* ---------- About page ----------

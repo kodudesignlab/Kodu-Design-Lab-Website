@@ -353,5 +353,112 @@ window.KODU_PROJECTS = {
         "alt": "Alpha Life Essentials: Alphamutliprofile"
       }
     ]
+  },
+  "nsw-mining": {
+    "name": "NSW Mining Careers",
+    "info": "Careers Site Design",
+    "overview": "A careers site for NSW Mining built to help people find their way into the industry. Alongside the full site system, I designed an interactive questionnaire that matches visitors with the mining careers that suit them, then points them to the pathways to get there.",
+    "role": [
+      "Site System Design",
+      "UI Design",
+      "User Experience",
+      "Careers Questionnaire Design",
+      "Figma Prototype"
+    ],
+    "roleLabel": "",
+    "team": [
+      "BEECH Agency team"
+    ],
+    "link": "https://nswminingcareers.com.au/",
+    "images": [
+      {
+        "src": "images/nsw-mining/01-careers-site-feature",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "NSW Mining Careers: Careers Site Feature"
+      },
+      {
+        "src": "images/nsw-mining/02-careers-guide",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "NSW Mining Careers: Careers Guide"
+      },
+      {
+        "src": "images/nsw-mining/03-enviro-science-page",
+        "widths": [
+          1200,
+          1760
+        ],
+        "cols": 2,
+        "aspect": "1760 / 3513",
+        "tall": true,
+        "alt": "NSW Mining Careers: Enviro Science Page"
+      },
+      {
+        "src": "images/nsw-mining/04-great-career-page",
+        "widths": [
+          1200,
+          1760
+        ],
+        "cols": 2,
+        "aspect": "1760 / 3141",
+        "tall": true,
+        "alt": "NSW Mining Careers: Great Career Page"
+      },
+      {
+        "src": "images/nsw-mining/05-job-selector",
+        "widths": [
+          1200,
+          2000,
+          2440
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "NSW Mining Careers: Job Selector"
+      },
+      {
+        "src": "images/nsw-mining/06-location-slider",
+        "widths": [
+          1200,
+          2000,
+          2440
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "NSW Mining Careers: Location Slider"
+      },
+      {
+        "src": "images/nsw-mining/07-careers-phone",
+        "widths": [
+          1200,
+          2000,
+          2600
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "NSW Mining Careers: Careers Phone"
+      },
+      {
+        "src": "images/nsw-mining/08-find-a-career-mobile",
+        "widths": [
+          1200,
+          2000,
+          2600
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "NSW Mining Careers: Find A Career Mobile"
+      }
+    ]
   }
 };

@@ -21,7 +21,8 @@ const COVER_RATIO = 3 / 4;                // 6:8 card
 const QUALITY = 88;
 // Filename hints → columns per row. New style: .2up / .3up (aspect comes from the image itself).
 // Old style still accepted: .portrait/.third/.poster (2, 3, 3 per row), .16-9/.16-10 (full width, fixed box).
-const HINTS = { '2up': 2, '3up': 3, full: 1, portrait: 2, third: 3, poster: 3, '16-9': 1, '16-10': 1 };
+// .tall = consecutive tall images share one row at EQUAL HEIGHT (widths follow each image's shape, nothing cropped)
+const HINTS = { '2up': 2, '3up': 3, tall: 'tall', full: 1, portrait: 2, third: 3, poster: 3, '16-9': 1, '16-10': 1 };
 
 const log = (...a) => console.log(...a);
 const warn = (...a) => console.warn('  ⚠︎', ...a);
@@ -145,9 +146,11 @@ for (const p of projects) {
   for (const f of p.files) {
     const src = path.join(p.dir, f.file);
     const size = imageSize(src);
-    const cols = f.hint ? HINTS[f.hint] : (size.w < size.h ? 2 : 1);   // portrait images pair up by default
+    const tall = f.hint === 'tall';
+    const cols = tall ? 2 : f.hint ? HINTS[f.hint] : (size.w < size.h ? 2 : 1);   // portrait images pair up by default
     let aspect;
-    if (cols === 1) aspect = f.hint === '16-9' ? '16 / 9' : f.hint === '16-10' ? '16 / 10' : fullWidthAspect(size);
+    if (tall) aspect = size.w + ' / ' + size.h;
+    else if (cols === 1) aspect = f.hint === '16-9' ? '16 / 9' : f.hint === '16-10' ? '16 / 10' : fullWidthAspect(size);
     else if (f.hint === 'portrait' || f.hint === 'third') aspect = '4 / 5';
     else if (f.hint === 'poster') aspect = '1188 / 1680';
     else aspect = size.w + ' / ' + size.h;
@@ -170,16 +173,17 @@ for (const p of projects) {
       widths,
       cols,
       aspect,
+      ...(tall ? { tall: true } : {}),
       alt: `${p.meta.name}: ${titleCase(f.name)}`,
     });
-    const layout = cols === 1 ? 'full ' + aspect.replace(/ /g, '') : cols + ' per row';
+    const layout = tall ? 'tall row' : cols === 1 ? 'full ' + aspect.replace(/ /g, '') : cols + ' per row';
     log(`  ${f.file.padEnd(34)} ${layout.padEnd(12)} [${widths.join(', ')}]`);
   }
 
   // Warn when a side-by-side row isn't filled or its images have different shapes
   for (let i = 0; i < images.length; ) {
     const c = images[i].cols;
-    if (c === 1) { i++; continue; }
+    if (c === 1 || images[i].tall) { i++; continue; }
     const row = images.slice(i, i + c);
     if (row.length < c || row.some((im) => im.cols !== c)) warn(`row starting at ${p.files[i].file} needs ${c} images marked .${c}up`);
     else if (row.some((im) => im.aspect !== row[0].aspect)) warn(`row starting at ${p.files[i].file}: images have different shapes, they won't line up`);
