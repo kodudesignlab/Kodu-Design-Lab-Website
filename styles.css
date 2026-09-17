@@ -374,7 +374,8 @@ img { display: block; max-width: 100%; }
    Same 12-col grid + type as the About page: eyebrows in cols 5–6, text in cols 7–11. */
 .project-text {
   grid-column: span 6;
-  padding: calc(7.5rem - var(--margin-main)) 0;   /* 7.5rem visual gap including the grid's 20px */
+  /* 4rem at ≤600px → 9rem at ≥2200px (minus the grid's 20px so the visual gap matches) */
+  padding: calc(clamp(4rem, 2.125rem + 5vw, 9rem) - var(--margin-main)) 0;
 }
 .project-text__grid {
   display: grid;
@@ -414,7 +415,6 @@ img { display: block; max-width: 100%; }
   .project-text__lead, .project-text__list, .project-text__link { grid-column: 7 / 13; }
 }
 @media (max-width: 899px) {
-  .project-text { padding: 4rem 0; }
   .project-text__grid { row-gap: 12px; }
   .project-text__eyebrow, .project-text__lead, .project-text__list, .project-text__link { grid-column: 1 / 13; font-size: 16px; }
   .project-text__eyebrow { margin-top: 28px; }
