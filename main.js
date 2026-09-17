@@ -328,7 +328,15 @@
   /* ---------- Card → project page transition (and back) ---------- */
   let currentPage = null;   // the .project-page element while a project is open
   let activeCard = null;    // the card that was clicked
-  let busy = false;
+  let busy = false;         // a transition is running
+  let projectOpen = false;  // true from the moment a card is clicked until the close finishes
+  let queued = null;        // 'close' | 'open' requested while busy — runs when the transition ends
+  let queuedArgs = null;
+  function runQueued() {
+    const q = queued; queued = null;
+    if (q === 'close') closeProject();
+    else if (q === 'open' && queuedArgs) openProject(...queuedArgs);
+  }
 
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   history.replaceState({ view: 'home' }, '', location.href);
@@ -347,8 +355,14 @@
   }
 
   function openProject(card, slug, pushUrl) {
-    if (busy || !PROJECTS[slug]) return;
+    if (!PROJECTS[slug]) return;
+    if (busy) { queued = 'open'; queuedArgs = [card, slug, pushUrl]; return; }
+    // Clicked before the intro finished: jump the intro to its end so the two don't fight
+    if (window.koduIntro && window.koduIntro.isActive()) window.koduIntro.progress(1);
+    html.classList.remove('is-loading');
+    html.classList.add('intro-done');
     busy = true;
+    projectOpen = true;
     activeCard = card;
     html.classList.add('is-transitioning');
 
@@ -367,6 +381,7 @@
       onComplete() {
         html.classList.remove('is-transitioning');
         busy = false;
+        runQueued();
       },
     });
     window.koduTransition = tl;
@@ -418,7 +433,8 @@
   }
 
   function closeProject() {
-    if (busy || !currentPage) return;
+    if (busy) { queued = 'close'; return; }
+    if (!currentPage) { projectOpen = false; return; }
     busy = true;
     html.classList.add('is-transitioning');
 
@@ -435,6 +451,8 @@
       onComplete() {
         html.classList.remove('is-transitioning');
         busy = false;
+        projectOpen = false;
+        runQueued();
       },
     });
     window.koduTransition = tl;
@@ -492,16 +510,16 @@
   // Brand link acts as "back" while a project is open
   document.querySelector('.brand__link').addEventListener('click', (e) => {
     e.preventDefault();
-    if (currentPage) history.back();
+    if (projectOpen) history.back();
     else window.scrollTo(0, 0);
   });
 
   // Browser back / forward
   window.addEventListener('popstate', (e) => {
     const state = e.state || { view: 'home' };
-    if (state.view === 'home' && currentPage) {
+    if (state.view === 'home' && projectOpen) {
       closeProject();
-    } else if (state.view === 'project' && !currentPage) {
+    } else if (state.view === 'project' && !projectOpen) {
       const card = cards.find((c) => c.dataset.project === state.slug);
       if (card) openProject(card, state.slug, false);
     }
