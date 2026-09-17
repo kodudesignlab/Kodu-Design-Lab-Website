@@ -216,6 +216,7 @@ img { display: block; max-width: 100%; }
 
 .project-card__name { font-weight: 500; color: var(--text-primary); }
 .project-card__info { color: var(--text-muted); }
+.project-card__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .project-card__index { display: none; font-weight: 500; color: var(--text-primary); }
 
 /* ---------- Project page ---------- */
@@ -423,8 +424,8 @@ html:not(.intro-done) { overflow: hidden; }
    ===================================================================================== */
 @media (max-width: 699px) {
   .project-wrapper {
-    justify-content: center;            /* vertically centre the row like desktop */
-    padding-bottom: var(--wrapper-pad-bottom);
+    justify-content: flex-start;
+    padding: 2rem var(--margin-main);   /* 2rem safe zone above and below the row */
   }
   .project-container {
     display: flex;                      /* override the 2-col grid */
@@ -434,9 +435,9 @@ html:not(.intro-done) { overflow: hidden; }
     align-self: stretch;                /* fill the wrapper's width (it centres children by default) */
     width: auto;
     min-width: 0;
-    margin: 0 calc(-1 * var(--margin-main));            /* full-bleed so cards can slide under the margins */
+    margin: auto calc(-1 * var(--margin-main));         /* auto = vertically centred, but never overflows the safe zone */
     padding: 0 calc((100vw - var(--card-w)) / 2);       /* centres the first (and last) card */
-    --card-w: 74vw;
+    --card-w: 90vw;                     /* neighbours peek in by (5vw - 10px gap) ≈ 8px on a 375px phone */
     overflow-x: auto;
     overflow-y: visible;
     scroll-snap-type: x mandatory;
@@ -448,7 +449,8 @@ html:not(.intro-done) { overflow: hidden; }
     flex: 0 0 var(--card-w);
     scroll-snap-align: center;
   }
-  .project-card__index { display: block; margin-bottom: var(--card-gap); }
+  .project-card__media { aspect-ratio: 4 / 5; }
+  .project-card__index { display: block; }
 
   /* During the intro the cards fly in from below the viewport — let them show outside the row */
   html:not(.intro-done) .project-container { overflow: visible; }
