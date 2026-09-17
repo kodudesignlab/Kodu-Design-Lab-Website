@@ -212,6 +212,7 @@ const cardHtml = cards.map(({ slug, meta, coverWidths }, i) => {
     : `<a class="project-card" href="projects/${slug}" data-project="${slug}">`;
   const close = meta.draft ? '</div>' : '</a>';
   return `      ${open}
+        <p class="project-card__index">${String(i + 1).padStart(2, '0')}.</p>
         <div class="project-card__media">
           <img src="${src}" srcset="${srcset}" sizes="${cardSizes}"
                alt="${escapeHtml(meta.name)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">

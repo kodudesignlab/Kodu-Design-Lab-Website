@@ -84,6 +84,8 @@ img { display: block; max-width: 100%; }
 
 .brand { max-width: 243px; }
 .brand__link { white-space: nowrap; }
+.brand__break { display: none; }
+@media (max-width: 899px) { .brand__break { display: block; } }
 .brand__name { font-weight: 500; color: var(--text-primary); }
 .brand__tagline { color: var(--text-muted); }
 
@@ -214,6 +216,7 @@ img { display: block; max-width: 100%; }
 
 .project-card__name { font-weight: 500; color: var(--text-primary); }
 .project-card__info { color: var(--text-muted); }
+.project-card__index { display: none; font-weight: 500; color: var(--text-primary); }
 
 /* ---------- Project page ---------- */
 .project-page {
@@ -411,6 +414,46 @@ html:not(.intro-done) { overflow: hidden; }
   }
   .project-card { flex: none; }
 }
+
+/* =====================================================================================
+   MOBILE CAROUSEL (< 700px)
+   One swipeable row: first card centred, next card peeking in from the right, with an
+   "01." index above each card. To go back to the stacked 2-column grid on mobile, delete
+   this whole block (down to the closing "END MOBILE CAROUSEL" line). Nothing else depends on it.
+   ===================================================================================== */
+@media (max-width: 699px) {
+  .project-wrapper {
+    justify-content: center;            /* vertically centre the row like desktop */
+    padding-bottom: var(--wrapper-pad-bottom);
+  }
+  .project-container {
+    display: flex;                      /* override the 2-col grid */
+    justify-content: flex-start;        /* NOT center: centring an overflowing row hides its start */
+    gap: var(--column-gap);
+    align-items: flex-start;
+    align-self: stretch;                /* fill the wrapper's width (it centres children by default) */
+    width: auto;
+    min-width: 0;
+    margin: 0 calc(-1 * var(--margin-main));            /* full-bleed so cards can slide under the margins */
+    padding: 0 calc((100vw - var(--card-w)) / 2);       /* centres the first (and last) card */
+    --card-w: 74vw;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .project-container::-webkit-scrollbar { display: none; }
+  .project-card {
+    flex: 0 0 var(--card-w);
+    scroll-snap-align: center;
+  }
+  .project-card__index { display: block; margin-bottom: var(--card-gap); }
+
+  /* During the intro the cards fly in from below the viewport — let them show outside the row */
+  html:not(.intro-done) .project-container { overflow: visible; }
+}
+/* END MOBILE CAROUSEL */
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
