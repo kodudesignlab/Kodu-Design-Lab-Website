@@ -15,7 +15,8 @@ const { execFileSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..');
 const CONTENT = path.join(ROOT, 'content');
 const WIDTHS = [1200, 2000, 2800];        // page images
-const COVER_WIDTHS = [800, 1600];         // homepage card covers
+const COVER_WIDTHS = [500, 1000, 1500];   // homepage card covers (pre-cropped to 6:8)
+const COVER_RATIO = 3 / 4;                // 6:8 card
 const QUALITY = 88;
 // Filename hints → columns per row. New style: .2up / .3up (aspect comes from the image itself).
 // Old style still accepted: .portrait/.third/.poster (2, 3, 3 per row), .16-9/.16-10 (full width, fixed box).
@@ -36,6 +37,16 @@ function resize(src, dest, width) {
   const args = ['-s', 'format', 'jpeg', '-s', 'formatOptions', String(QUALITY)];
   if (width) args.push('--resampleWidth', String(width));
   execFileSync('sips', [...args, src, '--out', dest], { stdio: 'ignore' });
+}
+
+// Cover: centre-crop to 6:8 so every pixel is used by the card, then size to `width`
+function resizeCover(src, dest, width, size) {
+  const height = Math.round(width / COVER_RATIO);
+  const base = ['-s', 'format', 'jpeg', '-s', 'formatOptions', String(QUALITY)];
+  // scale so the crop box fits, then crop centred
+  const scaleArgs = size.w / size.h > COVER_RATIO ? ['--resampleHeight', String(height)] : ['--resampleWidth', String(width)];
+  execFileSync('sips', [...base, ...scaleArgs, src, '--out', dest], { stdio: 'ignore' });
+  execFileSync('sips', ['-c', String(height), String(width), dest], { stdio: 'ignore' });
 }
 
 // Only rebuild a variant when the source is newer than the output
@@ -105,18 +116,21 @@ for (const p of projects) {
     warn('no images — the card needs at least one image (or a cover.jpg for a draft)');
   } else {
     const src = path.join(p.dir, coverFile);
-    const { w } = imageSize(src);
+    const size = imageSize(src);
+    // widest 6:8 crop the source can supply without upscaling
+    const maxCoverW = Math.floor(Math.min(size.w, size.h * COVER_RATIO));
     const coverWidths = [];
     for (const cw of COVER_WIDTHS) {
-      if (cw > w) continue;
+      if (cw > maxCoverW) continue;
       const dest = path.join(outDir, `cover-${cw}.jpg`);
-      if (needsBuild(src, dest)) resize(src, dest, cw);
+      if (needsBuild(src, dest)) resizeCover(src, dest, cw, size);
       coverWidths.push(cw);
     }
-    if (!coverWidths.length) { // tiny source — keep native
-      const dest = path.join(outDir, `cover-${w}.jpg`);
-      if (needsBuild(src, dest)) resize(src, dest);
-      coverWidths.push(w);
+    if (!coverWidths.length || Math.max(...coverWidths) < maxCoverW && maxCoverW < COVER_WIDTHS[COVER_WIDTHS.length - 1]) {
+      // keep the largest crop the source allows when it falls between/below the standard sizes
+      const dest = path.join(outDir, `cover-${maxCoverW}.jpg`);
+      if (needsBuild(src, dest)) resizeCover(src, dest, maxCoverW, size);
+      coverWidths.push(maxCoverW);
     }
     cards.push({ slug: p.slug, meta: p.meta, coverWidths });
     log(`  cover ← ${coverFile}  [${coverWidths.join(', ')}]`);
@@ -203,7 +217,7 @@ for (const slug of Object.keys(data)) {
 for (const f of fs.readdirSync(pagesDir)) if (f.endsWith('.html') && !wanted.has(f)) fs.unlinkSync(path.join(pagesDir, f));
 
 /* ---------- write homepage cards ---------- */
-const cardSizes = '(max-width: 1199px) calc(50vw - 25px), calc(16.66vw - 12px)';
+const cardSizes = '(max-width: 699px) calc(90vw - 6px), (max-width: 1199px) calc(50vw - 25px), calc(16.66vw - 12px)';
 const cardHtml = cards.map(({ slug, meta, coverWidths }, i) => {
   const srcset = coverWidths.map((w) => `images/${slug}/cover-${w}.jpg ${w}w`).join(', ');
   const src = `images/${slug}/cover-${coverWidths[0]}.jpg`;

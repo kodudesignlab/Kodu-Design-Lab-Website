@@ -236,6 +236,7 @@
   const cardMeta = gsap.utils.toArray('.project-card__meta');
   const HOME_TITLE = document.title;
   const mobileMQ = matchMedia('(max-width: 699px)');   // the mobile carousel breakpoint
+  html.classList.add('lock-scroll');                     // released when the intro completes
 
   html.classList.add('is-loading');
 
@@ -258,6 +259,7 @@
     if (reduceMotion || typeof gsap === 'undefined') {
       html.classList.remove('is-loading');
       html.classList.add('intro-done');
+      html.classList.remove('lock-scroll');
       preloadHeroes();
       return;
     }
@@ -296,6 +298,7 @@
       defaults: { ease: 'power3.out' },
       onComplete() {
         html.classList.add('intro-done');
+        html.classList.remove('lock-scroll');
         // Drop GSAP's inline transforms so text sits on whole pixels and renders crisp
         gsap.set([brandLines, navItems], { clearProps: 'transform,opacity' });
         preloadHeroes();
@@ -382,6 +385,7 @@
     if (window.koduIntro && window.koduIntro.isActive()) window.koduIntro.progress(1);
     html.classList.remove('is-loading');
     html.classList.add('intro-done');
+    html.classList.remove('lock-scroll');
     busy = true;
     projectOpen = true;
     activeCard = card;

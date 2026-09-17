@@ -394,8 +394,8 @@ img { display: block; max-width: 100%; }
 .is-loading .nav > *,
 .is-loading .project-card { opacity: 0; }
 
-/* Cards start below the viewport during the intro — stop that creating a scrollbar */
-html:not(.intro-done) { overflow: hidden; }
+/* Homepage only: cards start below the viewport during the intro — stop that creating a scrollbar */
+html.lock-scroll { overflow: hidden; }
 
 /* ---------- Responsive: 2-col grid below 1200px ---------- */
 @media (max-width: 1199px) {
