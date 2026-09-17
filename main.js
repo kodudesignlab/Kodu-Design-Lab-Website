@@ -226,6 +226,7 @@
   let cards = gsap.utils.toArray('.project-card');
   const cardMeta = gsap.utils.toArray('.project-card__meta');
   const HOME_TITLE = document.title;
+  const mobileMQ = matchMedia('(max-width: 699px)');   // the mobile carousel breakpoint
 
   html.classList.add('is-loading');
 
@@ -266,13 +267,15 @@
     gsap.set(brandLines, { y: 14, opacity: 0 });
     gsap.set(navItems, { y: 14, opacity: 0 });
     gsap.set(cardMeta, { opacity: 0 });
-    // Cards start stacked at the container centre but pushed fully below the viewport
+    // Cards start stacked at the container centre but pushed fully below the viewport.
+    // On mobile the stack sits at 80% so there's breathing room around it before it fans out.
     const belowViewport = window.innerHeight;
+    const stackScale = mobileMQ.matches ? 0.8 : 1;
     cards.forEach((card, i) => {
       gsap.set(card, {
         x: offsets[i].x,
         y: offsets[i].y + belowViewport,
-        scale: 0.96,
+        scale: stackScale * 0.96,
         rotation: (i - (cards.length - 1) / 2) * 1.5,
         opacity: 1,
         zIndex: cards.length - i,
@@ -296,7 +299,7 @@
     // 1. Cards slide up from below the viewport and settle stacked in the centre (0 → ~1.25s)
     tl.to(cards, {
       y: (i) => offsets[i].y,
-      scale: 1,
+      scale: stackScale,
       duration: 1.0,
       ease: 'power3.out',
       stagger: 0.05,
@@ -310,6 +313,7 @@
     tl.to(cards, {
       x: 0,
       y: 0,
+      scale: 1,          // mobile: grow from the 80% stack to full size as they spread
       rotation: 0,
       duration: 1.3,
       ease: 'power3.inOut',
@@ -522,7 +526,6 @@
      Below 700px the cards sit in a horizontal snap-scroller. We add a full copy of the set on
      each side and, whenever the scroll position drifts into a copy, jump it back by one set
      width. The copies are pixel-identical so the jump is invisible. Desktop is untouched. */
-  const mobileMQ = matchMedia('(max-width: 699px)');
   let loopActive = false;
   function setupMobileLoop() {
     const originals = cards.filter((c) => !c.dataset.clone);
