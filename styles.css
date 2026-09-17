@@ -364,7 +364,8 @@ img { display: block; max-width: 100%; }
   .about__portrait { grid-column: 1 / 7; grid-row: auto; margin-bottom: 36px; }        /* half the screen width */
   .about__eyebrow, .about__lead, .about__list, .about__links { grid-column: 1 / 13; }
   .about__list { margin-bottom: 0; }
-  .about__eyebrow--services, .about__eyebrow--links { margin-top: 36px; }
+  .about__eyebrow { margin-top: 36px; }                 /* same gap between every section… */
+  .about__portrait + .about__eyebrow { margin-top: 0; } /* …except the first, which sits under the portrait */
 }
 
 /* ---------- Page transition helpers ---------- */
