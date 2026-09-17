@@ -295,7 +295,7 @@ window.KODU_PROJECTS = {
     "roleLabel": "",
     "team": [
       "BEECH Agency team",
-      "Dom Andrews (Development)"
+      "Josh Wayman & Dom Andrews (Development)"
     ],
     "link": "https://app.lifeessentials.com.au/",
     "images": [

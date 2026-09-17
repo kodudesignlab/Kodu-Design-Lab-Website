@@ -63,13 +63,13 @@
       step += 1;
       gsap.to(swap, {
         yPercent: -(100 / 3) * step,   // one line = a third of the three-line track
-        duration: 0.7,
+        duration: 0.55,
         ease: 'power3.inOut',
         overwrite: true,
         onComplete() { if (step >= 2) { step = 0; gsap.set(swap, { yPercent: 0 }); } },
       });
     };
-    const start = () => { if (!timer) timer = setInterval(advance, 3500); };
+    const start = () => { if (!timer) timer = setInterval(advance, 2800); };
     const stop = () => { clearInterval(timer); timer = null; };
     // Background tabs keep firing intervals but stop animating, which used to run the track off
     // the end. Pause while hidden and come back to a clean first line.
