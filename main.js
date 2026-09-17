@@ -140,7 +140,9 @@
     sec.className = 'project-text';
     let html = '<div class="project-text__grid">';
     if (d.overview) html += `<p class="project-text__eyebrow">Overview</p><p class="project-text__lead" data-split>${esc(d.overview)}</p>`;
-    if (d.role.length) html += `<p class="project-text__eyebrow">My Role</p><ul class="project-text__list">${d.role.map((r) => '<li>' + esc(r) + '</li>').join('')}</ul>`;
+    // Personal projects (no team) read "What I did"; collaborative ones "My Role". Override with roleLabel.
+    const roleLabel = d.roleLabel || (d.team.length ? 'My Role' : 'What I did');
+    if (d.role.length) html += `<p class="project-text__eyebrow">${esc(roleLabel)}</p><ul class="project-text__list">${d.role.map((r) => '<li>' + esc(r) + '</li>').join('')}</ul>`;
     if (d.team.length) html += `<p class="project-text__eyebrow">The Team</p><ul class="project-text__list">${d.team.map((t) => '<li>' + esc(t) + '</li>').join('')}</ul>`;
     if (d.link) html += `<p class="project-text__link"><a class="ext-link" href="${esc(d.link)}" target="_blank" rel="noopener"><span class="ext-link__text roll-target">Live Site</span>${ARROW}</a></p>`;
     html += '</div>';

@@ -43,6 +43,8 @@
    "team": ["BEECH Agency team", "Dom Andrews (Development)"],
    "link": "https://example.com"
    ```
+   The role heading reads "My Role" when there's a team, or "What I did" for a personal project
+   (no team). Set `"roleLabel": "..."` to override it.
    - `order` — position on the homepage (1 = first)
    - The homepage card always shows the **first image** (cropped to 6:8, centred) — it has to be the
      same image as the hero so the card-to-page transition is seamless. Pick a hero that also crops

@@ -12,6 +12,7 @@ window.KODU_PROJECTS = {
       "Website Design",
       "UI Design"
     ],
+    "roleLabel": "",
     "team": [],
     "link": "",
     "images": [
@@ -142,6 +143,7 @@ window.KODU_PROJECTS = {
       "WordPress Block System",
       "Figma Prototype"
     ],
+    "roleLabel": "",
     "team": [
       "BEECH Agency team"
     ],
@@ -290,6 +292,7 @@ window.KODU_PROJECTS = {
       "Portal Login Flow",
       "Figma Prototype"
     ],
+    "roleLabel": "",
     "team": [
       "BEECH Agency team",
       "Dom Andrews (Development)"

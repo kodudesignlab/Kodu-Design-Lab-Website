@@ -192,6 +192,7 @@ for (const p of projects) {
     // Optional copy block shown after the hero (see content/HOW-TO-ADD-A-PROJECT.md)
     overview: p.meta.overview || '',
     role: Array.isArray(p.meta.role) ? p.meta.role : [],
+    roleLabel: p.meta.roleLabel || '',
     team: Array.isArray(p.meta.team) ? p.meta.team : [],
     link: p.meta.link || '',
     images,
