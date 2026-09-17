@@ -394,40 +394,7 @@ window.KODU_PROJECTS = {
         "alt": "NSW Mining Careers: Job Selector"
       },
       {
-        "src": "images/nsw-mining/03-careers-guide",
-        "widths": [
-          1200,
-          2000,
-          2800
-        ],
-        "cols": 1,
-        "aspect": "16 / 10",
-        "alt": "NSW Mining Careers: Careers Guide"
-      },
-      {
-        "src": "images/nsw-mining/04-mining-page-tall-a",
-        "widths": [
-          1200,
-          1760
-        ],
-        "cols": 2,
-        "aspect": "1760 / 3513",
-        "tall": true,
-        "alt": "NSW Mining Careers: Mining Page Tall A"
-      },
-      {
-        "src": "images/nsw-mining/05-mining-page-tall-b",
-        "widths": [
-          1200,
-          1760
-        ],
-        "cols": 2,
-        "aspect": "1760 / 3141",
-        "tall": true,
-        "alt": "NSW Mining Careers: Mining Page Tall B"
-      },
-      {
-        "src": "images/nsw-mining/06-location-slider",
+        "src": "images/nsw-mining/03-location-slider",
         "widths": [
           1200,
           2000,
@@ -438,7 +405,18 @@ window.KODU_PROJECTS = {
         "alt": "NSW Mining Careers: Location Slider"
       },
       {
-        "src": "images/nsw-mining/07-careers-phone",
+        "src": "images/nsw-mining/04-careers-guide",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "NSW Mining Careers: Careers Guide"
+      },
+      {
+        "src": "images/nsw-mining/05-careers-phone",
         "widths": [
           1200,
           2000,
@@ -447,6 +425,28 @@ window.KODU_PROJECTS = {
         "cols": 1,
         "aspect": "16 / 9",
         "alt": "NSW Mining Careers: Careers Phone"
+      },
+      {
+        "src": "images/nsw-mining/06-mining-page-tall-a",
+        "widths": [
+          1200,
+          1760
+        ],
+        "cols": 2,
+        "aspect": "1760 / 3513",
+        "tall": true,
+        "alt": "NSW Mining Careers: Mining Page Tall A"
+      },
+      {
+        "src": "images/nsw-mining/07-mining-page-tall-b",
+        "widths": [
+          1200,
+          1760
+        ],
+        "cols": 2,
+        "aspect": "1760 / 3141",
+        "tall": true,
+        "alt": "NSW Mining Careers: Mining Page Tall B"
       },
       {
         "src": "images/nsw-mining/08-find-a-career-mobile",
