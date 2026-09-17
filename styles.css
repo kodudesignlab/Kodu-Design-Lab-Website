@@ -374,8 +374,8 @@ img { display: block; max-width: 100%; }
    Same 12-col grid + type as the About page: eyebrows in cols 5–6, text in cols 7–11. */
 .project-text {
   grid-column: span 6;
-  /* 4rem at ≤600px → 9rem at ≥2200px (minus the grid's 20px so the visual gap matches) */
-  padding: calc(clamp(4rem, 2.125rem + 5vw, 9rem) - var(--margin-main)) 0;
+  /* 4rem at ≤600px → 11rem at ≥2200px (minus the grid's 20px so the visual gap matches) */
+  padding: calc(clamp(4rem, 1.375rem + 7vw, 11rem) - var(--margin-main)) 0;
 }
 .project-text__grid {
   display: grid;
