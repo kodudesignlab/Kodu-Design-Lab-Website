@@ -13,6 +13,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
+const SITE = 'https://www.kodudesignlab.com';                  // canonical origin (no trailing slash)
 const CONTENT = path.join(ROOT, 'content');
 const WIDTHS = [1200, 2000, 2800];        // page images
 const COVER_WIDTHS = [500, 1000, 1500];   // homepage card covers (pre-cropped to 6:8)
@@ -208,9 +209,15 @@ const pagesDir = path.join(ROOT, 'projects');
 fs.mkdirSync(pagesDir, { recursive: true });
 const wanted = new Set();
 for (const slug of Object.keys(data)) {
+  const d = data[slug];
+  const hero = d.images[0];
+  const description = escapeHtml(`${d.name}${d.info ? ' — ' + d.info : ''}. A project by Kodu Design Lab, the design practice of Lachlan Sarv in Newcastle, NSW.`);
   const html = template
-    .replace(/\{\{TITLE\}\}/g, escapeHtml(data[slug].name))
-    .replace(/\{\{SLUG\}\}/g, slug);
+    .replace(/\{\{TITLE\}\}/g, escapeHtml(d.name))
+    .replace(/\{\{SLUG\}\}/g, slug)
+    .replace(/\{\{DESCRIPTION\}\}/g, description)
+    .replace(/\{\{URL\}\}/g, `${SITE}/projects/${slug}`)
+    .replace(/\{\{IMAGE\}\}/g, hero ? `${SITE}/${hero.src}-${Math.max(...hero.widths)}.jpg` : `${SITE}/images/site/og-default.jpg`);
   fs.writeFileSync(path.join(pagesDir, `${slug}.html`), html);
   wanted.add(`${slug}.html`);
 }
@@ -252,4 +259,18 @@ index = index.replace(
 );
 fs.writeFileSync(indexPath, index);
 
-log(`\n✓ Built ${Object.keys(data).length} project page(s), ${cards.length} homepage card(s).`);
+/* ---------- sitemap.xml ---------- */
+const today = new Date().toISOString().slice(0, 10);
+const urls = [
+  { loc: `${SITE}/`, priority: '1.0' },
+  { loc: `${SITE}/about`, priority: '0.8' },
+  ...Object.keys(data).map((slug) => ({ loc: `${SITE}/projects/${slug}`, priority: '0.7' })),
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><priority>${u.priority}</priority></url>`).join('\n')}
+</urlset>
+`;
+fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
+
+log(`\n✓ Built ${Object.keys(data).length} project page(s), ${cards.length} homepage card(s), sitemap with ${urls.length} URLs.`);
