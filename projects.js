@@ -383,7 +383,18 @@ window.KODU_PROJECTS = {
         "alt": "NSW Mining Careers: Careers Site Feature"
       },
       {
-        "src": "images/nsw-mining/02-careers-guide",
+        "src": "images/nsw-mining/02-job-selector",
+        "widths": [
+          1200,
+          2000,
+          2440
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "NSW Mining Careers: Job Selector"
+      },
+      {
+        "src": "images/nsw-mining/03-careers-guide",
         "widths": [
           1200,
           2000,
@@ -394,7 +405,7 @@ window.KODU_PROJECTS = {
         "alt": "NSW Mining Careers: Careers Guide"
       },
       {
-        "src": "images/nsw-mining/03-enviro-science-page",
+        "src": "images/nsw-mining/04-enviro-science-page",
         "widths": [
           1200,
           1760
@@ -405,7 +416,7 @@ window.KODU_PROJECTS = {
         "alt": "NSW Mining Careers: Enviro Science Page"
       },
       {
-        "src": "images/nsw-mining/04-great-career-page",
+        "src": "images/nsw-mining/05-great-career-page",
         "widths": [
           1200,
           1760
@@ -414,17 +425,6 @@ window.KODU_PROJECTS = {
         "aspect": "1760 / 3141",
         "tall": true,
         "alt": "NSW Mining Careers: Great Career Page"
-      },
-      {
-        "src": "images/nsw-mining/05-job-selector",
-        "widths": [
-          1200,
-          2000,
-          2440
-        ],
-        "cols": 1,
-        "aspect": "16 / 9",
-        "alt": "NSW Mining Careers: Job Selector"
       },
       {
         "src": "images/nsw-mining/06-location-slider",
