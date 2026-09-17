@@ -292,6 +292,28 @@ window.KODU_PROJECTS = {
         "cols": 2,
         "aspect": "1800 / 2520",
         "alt": "Alpha Life Essentials: Website Layout"
+      },
+      {
+        "src": "images/alpha-life-essentials/04-multisignup",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "Alpha Life Essentials: Multisignup"
+      },
+      {
+        "src": "images/alpha-life-essentials/05-alphamutliprofile",
+        "widths": [
+          1200,
+          2000,
+          2800
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "Alpha Life Essentials: Alphamutliprofile"
       }
     ]
   }
