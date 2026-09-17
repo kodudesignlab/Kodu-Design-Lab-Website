@@ -20,8 +20,7 @@ window.KODU_PROJECTS = {
         "src": "images/courtside-wines/01-tote",
         "widths": [
           1200,
-          2000,
-          2800
+          2880
         ],
         "cols": 1,
         "aspect": "16 / 10",
@@ -41,8 +40,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/courtside-wines/03-tshirt-front",
         "widths": [
-          1200,
-          2000,
           2309
         ],
         "cols": 2,
@@ -52,8 +49,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/courtside-wines/04-tshirt-back",
         "widths": [
-          1200,
-          2000,
           2309
         ],
         "cols": 2,
@@ -64,8 +59,7 @@ window.KODU_PROJECTS = {
         "src": "images/courtside-wines/05-business-card",
         "widths": [
           1200,
-          2000,
-          2800
+          3000
         ],
         "cols": 1,
         "aspect": "16 / 9",
@@ -113,8 +107,7 @@ window.KODU_PROJECTS = {
         "src": "images/courtside-wines/10-macbook-01",
         "widths": [
           1200,
-          2000,
-          2800
+          3000
         ],
         "cols": 1,
         "aspect": "16 / 10",
@@ -124,8 +117,7 @@ window.KODU_PROJECTS = {
         "src": "images/courtside-wines/11-macbook-02",
         "widths": [
           1200,
-          2000,
-          2800
+          3000
         ],
         "cols": 1,
         "aspect": "16 / 10",
@@ -153,8 +145,7 @@ window.KODU_PROJECTS = {
         "src": "images/grampians-sandstone/01-laptop-hero",
         "widths": [
           1200,
-          2000,
-          2800
+          2880
         ],
         "cols": 1,
         "aspect": "16 / 10",
@@ -185,7 +176,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/grampians-sandstone/04-photo-building",
         "widths": [
-          1200,
           1500
         ],
         "cols": 2,
@@ -195,7 +185,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/grampians-sandstone/05-photo-clocktower",
         "widths": [
-          1200,
           1500
         ],
         "cols": 2,
@@ -228,7 +217,6 @@ window.KODU_PROJECTS = {
         "src": "images/grampians-sandstone/08-page-specifications",
         "widths": [
           1200,
-          2000,
           2400
         ],
         "cols": 3,
@@ -239,7 +227,6 @@ window.KODU_PROJECTS = {
         "src": "images/grampians-sandstone/09-page-frame-2",
         "widths": [
           1200,
-          2000,
           2400
         ],
         "cols": 3,
@@ -250,7 +237,6 @@ window.KODU_PROJECTS = {
         "src": "images/grampians-sandstone/10-page-frame-3",
         "widths": [
           1200,
-          2000,
           2400
         ],
         "cols": 3,
@@ -261,7 +247,6 @@ window.KODU_PROJECTS = {
         "src": "images/grampians-sandstone/11-digger",
         "widths": [
           1200,
-          2000,
           2440
         ],
         "cols": 1,
@@ -313,7 +298,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/alpha-life-essentials/02-website-layout",
         "widths": [
-          1200,
           1800
         ],
         "cols": 2,
@@ -323,7 +307,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/alpha-life-essentials/03-website-layout",
         "widths": [
-          1200,
           1800
         ],
         "cols": 2,
@@ -334,8 +317,7 @@ window.KODU_PROJECTS = {
         "src": "images/alpha-life-essentials/04-multisignup",
         "widths": [
           1200,
-          2000,
-          2800
+          3000
         ],
         "cols": 1,
         "aspect": "16 / 9",
@@ -345,8 +327,7 @@ window.KODU_PROJECTS = {
         "src": "images/alpha-life-essentials/05-alphamutliprofile",
         "widths": [
           1200,
-          2000,
-          2800
+          3000
         ],
         "cols": 1,
         "aspect": "16 / 9",
@@ -376,7 +357,7 @@ window.KODU_PROJECTS = {
         "widths": [
           1200,
           2000,
-          2800
+          2880
         ],
         "cols": 1,
         "aspect": "16 / 9",
@@ -386,7 +367,6 @@ window.KODU_PROJECTS = {
         "src": "images/nsw-mining/02-job-selector",
         "widths": [
           1200,
-          2000,
           2440
         ],
         "cols": 1,
@@ -397,7 +377,6 @@ window.KODU_PROJECTS = {
         "src": "images/nsw-mining/03-location-slider",
         "widths": [
           1200,
-          2000,
           2440
         ],
         "cols": 1,
@@ -408,8 +387,7 @@ window.KODU_PROJECTS = {
         "src": "images/nsw-mining/04-careers-guide",
         "widths": [
           1200,
-          2000,
-          2800
+          2880
         ],
         "cols": 1,
         "aspect": "16 / 10",
@@ -419,7 +397,6 @@ window.KODU_PROJECTS = {
         "src": "images/nsw-mining/05-careers-phone",
         "widths": [
           1200,
-          2000,
           2600
         ],
         "cols": 1,
@@ -429,7 +406,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/nsw-mining/06-mining-page-tall-a",
         "widths": [
-          1200,
           1760
         ],
         "cols": 2,
@@ -440,7 +416,6 @@ window.KODU_PROJECTS = {
       {
         "src": "images/nsw-mining/07-mining-page-tall-b",
         "widths": [
-          1200,
           1760
         ],
         "cols": 2,
@@ -452,7 +427,6 @@ window.KODU_PROJECTS = {
         "src": "images/nsw-mining/08-find-a-career-mobile",
         "widths": [
           1200,
-          2000,
           2600
         ],
         "cols": 1,

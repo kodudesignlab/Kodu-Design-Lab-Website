@@ -18,7 +18,8 @@ const CONTENT = path.join(ROOT, 'content');
 const WIDTHS = [1200, 2000, 2800];        // page images
 const COVER_WIDTHS = [500, 1000, 1500];   // homepage card covers (pre-cropped to 6:8)
 const COVER_RATIO = 3 / 4;                // 6:8 card
-const QUALITY = 88;
+const QUALITY = 86;        // page images
+const COVER_QUALITY = 88;  // card covers are small files, so spend a little more on sharpness
 // Filename hints → columns per row. New style: .2up / .3up (aspect comes from the image itself).
 // Old style still accepted: .portrait/.third/.poster (2, 3, 3 per row), .16-9/.16-10 (full width, fixed box).
 // .tall = tall images side by side at equal width, each at its own natural height (nothing cropped)
@@ -35,20 +36,23 @@ function imageSize(file) {
   return { w, h };
 }
 
-function resize(src, dest, width) {
+function resize(src, dest, width, srcWidth) {
+  // Source already (near) this size? Use its bytes as-is: re-encoding only makes the file bigger and softer.
+  if (srcWidth && /\.jpe?g$/i.test(src) && srcWidth <= width * 1.08) { fs.copyFileSync(src, dest); return; }
   const args = ['-s', 'format', 'jpeg', '-s', 'formatOptions', String(QUALITY)];
   if (width) args.push('--resampleWidth', String(width));
   execFileSync('sips', [...args, src, '--out', dest], { stdio: 'ignore' });
 }
 
-// Cover: centre-crop to 6:8 so every pixel is used by the card, then size to `width`
+// Cover: centre-crop to 6:8 so every pixel is used by the card, then size to `width`.
+// Two passes (sips ignores flag order) but the intermediate is lossless PNG, so only ONE jpeg encode.
 function resizeCover(src, dest, width, size) {
   const height = Math.round(width / COVER_RATIO);
-  const base = ['-s', 'format', 'jpeg', '-s', 'formatOptions', String(QUALITY)];
-  // scale so the crop box fits, then crop centred
+  const tmp = dest + '.tmp.png';
   const scaleArgs = size.w / size.h > COVER_RATIO ? ['--resampleHeight', String(height)] : ['--resampleWidth', String(width)];
-  execFileSync('sips', [...base, ...scaleArgs, src, '--out', dest], { stdio: 'ignore' });
-  execFileSync('sips', ['-c', String(height), String(width), dest], { stdio: 'ignore' });
+  execFileSync('sips', ['-s', 'format', 'png', ...scaleArgs, src, '--out', tmp], { stdio: 'ignore' });
+  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', String(COVER_QUALITY), '-c', String(height), String(width), tmp, '--out', dest], { stdio: 'ignore' });
+  fs.unlinkSync(tmp);
 }
 
 // Only rebuild a variant when the source is newer than the output
@@ -157,17 +161,24 @@ for (const p of projects) {
     const widths = [];
     for (const w of WIDTHS) {
       if (w > size.w) continue;
+      if (size.w <= w * 1.08) continue;                 // covered by the native copy below
       const dest = path.join(outDir, `${f.slug}-${w}.jpg`);
-      if (needsBuild(src, dest)) resize(src, dest, w);
+      if (needsBuild(src, dest)) resize(src, dest, w, size.w);
       widths.push(w);
     }
-    // keep a native-width copy when the source isn't already one of the standard sizes
-    if (size.w < 2800 && !WIDTHS.includes(size.w)) {
+    // native-width copy: untouched bytes when the source is a jpeg near/above the largest useful size
+    if (size.w <= WIDTHS[WIDTHS.length - 1] * 1.08 && !widths.includes(size.w)) {
       const dest = path.join(outDir, `${f.slug}-${size.w}.jpg`);
-      if (needsBuild(src, dest)) resize(src, dest);
+      if (needsBuild(src, dest)) resize(src, dest, size.w, size.w);
       widths.push(size.w);
     }
     widths.sort((a, b) => a - b);
+    // Drop any variant that's no smaller in bytes than a larger one: the larger is strictly better
+    for (let i = widths.length - 2; i >= 0; i--) {
+      const small = path.join(outDir, `${f.slug}-${widths[i]}.jpg`);
+      const bigger = widths.slice(i + 1).map((w) => fs.statSync(path.join(outDir, `${f.slug}-${w}.jpg`)).size);
+      if (fs.statSync(small).size >= Math.min(...bigger)) { fs.unlinkSync(small); widths.splice(i, 1); }
+    }
     images.push({
       src: `images/${p.slug}/${f.slug}`,
       widths,
