@@ -144,7 +144,7 @@
     const roleLabel = d.roleLabel || (d.team.length ? 'My Role' : 'What I did');
     if (d.role.length) html += `<p class="project-text__eyebrow">${esc(roleLabel)}</p><ul class="project-text__list">${d.role.map((r) => '<li>' + esc(r) + '</li>').join('')}</ul>`;
     if (d.team.length) html += `<p class="project-text__eyebrow">The Team</p><ul class="project-text__list">${d.team.map((t) => '<li>' + esc(t) + '</li>').join('')}</ul>`;
-    if (d.link) html += `<p class="project-text__link"><a class="ext-link" href="${esc(d.link)}" target="_blank" rel="noopener"><span class="ext-link__text roll-target">Live Site</span>${ARROW}</a></p>`;
+    if (d.link) html += `<p class="project-text__link"><a class="ext-link" href="${esc(d.link)}" target="_blank" rel="noopener"><span class="ext-link__text roll-target">${esc(d.linkLabel || 'Live Site')}</span>${ARROW}</a></p>`;
     html += '</div>';
     sec.innerHTML = html;
     return sec;

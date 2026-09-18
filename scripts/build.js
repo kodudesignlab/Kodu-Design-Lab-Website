@@ -210,6 +210,7 @@ for (const p of projects) {
     roleLabel: p.meta.roleLabel || '',
     team: Array.isArray(p.meta.team) ? p.meta.team : [],
     link: p.meta.link || '',
+    linkLabel: p.meta.linkLabel || '',
     images,
   };
 

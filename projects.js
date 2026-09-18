@@ -15,6 +15,7 @@ window.KODU_PROJECTS = {
     "roleLabel": "",
     "team": [],
     "link": "",
+    "linkLabel": "",
     "images": [
       {
         "src": "images/courtside-wines/01-tote",
@@ -140,6 +141,7 @@ window.KODU_PROJECTS = {
       "BEECH Agency team"
     ],
     "link": "https://grampianssandstone.com.au",
+    "linkLabel": "",
     "images": [
       {
         "src": "images/grampians-sandstone/01-laptop-hero",
@@ -283,6 +285,7 @@ window.KODU_PROJECTS = {
       "Josh Wayman & Dom Andrews (Development)"
     ],
     "link": "https://app.lifeessentials.com.au/",
+    "linkLabel": "",
     "images": [
       {
         "src": "images/alpha-life-essentials/01-alphafloatingphones",
@@ -351,6 +354,7 @@ window.KODU_PROJECTS = {
       "BEECH Agency team"
     ],
     "link": "https://nswminingcareers.com.au/",
+    "linkLabel": "",
     "images": [
       {
         "src": "images/nsw-mining/01-careers-site-feature",
@@ -432,6 +436,33 @@ window.KODU_PROJECTS = {
         "cols": 1,
         "aspect": "16 / 9",
         "alt": "NSW Mining Careers: Find A Career Mobile"
+      }
+    ]
+  },
+  "aqua-club": {
+    "name": "Aqua Club",
+    "info": "Brand Identity",
+    "overview": "Brand identity for Aqua Club, a floating pontoon and jet ski dock business run by a good mate of mine, Tyler. A personal project covering the logo, a simple identity system and how the mark sits on the product itself, so it reads just as well on a pontoon out on the water as it does on screen.",
+    "role": [
+      "Logo Design",
+      "Brand Identity",
+      "Product Logo Placement"
+    ],
+    "roleLabel": "",
+    "team": [],
+    "link": "https://www.aquaclub.com.au/",
+    "linkLabel": "Check them out",
+    "images": [
+      {
+        "src": "images/aqua-club/01-aqua-club-pontoon",
+        "widths": [
+          1200,
+          2000,
+          3000
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "Aqua Club: Aqua Club Pontoon"
       }
     ]
   }

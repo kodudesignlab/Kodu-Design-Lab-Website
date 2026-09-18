@@ -43,8 +43,10 @@
    "overview": "One or two short paragraphs about the project.",
    "role": ["Visual Design System", "User Experience"],
    "team": ["BEECH Agency team", "Dom Andrews (Development)"],
-   "link": "https://example.com"
+   "link": "https://example.com",
+   "linkLabel": "Check them out"
    ```
+   `linkLabel` is optional; the link reads "Live Site" unless you set it.
    The role heading reads "My Role" when there's a team, or "What I did" for a personal project
    (no team). Set `"roleLabel": "..."` to override it.
    - `order` — position on the homepage (1 = first)
