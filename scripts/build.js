@@ -197,7 +197,11 @@ for (const p of projects) {
     if (c === 1 || images[i].tall) { i++; continue; }
     const row = images.slice(i, i + c);
     if (row.length < c || row.some((im) => im.cols !== c)) warn(`row starting at ${p.files[i].file} needs ${c} images marked .${c}up`);
-    else if (row.some((im) => im.aspect !== row[0].aspect)) warn(`row starting at ${p.files[i].file}: images have different shapes, they won't line up`);
+    else if (row.some((im) => im.aspect !== row[0].aspect) && !row.some((im) => im.tall)) {
+      // Mixed shapes in a side-by-side row: crop them all to 4:5 so the row lines up (use .tall to avoid cropping)
+      row.forEach((im) => { im.aspect = '4 / 5'; });
+      log(`  ↳ row starting at ${p.files[i].file}: mixed shapes, cropped to 4:5 (use .tall to keep natural heights)`);
+    }
     i += row.length;
   }
 

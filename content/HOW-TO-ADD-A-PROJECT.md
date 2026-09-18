@@ -21,9 +21,10 @@
    - `.tall` puts tall images side by side at equal width, each at its **own natural height**
      (top-aligned, nothing cropped; a shorter one just leaves space below). Use it when they aren't the same size.
 
-   Side-by-side images keep their own shape (the build measures them), so make sure the
-   images in one row are the **same size** or they won't line up. Rows must be complete:
-   two `.2up` files in a row, three `.3up` files in a row. The build warns you if not.
+   Side-by-side images keep their own shape (the build measures them). If the images in a row
+   are different shapes they're cropped to 4:5 so the row lines up (use `.tall` instead if you
+   don't want any cropping). Rows must be complete: two `.2up` files in a row, three `.3up`
+   files in a row. The build warns you if not.
 
    Full-width images are cropped to 16:9 or 16:10 (whichever is closer). Portrait images with
    no hint default to `.2up`.

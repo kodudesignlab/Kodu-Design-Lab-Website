@@ -463,6 +463,25 @@ window.KODU_PROJECTS = {
         "cols": 1,
         "aspect": "16 / 10",
         "alt": "Aqua Club: Aqua Club Pontoon"
+      },
+      {
+        "src": "images/aqua-club/02-jetskidock",
+        "widths": [
+          1067
+        ],
+        "cols": 2,
+        "aspect": "4 / 5",
+        "alt": "Aqua Club: Jetskidock"
+      },
+      {
+        "src": "images/aqua-club/03-logoonwater",
+        "widths": [
+          1200,
+          2112
+        ],
+        "cols": 2,
+        "aspect": "4 / 5",
+        "alt": "Aqua Club: Logoonwater"
       }
     ]
   }
