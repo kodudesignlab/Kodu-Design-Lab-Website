@@ -9,6 +9,18 @@
   const PROJECTS = window.KODU_PROJECTS || {};
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Smooth scroll (Lenis) ----------
+     Light inertia on wheel/trackpad; touch stays native so phones feel normal. Driven by GSAP's
+     ticker so it shares one animation clock with everything else. */
+  let lenis = null;
+  if (window.Lenis && !reduceMotion) {
+    lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1, smoothWheel: true, syncTouch: false });
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  // Jump to a position with or without Lenis
+  const scrollToTop = () => { if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); else scrollToTop(); };
+
   /* ---------- Header links: make them absolute so they survive pushState URL changes ----------
      (otherwise "about" resolves to /projects/about after opening a project from the homepage) */
   document.querySelectorAll('.brand__link, .nav__item').forEach((a) => {
@@ -219,8 +231,12 @@
       el.srcset = imageSrcset(img);
       el.sizes = img.tall ? SIZES[2] : (SIZES[img.cols] || SIZES[1]);
       el.alt = img.alt || '';
-      el.loading = i < 3 ? 'eager' : 'lazy';
+      // Quality first: fetch every image straight away (no lazy pop-in), hero at top priority
+      el.loading = 'eager';
+      el.fetchPriority = i === 0 ? 'high' : 'auto';
       el.decoding = 'async';
+      const markLoaded = () => el.classList.add('is-loaded');
+      if (el.complete && el.naturalWidth) markLoaded(); else el.addEventListener('load', markLoaded, { once: true });
       fig.appendChild(el);
       page.appendChild(fig);
       if (i === 0) { const text = buildProjectText(data); if (text) page.appendChild(text); }
@@ -318,6 +334,7 @@
   const HOME_TITLE = document.title;
   const mobileMQ = matchMedia('(max-width: 699px)');   // the mobile carousel breakpoint
   html.classList.add('lock-scroll');                     // released when the intro completes
+  if (lenis) lenis.stop();
 
   html.classList.add('is-loading');
 
@@ -341,6 +358,7 @@
       html.classList.remove('is-loading');
       html.classList.add('intro-done');
       html.classList.remove('lock-scroll');
+        if (lenis) lenis.start();
       preloadHeroes();
       return;
     }
@@ -380,6 +398,7 @@
       onComplete() {
         html.classList.add('intro-done');
         html.classList.remove('lock-scroll');
+        if (lenis) lenis.start();
         // Drop GSAP's inline transforms so text sits on whole pixels and renders crisp
         gsap.set([brandLines, navItems], { clearProps: 'transform,opacity' });
         preloadHeroes();
@@ -467,6 +486,7 @@
     html.classList.remove('is-loading');
     html.classList.add('intro-done');
     html.classList.remove('lock-scroll');
+        if (lenis) lenis.start();
     busy = true;
     projectOpen = true;
     activeCard = card;
@@ -516,7 +536,7 @@
       wrapper.hidden = true;
       body.appendChild(page);
       currentPage = page;
-      window.scrollTo(0, 0);
+      scrollToTop();
 
       const last = hero.getBoundingClientRect();
       tl.to(clone, {
@@ -581,7 +601,7 @@
       gsap.set(otherCards, { opacity: 0, y: 12 });
       gsap.set(meta, { opacity: 0 });
       wrapper.hidden = false;
-      window.scrollTo(0, 0);
+      scrollToTop();
 
       const last = media.getBoundingClientRect();
       tl.to(clone, {
@@ -621,7 +641,7 @@
   document.querySelector('.brand__link').addEventListener('click', (e) => {
     e.preventDefault();
     if (projectOpen) history.back();
-    else window.scrollTo(0, 0);
+    else scrollToTop();
   });
 
   // Browser back / forward

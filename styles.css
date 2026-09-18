@@ -216,6 +216,12 @@ html:not(.intro-done) .project-card { will-change: transform; }
 .project-card__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .project-card__index { display: none; font-weight: 500; color: var(--text-primary); }
 
+/* ---------- Smooth scroll (Lenis) ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
 /* ---------- Project page ---------- */
 .project-page {
   flex: 1 1 auto;
@@ -240,7 +246,11 @@ html:not(.intro-done) .project-card { will-change: transform; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;                                  /* fades in once the file has actually arrived */
+  transition: opacity 0.5s ease;
 }
+.project-image img.is-loaded,
+.project-image--hero img { opacity: 1; }   /* hero is handled by the card→hero transition, no fade */
 /* Columns per row (aspect-ratio is set inline per image by main.js) */
 .project-image--cols-1 { grid-column: span 6; }
 .project-image--cols-2 { grid-column: span 3; }
