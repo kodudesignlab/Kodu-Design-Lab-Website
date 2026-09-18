@@ -442,7 +442,7 @@ window.KODU_PROJECTS = {
   "aqua-club": {
     "name": "Aqua Club",
     "info": "Brand Identity",
-    "overview": "Brand identity for Aqua Club, a floating pontoon and jet ski dock business run by a good mate of mine, Tyler. A personal project covering the logo, a simple identity system and how the mark sits on the product itself, so it reads just as well on a pontoon out on the water as it does on screen.",
+    "overview": "Brand identity for Aqua Club, Australian premium yacht toys, run by a good mate of mine, Tyler. A personal project covering the logo, a simple identity system and how the mark sits on the products themselves, so it reads just as well out on the water as it does on screen.",
     "role": [
       "Logo Design",
       "Brand Identity",
