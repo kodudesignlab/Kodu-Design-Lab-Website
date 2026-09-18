@@ -482,6 +482,16 @@ window.KODU_PROJECTS = {
         "cols": 2,
         "aspect": "4 / 5",
         "alt": "Aqua Club: Logoonwater"
+      },
+      {
+        "src": "images/aqua-club/04-toybehindeboat",
+        "widths": [
+          1200,
+          3000
+        ],
+        "cols": 1,
+        "aspect": "16 / 9",
+        "alt": "Aqua Club: Toybehindeboat"
       }
     ]
   }
