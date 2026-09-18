@@ -285,15 +285,15 @@ window.KODU_PROJECTS = {
     "link": "https://app.lifeessentials.com.au/",
     "images": [
       {
-        "src": "images/alpha-life-essentials/01-floatingphonesmain",
+        "src": "images/alpha-life-essentials/01-alphafloatingphones",
         "widths": [
           1200,
           2000,
-          2800
+          3000
         ],
         "cols": 1,
         "aspect": "16 / 10",
-        "alt": "Alpha Life Essentials: Floatingphonesmain"
+        "alt": "Alpha Life Essentials: Alphafloatingphones"
       },
       {
         "src": "images/alpha-life-essentials/02-website-layout",
