@@ -187,15 +187,14 @@ window.KODU_PROJECTS = {
     "linkLabel": "Check them out",
     "images": [
       {
-        "src": "images/aqua-club/01-aqua-club-pontoon",
+        "src": "images/aqua-club/01-jetskidock",
         "widths": [
           1200,
-          2000,
           3000
         ],
         "cols": 1,
-        "aspect": "16 / 10",
-        "alt": "Aqua Club: Aqua Club Pontoon"
+        "aspect": "16 / 9",
+        "alt": "Aqua Club: Jetskidock"
       },
       {
         "src": "images/aqua-club/02-jetskidock",
