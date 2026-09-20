@@ -19,7 +19,7 @@
     gsap.ticker.lagSmoothing(0);
   }
   // Jump to a position with or without Lenis
-  const scrollToTop = () => { if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); else scrollToTop(); };
+  const scrollToTop = () => { if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); else window.scrollTo(0, 0); };
 
   /* ---------- Header links: make them absolute so they survive pushState URL changes ----------
      (otherwise "about" resolves to /projects/about after opening a project from the homepage) */
@@ -241,6 +241,14 @@
       page.appendChild(fig);
       if (i === 0) { const text = buildProjectText(data); if (text) page.appendChild(text); }
     });
+    // Optional YouTube embed at the end (privacy-enhanced domain, loads on demand)
+    if (data.video) {
+      const fig = document.createElement('figure');
+      fig.className = 'project-image project-image--cols-1 project-video';
+      fig.style.aspectRatio = '16 / 9';
+      fig.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${data.video}?rel=0&modestbranding=1" title="${esc(data.name)} video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+      page.appendChild(fig);
+    }
     return page;
   }
 

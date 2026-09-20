@@ -18,6 +18,7 @@ window.KODU_PROJECTS = {
     ],
     "link": "https://nswminingcareers.com.au/",
     "linkLabel": "",
+    "video": "",
     "images": [
       {
         "src": "images/nsw-mining/01-careers-site-feature",
@@ -120,6 +121,7 @@ window.KODU_PROJECTS = {
     ],
     "link": "https://app.lifeessentials.com.au/",
     "linkLabel": "",
+    "video": "",
     "images": [
       {
         "src": "images/alpha-life-essentials/01-alphafloatingphones",
@@ -185,6 +187,7 @@ window.KODU_PROJECTS = {
     "team": [],
     "link": "https://www.aquaclub.com.au/",
     "linkLabel": "Check them out",
+    "video": "",
     "images": [
       {
         "src": "images/aqua-club/01-jetskidock",
@@ -243,6 +246,7 @@ window.KODU_PROJECTS = {
     ],
     "link": "https://grampianssandstone.com.au",
     "linkLabel": "",
+    "video": "",
     "images": [
       {
         "src": "images/grampians-sandstone/01-laptop-hero",
@@ -384,6 +388,7 @@ window.KODU_PROJECTS = {
     "team": [],
     "link": "",
     "linkLabel": "",
+    "video": "",
     "images": [
       {
         "src": "images/courtside-wines/01-tote",
@@ -491,6 +496,102 @@ window.KODU_PROJECTS = {
         "cols": 1,
         "aspect": "16 / 10",
         "alt": "Courtside Wines: Macbook 02"
+      }
+    ]
+  },
+  "product-modelling": {
+    "name": "Timber Product Renders",
+    "info": "3D Modelling in Blender",
+    "overview": "A personal 3D project exploring product design in Blender. I built my own timber material from scratch, then modelled, lit and rendered a small collection of products around it: a lounge, a keyboard, a macro pad and a turntable. I also recorded a YouTube tutorial walking through how the timber material was made.",
+    "role": [
+      "3D Modelling (Blender)",
+      "Timber Material Creation",
+      "Lighting & Rendering",
+      "YouTube Tutorial"
+    ],
+    "roleLabel": "",
+    "team": [],
+    "link": "https://www.youtube.com/watch?v=jDEijCwz6to",
+    "linkLabel": "Watch the tutorial",
+    "video": "jDEijCwz6to",
+    "images": [
+      {
+        "src": "images/product-modelling/01-timber-lounge-close-up",
+        "widths": [
+          1200,
+          2700
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "Timber Product Renders: Timber Lounge Close Up"
+      },
+      {
+        "src": "images/product-modelling/02-timber-lounge-front-on",
+        "widths": [
+          1200,
+          2700
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "Timber Product Renders: Timber Lounge Front On"
+      },
+      {
+        "src": "images/product-modelling/03-timber-keyboard",
+        "widths": [
+          1200,
+          2880
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "Timber Product Renders: Timber Keyboard"
+      },
+      {
+        "src": "images/product-modelling/04-timber-macro-pad",
+        "widths": [
+          2440
+        ],
+        "cols": 2,
+        "aspect": "2440 / 2440",
+        "alt": "Timber Product Renders: Timber Macro Pad"
+      },
+      {
+        "src": "images/product-modelling/05-timber-macro-pad-close-up",
+        "widths": [
+          1200,
+          2440
+        ],
+        "cols": 2,
+        "aspect": "2440 / 2440",
+        "alt": "Timber Product Renders: Timber Macro Pad Close Up"
+      },
+      {
+        "src": "images/product-modelling/06-timber-turntable",
+        "widths": [
+          1200,
+          2858
+        ],
+        "cols": 1,
+        "aspect": "16 / 10",
+        "alt": "Timber Product Renders: Timber Turntable"
+      },
+      {
+        "src": "images/product-modelling/07-timber-turntable-close-up",
+        "widths": [
+          2000
+        ],
+        "cols": 2,
+        "aspect": "2000 / 2000",
+        "alt": "Timber Product Renders: Timber Turntable Close Up"
+      },
+      {
+        "src": "images/product-modelling/08-timber-macro-pad-knob",
+        "widths": [
+          1200,
+          2440
+        ],
+        "cols": 2,
+        "aspect": "2440 / 2440",
+        "alt": "Timber Product Renders: Timber Macro Pad Knob"
       }
     ]
   }

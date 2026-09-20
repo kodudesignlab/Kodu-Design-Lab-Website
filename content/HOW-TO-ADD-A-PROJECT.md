@@ -48,6 +48,7 @@
    "linkLabel": "Check them out"
    ```
    `linkLabel` is optional; the link reads "Live Site" unless you set it.
+   `"video": "https://www.youtube.com/watch?v=..."` embeds a YouTube video full-width at the bottom of the page.
    The role heading reads "My Role" when there's a team, or "What I did" for a personal project
    (no team). Set `"roleLabel": "..."` to override it.
    - `order` — position on the homepage (1 = first)

@@ -80,6 +80,7 @@ function parseImageName(file) {
   return { order, slug: m ? String(m[1]).padStart(2, '0') + '-' + words : words, name: words, hint };
 }
 
+const ratioOf = (aspect) => { const [w, h] = aspect.split('/').map(Number); return w / h; };
 const escapeHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const titleCase = (s) => s.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
@@ -197,7 +198,7 @@ for (const p of projects) {
     if (c === 1 || images[i].tall) { i++; continue; }
     const row = images.slice(i, i + c);
     if (row.length < c || row.some((im) => im.cols !== c)) warn(`row starting at ${p.files[i].file} needs ${c} images marked .${c}up`);
-    else if (row.some((im) => im.aspect !== row[0].aspect) && !row.some((im) => im.tall)) {
+    else if (!row.some((im) => im.tall) && row.some((im) => Math.abs(ratioOf(im.aspect) - ratioOf(row[0].aspect)) > 0.02)) {
       // Mixed shapes in a side-by-side row: crop them all to 4:5 so the row lines up (use .tall to avoid cropping)
       row.forEach((im) => { im.aspect = '4 / 5'; });
       log(`  ↳ row starting at ${p.files[i].file}: mixed shapes, cropped to 4:5 (use .tall to keep natural heights)`);
@@ -215,6 +216,8 @@ for (const p of projects) {
     team: Array.isArray(p.meta.team) ? p.meta.team : [],
     link: p.meta.link || '',
     linkLabel: p.meta.linkLabel || '',
+    // Optional YouTube URL: embedded full-width at the bottom of the page
+    video: (() => { const m = String(p.meta.video || '').match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/); return m ? m[1] : ''; })(),
     images,
   };
 
