@@ -334,10 +334,14 @@
     const SWAP_AT = 0.35;
     tl.add(() => {
       const clone = first ? makeClone(largestSrc(heroData), first) : null;
+      let cloneImg = null;
       if (clone) {
-        // The window shows the top of the image; start the clone the same way, then drift to centre.
+        // Replicate the teaser exactly: the image fills the teaser's 16:9 box (centred, cover) and the
+        // clone box clips it to the window, so the first frame is pixel-identical to what was on screen.
         // Also match the teaser's hover zoom so nothing snaps at the moment of the click.
-        gsap.set(clone.querySelector('img'), { objectPosition: '50% 0%', scale: currentScale(win.querySelector('img')), transformOrigin: '50% 50%' });
+        cloneImg = clone.querySelector('img');
+        const mediaH = win.querySelector('.next-project__media').getBoundingClientRect().height;
+        gsap.set(cloneImg, { height: mediaH, scale: currentScale(win.querySelector('img')), transformOrigin: '50% 50%' });
         gsap.set(hero, { visibility: 'hidden' });
       }
       fromPage.replaceWith(newPage);
@@ -354,7 +358,8 @@
             if (heroImg.complete && heroImg.naturalWidth) reveal();
             else { heroImg.addEventListener('load', reveal, { once: true }); heroImg.addEventListener('error', reveal, { once: true }); }
           } }, SWAP_AT);
-        tl.to(clone.querySelector('img'), { objectPosition: '50% 50%', scale: 1, duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
+        // Image box grows with the clone until it simply fills it (= the hero's own cover fit)
+        tl.to(cloneImg, { height: last.height, scale: 1, duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
       }
       tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
       if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
