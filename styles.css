@@ -449,9 +449,9 @@ html.lenis, html.lenis body { height: auto; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 120px 0 0;
+  padding: calc(120px + 3rem) 0 0;
   margin: 0 calc(-1 * var(--margin-main));           /* full-bleed so the clipped image meets the edges cleanly */
-  height: 602px;                                      /* fixed height = the image gets cut off (per design) */
+  height: 720px;                                      /* fixed height = the image gets cut off (~345px of it showing) */
   overflow: hidden;
   color: var(--text-primary);
 }
@@ -489,11 +489,11 @@ html.lenis, html.lenis body { height: auto; }
   .next-project:hover .next-project__media img { transform: scale(1.03); }
 }
 @media (max-width: 899px) {
-  .next-project { padding-top: 4rem; height: auto; }
+  .next-project { padding-top: 7rem; height: auto; }
   .next-project__name { font-size: 32px; }
   .next-project__window { margin-top: 40px; }
   .next-project__media { aspect-ratio: 16 / 9; }
-  .next-project__window { height: 42vw; }             /* cut off on mobile too */
+  .next-project__window { height: 52vw; }             /* cut off on mobile too */
 }
 .project-page:has(.next-project) { padding-bottom: 0; }   /* teaser runs to the page edge */
 /* END NEXT PROJECT SECTION */
