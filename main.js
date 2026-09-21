@@ -373,6 +373,25 @@
     return newPage;
   }
 
+  /* ---------- Next project teaser: grows from 50% → 100% as it scrolls into view ----------
+     Progress 0 = section top reaches the bottom of the viewport, 1 = page scrolled to the end.
+     Eased, then lerped every frame so it glides instead of tracking the wheel 1:1. */
+  if (NEXT_PROJECT && !reduceMotion) {
+    const ease = gsap.parseEase('power2.out');
+    let current = null;
+    let lastWin = null;
+    gsap.ticker.add(() => {
+      const win = document.querySelector('.next-project__window');
+      if (!win) { lastWin = null; return; }
+      const r = win.parentElement.getBoundingClientRect();
+      const p = gsap.utils.clamp(0, 1, (innerHeight - r.top) / r.height);
+      const target = 0.5 + 0.5 * ease(p);
+      if (win !== lastWin || current === null) { current = target; lastWin = win; }   // new page: no lerp from the old value
+      current += (target - current) * 0.12;
+      gsap.set(win, { scale: current, transformOrigin: '50% 0%' });
+    });
+  }
+
   // Standalone project page (direct load / refresh): render and stop here
   const staticPage = document.querySelector('[data-project-page]');
   if (staticPage) {
