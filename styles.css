@@ -494,7 +494,10 @@ html.lenis, html.lenis body { height: auto; }
   .next-project__name { font-size: 32px; }
   .next-project__window { margin-top: 40px; }
   .next-project__media { aspect-ratio: 16 / 9; }
-  .next-project__window { height: 52vw; }             /* cut off on mobile too */
+  .next-project__window {
+    height: 48vw;                                                       /* cut off on mobile too */
+    width: calc(100vw - 2 * var(--margin-main) - 3rem);                 /* 1.5rem narrower each side than the page images */
+  }
 }
 .project-page:has(.next-project) { padding-bottom: 0; }   /* teaser runs to the page edge */
 /* END NEXT PROJECT SECTION */
