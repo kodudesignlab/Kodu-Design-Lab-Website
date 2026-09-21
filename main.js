@@ -7,6 +7,10 @@
   const SITE_ROOT = new URL(BASE || './', location.href).href;
   const siteUrl = (path) => new URL(path, SITE_ROOT).href;
   const PROJECTS = window.KODU_PROJECTS || {};
+  const PROJECT_ORDER = Object.keys(PROJECTS);
+  // ======== NEXT PROJECT SECTION — set to false to remove it everywhere (CSS block can stay) ========
+  const NEXT_PROJECT = true;
+  // ===================================================================================================
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Smooth scroll (Lenis) ----------
@@ -144,6 +148,19 @@
   const ARROW = '<svg class="ext-link__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>';
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
+  // A fixed-position copy of an image that can travel between two rects
+  function makeClone(imgSrc, rect) {
+    const clone = document.createElement('div');
+    clone.className = 'flip-clone';
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = '';
+    clone.appendChild(img);
+    gsap.set(clone, { top: rect.top, left: rect.left, width: rect.width, height: rect.height });
+    body.appendChild(clone);
+    return clone;
+  }
+
   /* ---------- Project page rendering ---------- */
   // Overview / My Role / The Team / Live Site — same grid + type as the About page
   function buildProjectText(d) {
@@ -249,7 +266,91 @@
       fig.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${data.video}?rel=0&modestbranding=1" title="${esc(data.name)} video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
       page.appendChild(fig);
     }
+    // Next project teaser (see NEXT_PROJECT switch): the next hero, clipped, plus its name
+    if (NEXT_PROJECT && PROJECT_ORDER.length > 1) {
+      const nextSlug = PROJECT_ORDER[(PROJECT_ORDER.indexOf(slug) + 1) % PROJECT_ORDER.length];
+      const next = PROJECTS[nextSlug];
+      const nextHero = next.images[0];
+      if (nextHero) {
+        const a = document.createElement('a');
+        a.className = 'next-project';
+        a.href = siteUrl('projects/' + nextSlug);
+        a.dataset.next = nextSlug;
+        a.innerHTML = `<p class="next-project__eyebrow">(Next Project)</p>
+          <h2 class="next-project__name">${esc(next.name)}</h2>
+          <div class="next-project__window"><div class="next-project__media"><img src="${largestSrc(nextHero)}" srcset="${imageSrcset(nextHero)}" sizes="(max-width: 899px) calc(100vw - 40px), 900px" alt="" loading="lazy" decoding="async"></div></div>`;
+        page.appendChild(a);
+      }
+    }
     return page;
+  }
+
+  /* ---------- Next project: teaser image travels up to become the new hero ---------- */
+  let switching = false;
+  function wireNextProject(page, onSwitch) {
+    const link = page.querySelector('.next-project');
+    if (!link) return;
+    link.addEventListener('click', (e) => {
+      if (reduceMotion || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // normal navigation
+      e.preventDefault();
+      onSwitch(link.dataset.next, true);
+    });
+  }
+  // Returns the new page element; `after(newPage)` runs once the DOM has been swapped.
+  function switchProject(fromPage, nextSlug, after) {
+    if (switching || !PROJECTS[nextSlug]) return null;
+    switching = true;
+    html.classList.add('is-transitioning');
+    const link = fromPage.querySelector('.next-project');
+    const win = link && link.querySelector('.next-project__window');
+    const first = win ? win.getBoundingClientRect() : null;
+    const heroData = PROJECTS[nextSlug].images[0];
+
+    const newPage = buildProjectPage(nextSlug);
+    const hero = newPage.querySelector('.project-image--hero');
+    const textBlock = newPage.querySelector('.project-text');
+    if (textBlock) rollify(textBlock.querySelectorAll('.roll-target'));
+    const rest = gsap.utils.toArray(newPage.querySelectorAll('.project-image:not(.project-image--hero), .project-text, .next-project'));
+    gsap.set(rest, { opacity: 0, y: 40 });
+
+    // Everything on the old page except the teaser window fades away
+    const fading = [...fromPage.children].filter((el) => el !== link);
+    const teaserText = link ? [...link.children].filter((el) => el !== win) : [];
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.inOut' },
+      onComplete() { html.classList.remove('is-transitioning'); switching = false; },
+    });
+    window.koduTransition = tl;
+    tl.to([...fading, ...teaserText], { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
+
+    const SWAP_AT = 0.35;
+    tl.add(() => {
+      const clone = first ? makeClone(largestSrc(heroData), first) : null;
+      if (clone) {
+        // The window shows the top of the image; start the clone the same way, then drift to centre
+        gsap.set(clone.querySelector('img'), { objectPosition: '50% 0%' });
+        gsap.set(hero, { visibility: 'hidden' });
+      }
+      fromPage.replaceWith(newPage);
+      scrollToTop();
+      document.title = PROJECTS[nextSlug].name + ' — Kodu Design Lab';
+      after(newPage);
+
+      if (clone) {
+        const last = hero.getBoundingClientRect();
+        tl.to(clone, { top: last.top, left: last.left, width: last.width, height: last.height, duration: 1.3, ease: 'power3.inOut',
+          onComplete() {
+            const heroImg = hero.querySelector('img');
+            const reveal = () => { gsap.set(hero, { clearProps: 'visibility' }); clone.remove(); };
+            if (heroImg.complete && heroImg.naturalWidth) reveal();
+            else { heroImg.addEventListener('load', reveal, { once: true }); heroImg.addEventListener('error', reveal, { once: true }); }
+          } }, SWAP_AT);
+        tl.to(clone.querySelector('img'), { objectPosition: '50% 50%', duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
+      }
+      tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
+      if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
+    }, SWAP_AT);
+    return newPage;
   }
 
   // Standalone project page (direct load / refresh): render and stop here
@@ -265,6 +366,23 @@
       rollify(text.querySelectorAll('.roll-target'));
       (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => revealProjectText(text));
     }
+    // Next-project navigation on a standalone page (with browser back/forward)
+    let staticPageEl = built;
+    let staticSlug = slug;
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    history.replaceState({ view: 'project', slug }, '', location.href);
+    const goTo = (nextSlug, pushUrl) => {
+      const np = switchProject(staticPageEl, nextSlug, (newPage) => {
+        staticPageEl = newPage; staticSlug = nextSlug;
+        wireNextProject(newPage, goTo);
+      });
+      if (np && pushUrl) history.pushState({ view: 'project', slug: nextSlug }, '', siteUrl('projects/' + nextSlug));
+    };
+    wireNextProject(built, goTo);
+    window.addEventListener('popstate', (e) => {
+      const s = e.state;
+      if (s && s.view === 'project' && s.slug !== staticSlug) goTo(s.slug, false);
+    });
     return;
   }
 
@@ -462,6 +580,8 @@
   let activeCard = null;    // the card that was clicked
   let busy = false;         // a transition is running
   let projectOpen = false;  // true from the moment a card is clicked until the close finishes
+  let currentSlug = null;   // slug of the open project
+  let depth = 0;            // history entries above "home" (1 = project, 2 = next project, ...)
   let queued = null;        // 'close' | 'open' requested while busy — runs when the transition ends
   let queuedArgs = null;
   function runQueued() {
@@ -473,22 +593,9 @@
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   history.replaceState({ view: 'home' }, '', location.href);
 
-  // A fixed-position copy of an image that can travel between two rects
-  function makeClone(imgSrc, rect) {
-    const clone = document.createElement('div');
-    clone.className = 'flip-clone';
-    const img = document.createElement('img');
-    img.src = imgSrc;
-    img.alt = '';
-    clone.appendChild(img);
-    gsap.set(clone, { top: rect.top, left: rect.left, width: rect.width, height: rect.height });
-    body.appendChild(clone);
-    return clone;
-  }
-
   function openProject(card, slug, pushUrl) {
     if (!PROJECTS[slug]) return;
-    if (busy) { queued = 'open'; queuedArgs = [card, slug, pushUrl]; return; }
+    if (busy || switching) { queued = 'open'; queuedArgs = [card, slug, pushUrl]; return; }
     // Clicked before the intro finished: jump the intro to its end so the two don't fight
     if (window.koduIntro && window.koduIntro.isActive()) window.koduIntro.progress(1);
     html.classList.remove('is-loading');
@@ -506,6 +613,8 @@
 
     // Build the page now (hidden) so images start loading immediately
     const page = buildProjectPage(slug);
+    currentSlug = slug;
+    wireNextProject(page, goToNext);
     const hero = page.querySelector('.project-image--hero');
     const textBlock = page.querySelector('.project-text');
     if (textBlock) rollify(textBlock.querySelectorAll('.roll-target'));
@@ -565,12 +674,26 @@
       if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
     }, SWAP_AT);
 
-    if (pushUrl) history.pushState({ view: 'project', slug }, '', card.getAttribute('href'));
+    if (pushUrl) { depth = 1; history.pushState({ view: 'project', slug, depth }, '', card.getAttribute('href')); }
     document.title = PROJECTS[slug].name + ' — Kodu Design Lab';
   }
 
+  // Next project from within an open project (homepage context): swap pages, keep card state in sync
+  function goToNext(nextSlug, pushUrl) {
+    if (busy || !currentPage) return;
+    const np = switchProject(currentPage, nextSlug, (newPage) => {
+      currentPage = newPage;
+      currentSlug = nextSlug;
+      // The card we originally left had its image/text hidden for the FLIP; put it back to normal
+      if (activeCard) gsap.set([activeCard.querySelector('.project-card__media'), activeCard.querySelector('.project-card__meta')], { clearProps: 'visibility,opacity' });
+      activeCard = cards.find((c) => c.dataset.project === nextSlug) || activeCard;
+      wireNextProject(newPage, goToNext);
+    });
+    if (np && pushUrl) { depth += 1; history.pushState({ view: 'project', slug: nextSlug, depth }, '', siteUrl('projects/' + nextSlug)); }
+  }
+
   function closeProject() {
-    if (busy) { queued = 'close'; return; }
+    if (busy || switching) { queued = 'close'; return; }
     if (!currentPage) { projectOpen = false; return; }
     busy = true;
     html.classList.add('is-transitioning');
@@ -608,8 +731,10 @@
       currentPage = null;
       gsap.set(otherCards, { opacity: 0, y: 12 });
       gsap.set(meta, { opacity: 0 });
+      gsap.set(card, { clearProps: 'transform,opacity' });   // may have been faded as an "other card" before a next-project hop
       wrapper.hidden = false;
       scrollToTop();
+      if (mobileMQ.matches) card.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'instant' });
 
       const last = media.getBoundingClientRect();
       tl.to(clone, {
@@ -648,15 +773,18 @@
   // Brand link acts as "back" while a project is open
   document.querySelector('.brand__link').addEventListener('click', (e) => {
     e.preventDefault();
-    if (projectOpen) history.back();
+    if (projectOpen) history.go(-Math.max(1, depth));   // straight home, however many projects deep
     else scrollToTop();
   });
 
   // Browser back / forward
   window.addEventListener('popstate', (e) => {
     const state = e.state || { view: 'home' };
+    depth = state.depth || 0;
     if (state.view === 'home' && projectOpen) {
       closeProject();
+    } else if (state.view === 'project' && projectOpen && state.slug !== currentSlug) {
+      goToNext(state.slug, false);
     } else if (state.view === 'project' && !projectOpen) {
       const card = cards.find((c) => c.dataset.project === state.slug);
       if (card) openProject(card, state.slug, false);

@@ -439,6 +439,65 @@ html.lenis, html.lenis body { height: auto; }
   .project-text__link { margin-top: 28px; }
 }
 
+/* =====================================================================================
+   NEXT PROJECT SECTION (bottom of every project page)
+   To remove: set NEXT_PROJECT = false in main.js. This CSS block is then unused and can go.
+   ===================================================================================== */
+.next-project {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 120px 0 0;
+  margin: 0 calc(-1 * var(--margin-main));           /* full-bleed so the clipped image meets the edges cleanly */
+  height: 602px;                                      /* fixed height = the image gets cut off (per design) */
+  overflow: hidden;
+  color: var(--text-primary);
+}
+.next-project__eyebrow {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.next-project__name {
+  margin: 24px 0 0;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+.next-project__window {
+  margin-top: 72px;
+  width: min(900px, calc(100vw - 2 * var(--margin-main)));
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  background: var(--card-placeholder);
+}
+.next-project__media {
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+.next-project__media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .next-project:hover .next-project__media img { transform: scale(1.03); }
+}
+@media (max-width: 899px) {
+  .next-project { padding-top: 4rem; height: auto; }
+  .next-project__name { font-size: 32px; }
+  .next-project__window { margin-top: 40px; }
+  .next-project__media { aspect-ratio: 16 / 9; }
+  .next-project__window { height: 42vw; }             /* cut off on mobile too */
+}
+.project-page:has(.next-project) { padding-bottom: 0; }   /* teaser runs to the page edge */
+/* END NEXT PROJECT SECTION */
+
 /* ---------- Page transition helpers ---------- */
 /* The floating image that travels between the card and the project hero */
 .flip-clone {
