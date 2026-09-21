@@ -449,9 +449,10 @@ html.lenis, html.lenis body { height: auto; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: calc(120px + 3rem) 0 0;
+  /* top padding: 5rem on a phone → 12.75rem (204px) at 1512px, fluid in between */
+  padding: clamp(5rem, 13.6vw - 0.1rem, 12.75rem) 0 0;
   margin: 0 calc(-1 * var(--margin-main));           /* full-bleed so the clipped image meets the edges cleanly */
-  height: 720px;                                      /* fixed height = the image gets cut off (~345px of it showing) */
+  height: 756px;                                      /* fixed height = the image gets cut off (~345px of it showing) */
   overflow: hidden;
   color: var(--text-primary);
 }
@@ -489,7 +490,7 @@ html.lenis, html.lenis body { height: auto; }
   .next-project:hover .next-project__media img { transform: scale(1.03); }
 }
 @media (max-width: 899px) {
-  .next-project { padding-top: 7rem; height: auto; }
+  .next-project { height: auto; }
   .next-project__name { font-size: 32px; }
   .next-project__window { margin-top: 40px; }
   .next-project__media { aspect-ratio: 16 / 9; }
