@@ -24,6 +24,10 @@
   }
   // Jump to a position with or without Lenis
   const scrollToTop = () => { if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); else window.scrollTo(0, 0); };
+  // Freeze scrolling while a page transition plays (wheel, trackpad and touch) so the flying
+  // image never has to chase a moving page
+  const lockScroll = () => { html.classList.add('lock-scroll'); if (lenis) lenis.stop(); };
+  const unlockScroll = () => { html.classList.remove('lock-scroll'); if (lenis) lenis.start(); };
 
   /* ---------- Header links: make them absolute so they survive pushState URL changes ----------
      (otherwise "about" resolves to /projects/about after opening a project from the homepage) */
@@ -309,6 +313,7 @@
     if (switching || !PROJECTS[nextSlug]) return null;
     switching = true;
     html.classList.add('is-transitioning');
+    lockScroll();
     const link = fromPage.querySelector('.next-project');
     const win = link && link.querySelector('.next-project__window');
     const first = win ? win.getBoundingClientRect() : null;
@@ -326,7 +331,7 @@
     const teaserText = link ? [...link.children].filter((el) => el !== win) : [];
     const tl = gsap.timeline({
       defaults: { ease: 'power3.inOut' },
-      onComplete() { html.classList.remove('is-transitioning'); switching = false; },
+      onComplete() { html.classList.remove('is-transitioning'); switching = false; unlockScroll(); },
     });
     window.koduTransition = tl;
     tl.to([...fading, ...teaserText], { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
@@ -618,6 +623,7 @@
         if (lenis) lenis.start();
     busy = true;
     projectOpen = true;
+    lockScroll();
     activeCard = card;
     html.classList.add('is-transitioning');
 
@@ -640,6 +646,7 @@
       onComplete() {
         html.classList.remove('is-transitioning');
         busy = false;
+        unlockScroll();
         runQueued();
       },
     });
@@ -714,6 +721,7 @@
     if (!currentPage) { projectOpen = false; return; }
     busy = true;
     html.classList.add('is-transitioning');
+    lockScroll();
 
     const page = currentPage;
     const card = activeCard;
@@ -728,6 +736,7 @@
       onComplete() {
         html.classList.remove('is-transitioning');
         busy = false;
+        unlockScroll();
         projectOpen = false;
         runQueued();
       },
