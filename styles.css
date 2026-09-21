@@ -495,7 +495,8 @@ html.lenis, html.lenis body { height: auto; }
   .next-project__window { margin-top: 40px; }
   .next-project__media { aspect-ratio: 16 / 9; }
   .next-project__window {
-    height: 48vw;                                                       /* cut off on mobile too */
+    /* window is (100vw - 88px) wide → 16:9 image is 0.5625× that tall; show 80% of it */
+    height: calc((100vw - 2 * var(--margin-main) - 3rem) * 0.45);
     width: calc(100vw - 2 * var(--margin-main) - 3rem);                 /* 1.5rem narrower each side than the page images */
   }
 }
