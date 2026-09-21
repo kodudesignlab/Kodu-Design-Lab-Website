@@ -518,7 +518,6 @@ html.lenis, html.lenis body { height: auto; }
 /* While a transition runs, hand opacity control to GSAP */
 .is-transitioning .project-card { transition: none; }
 .is-transitioning .project-container:has(.project-card:hover) .project-card:not(:hover) { opacity: 1; }
-.is-transitioning .project-card:hover .project-card__media img { transform: none; }
 
 /* Pre-animation state: hide until JS positions the cards (JS removes this) */
 .is-loading .brand > *,

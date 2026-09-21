@@ -148,6 +148,14 @@
   const ARROW = '<svg class="ext-link__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>';
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
+  // Current rendered scale of an element (hover zooms etc.), so a clone can start from exactly what's on screen
+  function currentScale(el) {
+    const t = el && getComputedStyle(el).transform;
+    if (!t || t === 'none') return 1;
+    const mtx = new DOMMatrix(t);
+    return Math.hypot(mtx.a, mtx.b) || 1;
+  }
+
   // A fixed-position copy of an image that can travel between two rects
   function makeClone(imgSrc, rect) {
     const clone = document.createElement('div');
@@ -327,8 +335,9 @@
     tl.add(() => {
       const clone = first ? makeClone(largestSrc(heroData), first) : null;
       if (clone) {
-        // The window shows the top of the image; start the clone the same way, then drift to centre
-        gsap.set(clone.querySelector('img'), { objectPosition: '50% 0%' });
+        // The window shows the top of the image; start the clone the same way, then drift to centre.
+        // Also match the teaser's hover zoom so nothing snaps at the moment of the click.
+        gsap.set(clone.querySelector('img'), { objectPosition: '50% 0%', scale: currentScale(win.querySelector('img')), transformOrigin: '50% 50%' });
         gsap.set(hero, { visibility: 'hidden' });
       }
       fromPage.replaceWith(newPage);
@@ -345,7 +354,7 @@
             if (heroImg.complete && heroImg.naturalWidth) reveal();
             else { heroImg.addEventListener('load', reveal, { once: true }); heroImg.addEventListener('error', reveal, { once: true }); }
           } }, SWAP_AT);
-        tl.to(clone.querySelector('img'), { objectPosition: '50% 50%', duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
+        tl.to(clone.querySelector('img'), { objectPosition: '50% 50%', scale: 1, duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
       }
       tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
       if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
@@ -647,6 +656,9 @@
       const cloneImg = clone.querySelector('img');
       cloneImg.sizes = SIZES[1];
       cloneImg.srcset = imageSrcset(heroData);
+      // Match the card's hover zoom at the moment of the click, then ease back to 1 in flight
+      gsap.set(cloneImg, { scale: currentScale(cardImg), transformOrigin: '50% 50%' });
+      tl.to(cloneImg, { scale: 1, duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
       gsap.set(media, { visibility: 'hidden' });
       gsap.set(hero, { visibility: 'hidden' });
 
