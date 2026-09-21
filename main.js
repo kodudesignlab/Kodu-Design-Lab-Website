@@ -331,7 +331,7 @@
     const teaserText = link ? [...link.children].filter((el) => el !== win) : [];
     const tl = gsap.timeline({
       defaults: { ease: 'power3.inOut' },
-      onComplete() { html.classList.remove('is-transitioning'); switching = false; unlockScroll(); },
+      onComplete() { html.classList.remove('is-transitioning'); switching = false; unlockScroll(); },   // safety net
     });
     window.koduTransition = tl;
     tl.to([...fading, ...teaserText], { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
@@ -356,15 +356,16 @@
 
       if (clone) {
         const last = hero.getBoundingClientRect();
-        tl.to(clone, { top: last.top, left: last.left, width: last.width, height: last.height, duration: 1.3, ease: 'power3.inOut',
+        tl.to(clone, { top: last.top, left: last.left, width: last.width, height: last.height, duration: 1.15, ease: 'power3.inOut',
           onComplete() {
+            unlockScroll();   // scrolling is free as soon as the image is in place
             const heroImg = hero.querySelector('img');
             const reveal = () => { gsap.set(hero, { clearProps: 'visibility' }); clone.remove(); };
             if (heroImg.complete && heroImg.naturalWidth) reveal();
             else { heroImg.addEventListener('load', reveal, { once: true }); heroImg.addEventListener('error', reveal, { once: true }); }
           } }, SWAP_AT);
         // Image box grows with the clone until it simply fills it (= the hero's own cover fit)
-        tl.to(cloneImg, { height: last.height, scale: 1, duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
+        tl.to(cloneImg, { height: last.height, scale: 1, duration: 1.15, ease: 'power3.inOut' }, SWAP_AT);
       }
       tl.to(rest, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, SWAP_AT + 0.55);
       if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
@@ -670,7 +671,7 @@
       cloneImg.srcset = imageSrcset(heroData);
       // Match the card's hover zoom at the moment of the click, then ease back to 1 in flight
       gsap.set(cloneImg, { scale: currentScale(cardImg), transformOrigin: '50% 50%' });
-      tl.to(cloneImg, { scale: 1, duration: 1.3, ease: 'power3.inOut' }, SWAP_AT);
+      tl.to(cloneImg, { scale: 1, duration: 1.15, ease: 'power3.inOut' }, SWAP_AT);
       gsap.set(media, { visibility: 'hidden' });
       gsap.set(hero, { visibility: 'hidden' });
 
@@ -682,8 +683,9 @@
       const last = hero.getBoundingClientRect();
       tl.to(clone, {
         top: last.top, left: last.left, width: last.width, height: last.height,
-        duration: 1.3, ease: 'power3.inOut',
+        duration: 1.15, ease: 'power3.inOut',
         onComplete() {
+          unlockScroll();   // scrolling is free as soon as the image is in place
           // Keep the clone in place until the hero underneath has actually loaded
           const heroImg = hero.querySelector('img');
           const reveal = () => { gsap.set(hero, { clearProps: 'visibility' }); clone.remove(); };
@@ -765,8 +767,9 @@
       const last = media.getBoundingClientRect();
       tl.to(clone, {
         top: last.top, left: last.left, width: last.width, height: last.height,
-        duration: 1.3, ease: 'power3.inOut',
+        duration: 1.15, ease: 'power3.inOut',
         onComplete() {
+          unlockScroll();
           gsap.set(media, { clearProps: 'visibility' });
           clone.remove();
         },
