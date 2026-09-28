@@ -29,6 +29,45 @@
   const lockScroll = () => { html.classList.add('lock-scroll'); if (lenis) lenis.stop(); };
   const unlockScroll = () => { html.classList.remove('lock-scroll'); if (lenis) lenis.start(); };
 
+  /* ---------- CUSTOM CURSOR ----------
+     White dot in difference blend mode that trails the pointer with a light lerp, growing
+     1.5× over project cards and any link/button. Pointer devices only; delete this block and
+     the matching CSS to remove. */
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion) {
+    const dot = document.createElement('div');
+    dot.className = 'cursor-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    body.appendChild(dot);
+    html.classList.add('has-cursor');
+
+    const HOVER_SELECTOR = 'a, button, .project-card, .next-project, .theme-toggle, [role="button"]';
+    const pos = { x: innerWidth / 2, y: innerHeight / 2 };
+    const cur = { x: pos.x, y: pos.y, s: 1 };
+    let targetScale = 1;
+    let seen = false;
+
+    addEventListener('pointermove', (e) => {
+      pos.x = e.clientX; pos.y = e.clientY;
+      if (!seen) { seen = true; cur.x = pos.x; cur.y = pos.y; gsap.to(dot, { opacity: 1, duration: 0.3 }); }
+      // Growing over an interactive element (checked here so it also works for elements added later)
+      targetScale = e.target.closest && e.target.closest(HOVER_SELECTOR) ? 1.5 : 1;
+    }, { passive: true });
+    addEventListener('pointerdown', () => { targetScale *= 0.85; });
+    addEventListener('pointerup', () => { targetScale /= 0.85; });
+    // Hide when the pointer leaves the window
+    addEventListener('pointerleave', () => gsap.to(dot, { opacity: 0, duration: 0.2 }));
+    addEventListener('pointerenter', () => { if (seen) gsap.to(dot, { opacity: 1, duration: 0.2 }); });
+
+    gsap.ticker.add(() => {
+      if (body.lastElementChild !== dot) body.appendChild(dot);   // stay on top as pages are swapped in
+      cur.x += (pos.x - cur.x) * 0.2;      // light trail
+      cur.y += (pos.y - cur.y) * 0.2;
+      cur.s += (targetScale - cur.s) * 0.15;
+      gsap.set(dot, { x: cur.x, y: cur.y, scale: cur.s });
+    });
+  }
+  /* ---------- END CUSTOM CURSOR ---------- */
+
   /* ---------- Header links: make them absolute so they survive pushState URL changes ----------
      (otherwise "about" resolves to /projects/about after opening a project from the homepage) */
   document.querySelectorAll('.brand__link, .nav__item').forEach((a) => {
@@ -719,7 +758,7 @@
       if (textBlock) tl.add(revealProjectText(textBlock), SWAP_AT + 0.7);
     }, SWAP_AT);
 
-    if (pushUrl) { depth = 1; history.pushState({ view: 'project', slug, depth }, '', card.getAttribute('href')); }
+    if (pushUrl) { depth = 1; history.pushState({ view: 'project', slug, depth }, '', siteUrl('projects/' + slug)); }
     document.title = PROJECTS[slug].name + ' — Kodu Design Lab';
   }
 
