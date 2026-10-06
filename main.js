@@ -116,7 +116,6 @@
      Built here so it exists on every page without duplicating markup. Delete this block and
      the matching CSS to remove; the nav link falls back to its plain mailto: href. */
   const CONTACT_EMAIL = 'kodudesignlab@gmail.com';
-  const CONTACT_PHONE = '0425 288 883';
   const contactTrigger = document.querySelector('.nav__item[href^="mailto:"]');
   if (contactTrigger) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
@@ -147,7 +146,6 @@
       '<div class="contact-panel__links">' +
         '<p class="contact-panel__label">Say hello</p>' +
         '<a class="contact-link" href="mailto:' + CONTACT_EMAIL + '"><span class="roll-target">' + CONTACT_EMAIL + '</span>' + arrow + '</a>' +
-        '<a class="contact-link" href="tel:' + CONTACT_PHONE.replace(/\s+/g, '') + '"><span class="roll-target">' + CONTACT_PHONE + '</span>' + arrow + '</a>' +
       '</div>';
     body.appendChild(scrim);
     body.appendChild(panel);
