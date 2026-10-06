@@ -722,7 +722,7 @@ html.lock-scroll { overflow: hidden; }
 }
 .contact-panel__portrait img { width: 100%; height: 100%; object-fit: cover; }
 
-.contact-panel__links { padding-bottom: 1rem; }
+.contact-panel__links { padding-bottom: 5rem; }
 .contact-panel__label {
   color: var(--panel-muted);
   text-transform: uppercase;
@@ -755,6 +755,7 @@ html.lock-scroll { overflow: hidden; }
     gap: 2rem;
   }
   .contact-panel__body { margin-top: 1.5rem; }
+  .contact-panel__links { padding-bottom: 1rem; }
   .contact-panel__portrait { width: clamp(96px, 26vw, 140px); }
 }
 /* END CONTACT PANEL */
