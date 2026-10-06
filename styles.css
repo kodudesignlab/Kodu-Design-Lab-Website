@@ -739,7 +739,20 @@ html.lock-scroll { overflow: hidden; }
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   line-height: 1.1;
 }
-.contact-link:last-child { border-bottom: 1px solid var(--panel-line); }
+.contact-link:last-of-type { border-bottom: 1px solid var(--panel-line); }
+
+/* Instagram / LinkedIn, side by side, same styling as the About page links */
+.contact-social {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.5;
+}
 .contact-link svg {
   flex: 0 0 auto;
   width: 1em;                        /* tracks the link text size */

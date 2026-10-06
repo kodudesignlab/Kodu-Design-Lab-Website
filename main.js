@@ -119,6 +119,8 @@
   const contactTrigger = document.querySelector('.nav__item[href^="mailto:"]');
   if (contactTrigger) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+    // Same diagonal arrow as the About page social links
+    const extArrow = '<svg class="about__link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>';
     const scrim = document.createElement('div');
     scrim.className = 'contact-scrim';
     const panel = document.createElement('aside');
@@ -146,6 +148,10 @@
       '<div class="contact-panel__links">' +
         '<p class="contact-panel__label">Say hello</p>' +
         '<a class="contact-link" href="mailto:' + CONTACT_EMAIL + '"><span class="roll-target">' + CONTACT_EMAIL + '</span>' + arrow + '</a>' +
+        '<ul class="contact-social">' +
+          '<li><a class="about__link" href="https://www.instagram.com/lachlan.sarv/" target="_blank" rel="noopener"><span class="roll-target">Instagram</span>' + extArrow + '</a></li>' +
+          '<li><a class="about__link" href="https://www.linkedin.com/in/lachlan-sarv-4192311a4/" target="_blank" rel="noopener"><span class="roll-target">LinkedIn</span>' + extArrow + '</a></li>' +
+        '</ul>' +
       '</div>';
     body.appendChild(scrim);
     body.appendChild(panel);
