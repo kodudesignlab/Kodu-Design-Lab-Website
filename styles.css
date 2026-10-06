@@ -654,7 +654,7 @@ html.lock-scroll { overflow: hidden; }
   top: 0;
   right: 0;
   z-index: 90;
-  width: min(620px, 46vw);
+  width: min(680px, 50vw);
   height: 100svh;
   display: flex;
   flex-direction: column;
