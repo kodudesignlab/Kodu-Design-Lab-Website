@@ -742,8 +742,8 @@ html.lock-scroll { overflow: hidden; }
 .contact-link:last-of-type { border-bottom: 1px solid var(--panel-line); }
 .contact-link svg {
   flex: 0 0 auto;
-  width: 1em;                        /* tracks the link text size */
-  height: 1em;
+  width: 2rem;
+  height: 2rem;
   transition: transform 0.45s var(--ease-out);
 }
 /* Hovering anywhere on the row rolls the label, not just the text itself */
