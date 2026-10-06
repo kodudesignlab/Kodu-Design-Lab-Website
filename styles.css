@@ -624,3 +624,137 @@ html.lock-scroll { overflow: hidden; }
     animation-duration: 0.01ms !important;
   }
 }
+
+/* =====================================================================================
+   CONTACT PANEL
+   Slides in from the right when "Contact" is clicked; the page behind it dims and blurs.
+   Colours are inverted against the page theme (dark panel in light mode, light panel in
+   dark mode). To remove: delete this block and the CONTACT PANEL section in main.js.
+   ===================================================================================== */
+.contact-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(10, 10, 10, 0.45);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  opacity: 0;
+  visibility: hidden;
+}
+:root[data-theme='dark'] .contact-scrim { background: rgba(0, 0, 0, 0.55); }
+
+.contact-panel {
+  /* Inverted against the page theme */
+  --panel-bg: #141414;
+  --panel-text: #f2f2f2;
+  --panel-muted: rgba(242, 242, 242, 0.55);
+  --panel-line: rgba(242, 242, 242, 0.16);
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 90;
+  width: min(620px, 46vw);
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: var(--margin-main);
+  background: var(--panel-bg);
+  color: var(--panel-text);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateX(100%);
+  visibility: hidden;
+}
+:root[data-theme='dark'] .contact-panel {
+  --panel-bg: #ffffff;
+  --panel-text: #1c1c1c;
+  --panel-muted: rgba(28, 28, 28, 0.55);
+  --panel-line: rgba(28, 28, 28, 0.16);
+}
+
+.contact-panel__top { display: block; }
+
+.contact-panel__bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--label-lg);
+}
+.contact-panel__close {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.contact-panel__body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+.contact-panel__lead {
+  max-width: 34ch;
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  line-height: 1.35;
+}
+.contact-panel__lead span { color: var(--panel-muted); }
+
+.contact-panel__portrait {
+  flex: 0 0 auto;
+  width: clamp(110px, 12vw, 160px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.contact-panel__portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+.contact-panel__links { padding-bottom: 1rem; }
+.contact-panel__label {
+  color: var(--panel-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+.contact-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(0.9rem, 1.6vw, 1.4rem) 0;
+  border-top: 1px solid var(--panel-line);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.1;
+}
+.contact-link:last-child { border-bottom: 1px solid var(--panel-line); }
+.contact-link svg {
+  flex: 0 0 auto;
+  width: clamp(24px, 2.4vw, 34px);
+  height: clamp(24px, 2.4vw, 34px);
+  transition: transform 0.45s var(--ease-out);
+}
+.contact-link:hover svg { transform: translateX(6px); }
+.contact-link .roll { --roll-step: 10ms; }
+
+@media (max-width: 899px) {
+  .contact-panel {
+    width: 100%;
+    gap: 2rem;
+  }
+  .contact-panel__body { margin-top: 1.5rem; }
+  .contact-panel__portrait { width: clamp(96px, 26vw, 140px); }
+}
+/* END CONTACT PANEL */

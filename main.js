@@ -111,6 +111,84 @@
   }); }
   rollify(document.querySelectorAll('.brand__link, .nav__item, .roll-target'));
 
+  /* ---------- CONTACT PANEL ----------
+     "Contact" in the nav slides a panel in from the right and dims + blurs the page behind it.
+     Built here so it exists on every page without duplicating markup. Delete this block and
+     the matching CSS to remove; the nav link falls back to its plain mailto: href. */
+  const CONTACT_EMAIL = 'kodudesignlab@gmail.com';
+  const CONTACT_PHONE = '0400 000 000';   // <- replace with the real number
+  const contactTrigger = document.querySelector('.nav__item[href^="mailto:"]');
+  if (contactTrigger) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+    const scrim = document.createElement('div');
+    scrim.className = 'contact-scrim';
+    const panel = document.createElement('aside');
+    panel.className = 'contact-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', 'Contact');
+    panel.innerHTML =
+      '<div class="contact-panel__top">' +
+        '<div class="contact-panel__bar">' +
+          '<span>(Get in touch)</span>' +
+          '<button class="contact-panel__close" type="button"><span class="roll-target">Close</span></button>' +
+        '</div>' +
+        '<div class="contact-panel__body">' +
+          '<p class="contact-panel__lead">Like what you see? Let\u2019s talk. ' +
+            '<span>Whether it\u2019s a brand that needs a look, a website that needs building, or just a rough idea you want to kick around, I\u2019d love to hear what you\u2019re working on.</span>' +
+          '</p>' +
+          '<div class="contact-panel__portrait">' +
+            '<img src="' + siteUrl('images/about/portrait-600.jpg') + '" ' +
+              'srcset="' + siteUrl('images/about/portrait-600.jpg') + ' 600w, ' + siteUrl('images/about/portrait-1120.jpg') + ' 1120w" ' +
+              'sizes="160px" alt="Lachlan Sarv" decoding="async">' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="contact-panel__links">' +
+        '<p class="contact-panel__label">Say hello</p>' +
+        '<a class="contact-link" href="mailto:' + CONTACT_EMAIL + '"><span class="roll-target">' + CONTACT_EMAIL + '</span>' + arrow + '</a>' +
+        '<a class="contact-link" href="tel:' + CONTACT_PHONE.replace(/\s+/g, '') + '"><span class="roll-target">' + CONTACT_PHONE + '</span>' + arrow + '</a>' +
+      '</div>';
+    body.appendChild(scrim);
+    body.appendChild(panel);
+    rollify(panel.querySelectorAll('.roll-target'));
+
+    const closeBtn = panel.querySelector('.contact-panel__close');
+    let contactOpen = false;
+    let contactTl = null;
+
+    function openContact() {
+      if (contactOpen) return;
+      contactOpen = true;
+      lockScroll();
+      panel.scrollTop = 0;
+      gsap.set([scrim, panel], { visibility: 'visible' });
+      if (contactTl) contactTl.kill();
+      contactTl = gsap.timeline()
+        .to(scrim, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0)
+        .fromTo(panel, { xPercent: 100, x: 0 }, { xPercent: 0, x: 0, duration: 0.75, ease: 'power3.out' }, 0);
+      closeBtn.focus({ preventScroll: true });
+    }
+
+    function closeContact() {
+      if (!contactOpen) return;
+      contactOpen = false;
+      if (contactTl) contactTl.kill();
+      contactTl = gsap.timeline({
+        onComplete() { gsap.set([scrim, panel], { visibility: 'hidden' }); unlockScroll(); }
+      })
+        .to(panel, { xPercent: 100, x: 0, duration: 0.55, ease: 'power3.in' }, 0)
+        .to(scrim, { opacity: 0, duration: 0.45, ease: 'power2.in' }, 0);
+      contactTrigger.focus({ preventScroll: true });
+    }
+
+    contactTrigger.addEventListener('click', (e) => { e.preventDefault(); openContact(); });
+    closeBtn.addEventListener('click', closeContact);
+    scrim.addEventListener('click', closeContact);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && contactOpen) closeContact(); });
+  }
+  /* ---------- END CONTACT PANEL ---------- */
+
   /* ---------- Tagline: "by Lachlan Sarv" ⇄ "Digital & Graphic Design" ----------
      A three-line track (A, B, A) slides up one line every few seconds; after the third
      line it snaps back to the top invisibly, so it reads as an endless upward loop. */
