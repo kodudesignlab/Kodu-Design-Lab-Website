@@ -749,7 +749,7 @@ html.lock-scroll { overflow: hidden; }
 /* Hovering anywhere on the row rolls the label, not just the text itself */
 .contact-link:hover .roll .char { transform: translateY(-100%); }
 .contact-link:hover svg { transform: translateX(6px); }
-.contact-link--ext:hover svg { transform: translate(5px, -5px); }
+.contact-link--ext:hover svg { transform: translate(4px, -4px); }
 .contact-link .roll { --roll-step: 10ms; }
 
 @media (max-width: 899px) {
