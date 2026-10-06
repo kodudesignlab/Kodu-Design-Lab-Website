@@ -722,7 +722,7 @@ html.lock-scroll { overflow: hidden; }
 }
 .contact-panel__portrait img { width: 100%; height: 100%; object-fit: cover; }
 
-.contact-panel__links { padding-bottom: 3.5rem; }
+.contact-panel__links { padding-bottom: 2.5rem; }
 .contact-panel__label {
   color: var(--panel-muted);
   text-transform: uppercase;
@@ -746,6 +746,8 @@ html.lock-scroll { overflow: hidden; }
   height: 1em;
   transition: transform 0.45s var(--ease-out);
 }
+/* Hovering anywhere on the row rolls the label, not just the text itself */
+.contact-link:hover .roll .char { transform: translateY(-100%); }
 .contact-link:hover svg { transform: translateX(6px); }
 .contact-link--ext:hover svg { transform: translate(5px, -5px); }
 .contact-link .roll { --roll-step: 10ms; }
